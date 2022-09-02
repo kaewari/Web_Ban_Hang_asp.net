@@ -6,6 +6,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 @{
     var session = (SNShop.Common.UserLogin)Session[SNShop.Common.Constants.USER_SESSION];
+
 }
 <!DOCTYPE HTML>
 <html>
@@ -21,7 +22,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script type="text/javascript" src="/asset/client/js/startstop-slider.js"></script>
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>    
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 </head>
 <body>
     <div class="wrap">
@@ -40,13 +42,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         }
                         else
                         {
-                            <li>Hello @session.UserName</li>
-                            <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
-                            <li>@Html.ActionLink("My accout", "ShowProfile", "Account")</li>
-                            <li><a href="#">Checkout</a></li>
+                            <li><span style="color:red">Xin chào:</span><a href="@Url.Action("ShowProfile", "Account")"><span><img src="@session.Picture" width="25" height="25" /></span> @session.UserName</a></li>
+                            <li>@Html.ActionLink("Logout", "Logout", "Account")</li>                           
                         }
-
-
 
                     </ul>
                 </div>
@@ -54,14 +52,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
             <div class="header_top">
                 <div class="logo">
-                    <a href="index.html"><img src="/asset/client/images/logo.png" alt="" /></a>
+                    <a href="@Url.Action("Index","Home")"><img src="/asset/client/images/logo.png" alt="" /></a>
                 </div>
                 <div class="cart">
+                    <a href="@Url.Action("ListCart","Cart")"><i class="fa-solid fa-cart-shopping"></i></a>
                     <p>
-                        Welcome to our Online Store! <span>Cart:</span><div id="dd" class="wrapper-dropdown-2">
-                            0 item(s) - $0.00
+                        <div id="dd" class="wrapper-dropdown-2">
+                            @ViewBag.Countproduct item(s) - <span style="color:red">@String.Format("{0:0,0}", @ViewBag.Total, null)&#8363;</span>
                             <ul class="dropdown">
-                                <li>you have no items in your Shopping cart</li>
+                                <li>Bạn có @ViewBag.Countproduct trong giỏ hàng</li>
                             </ul>
                         </div>
                     </p>
@@ -103,11 +102,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <li> <div class="clear"></div></li>
                     </ul>
                 </div>
-                <div class="search_box">
-                    <form>
-                        <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}"><input type="submit" value="">
-                    </form>
-                </div>
+                @*<div class="search_box">
+                        <form>
+                            <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}"><input type="submit" value="">
+                        </form>
+                    </div>*@
+                @using (Html.BeginForm())
+                {
+                    <div class="navbar-form navbar-right" style="margin-right:-10px">
+                        Tìm sản phẩm: @Html.TextBox("SearchString", "", new { @class = "form-control" })
+                        <input type="submit" class="btn btn-danger" value="Search" />
+                    </div>
+                }@*giao diện 2*@
                 <div class="clear"></div>
             </div>
             @RenderSection("slide", required: false)

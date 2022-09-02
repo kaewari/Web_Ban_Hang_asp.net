@@ -94,7 +94,7 @@ body {
 .cart{
 	float:right;
 	 position: relative;
-	 padding-right:40px;
+	 padding-right:20px;
 	 margin-top:20px;
 }
 .cart p{
@@ -333,12 +333,13 @@ body {
 	-moz-box-shadow: 0px 0px 3px rgb(150, 150, 150);
 	-o-box-shadow: 0px 0px 3px rgb(150, 150, 150);
 }
-.grid_1_of_4:first-child {
+/*.grid_1_of_4:first-child {
 	margin-left: 0;
-}
+}*/
 .images_1_of_4 {
-	width: 20.8%;
-	padding: 1.5%;
+	margin:6px;
+	width: 19%;
+	padding: 0.5%;
 	text-align: center;
 	position: relative;
 }

@@ -1,0 +1,77 @@
+﻿@model IEnumerable<SNShop.Models.CartModel>
+
+@{
+    ViewBag.Title = "ListCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="color:red; text-align:center">GIỎ HÀNG</h2>
+
+@if (ViewBag.Countproduct > 0)
+{
+    <table class="table">
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @String.Format("{0:0}", @ViewBag.Count + 1)
+                </td>
+                <td>
+                    <a href="@Url.Action("Detail", "Home", new { @id = item.ProductID })">@Html.DisplayFor(modelItem => item.ProductName)</a>
+
+                </td>
+                <td>
+                    <span class="item-price" style="color:red">@String.Format("{0:0,0}", item.UnitPrice - (item.UnitPrice * 20 / 100))&#8363;</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+                </td>
+            </tr>
+
+        }
+        <tr>
+            <td colspan="2"> So luong san pham: @ViewBag.CountProduct</td>
+            <td colspan="2">Thanh tien: @String.Format("{0:0,0}", ViewBag.ToTal) &#8363;</td>
+            @if (Session["UserID"] != null)
+            {
+                <td colspan="2"> @Html.ActionLink("Dat hang", "OrderProduct")</td>
+            }
+        </tr>
+    </table>
+    if (Session["UserID"] == null)
+    {
+        <a href="@Url.Action("Login", "Account")"> Bạn chưa đăng nhập </a>
+    }
+    
+    <a href="@Url.Action("Index","Home")"><p style="text-align:center">Tiếp tục mua hàng</p></a>
+}
+else
+{
+    <p style="text-align:center">Không có sản phẩm</p>
+    <a href="@Url.Action("Index","Home")"><p style="text-align:center">Tiếp tục mua hàng</p></a>
+}

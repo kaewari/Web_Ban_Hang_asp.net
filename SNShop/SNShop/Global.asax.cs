@@ -12,8 +12,7 @@ namespace SNShop
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
-        {
-
+        {          
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -24,7 +23,6 @@ namespace SNShop
         }
         protected void Application_End()
         {
-            Visited visited = new Visited();
             Application["Visiter"] = 0;
             Application["Sessions"] = 0;
 

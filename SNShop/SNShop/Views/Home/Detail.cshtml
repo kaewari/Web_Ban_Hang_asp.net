@@ -1,0 +1,112 @@
+﻿@model SNShop.Models.Product
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/asset/client/css/flexslider.css" type="text/css" media="screen" />
+<script src="~/asset/client/js/jquery.flexslider.js"></script>
+
+<div class="banner-bootom-w3-agileits py-5">
+    <div class="container py-xl-4 py-lg-2">
+        <!-- //tittle heading -->
+        <div class="row">
+            <div class="col-lg-5 col-md-8 single-right-left ">
+                <div class="grid">
+                    <div class="flexslider">
+                        <ul class="slides">
+                            <li data-thumb="/Images/si1.jpg">
+                                <div class="thumb-image">
+                                    <img src="/Images/si1.jpg" data-imagezoom="true" class="img-fluid" alt="">
+                                </div>
+                            </li>
+                            <li data-thumb="/Images/si2.jpg">
+                                <div class="thumb-image">
+                                    <img src="/Images/si2.jpg" data-imagezoom="true" class="img-fluid" alt="">
+                                </div>
+                            </li>
+                            <li data-thumb="/Images/si3.jpg">
+                                <div class="thumb-image">
+                                    <img src="/Images/si3.jpg" data-imagezoom="true" class="img-fluid" alt="">
+                                </div>
+                            </li>
+                            <li data-thumb="/Images/si3.jpg">
+                                <div class="thumb-image">
+                                    <img src="/Images/si3.jpg" data-imagezoom="true" class="img-fluid" alt="">
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 single-right-left simpleCart_shelfItem" style="font-size:20px">
+                <h3 class="mb-3">@Html.DisplayFor(model => model.Name)</h3>
+                <div class="single-infoagile">
+                    <ul>
+                        <li class="mb-3">
+                            &#8730;Bảo hành chính hãng 12 tháng.
+                        </li>
+                        <li class="mb-3">
+                            &#8730;Hỗ trợ đổi mới trong 7 ngày.
+                        </li>
+                        <li class="mb-3">
+                            &#8730;Windows bản quyền tích hợp.
+                        </li>
+                        <li class="mb-3">
+                            &#8730;Miễn phí giao hàng tận nơi.
+                        </li>
+                    </ul>
+                </div>
+                <div class="product-single-w3l">
+                    <p class="my-3">
+                        <i class="far fa-hand-point-right mr-2"></i>
+                        Mô tả sản phẩm
+                    </p>
+                    <ul>
+                        <li class="mb-1">
+                            3 GB RAM | 16 GB ROM | Expandable Upto 256 GB
+                        </li>
+                        <li class="mb-1">
+                            5.5 inch Full HD Display
+                        </li>
+                        <li class="mb-1">
+                            13MP Rear Camera | 8MP Front Camera
+                        </li>
+                        <li class="mb-1">
+                            3300 mAh Battery
+                        </li>
+                        <li class="mb-1">
+                            Exynos 7870 Octa Core 1.6GHz Processor
+                        </li>
+                    </ul>
+                    <p class="my-sm-4 my-3">
+                        <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
+                    </p>
+                </div>
+                <div class="mb-3" style="font-size:30px">
+                    <div><span>Giá cũ:</span><del class="mx-2 font-weight-light"><span class="rupees" style="color:red">@String.Format("{0:0,0}", Model.Price)&#8363;</span></del></div>
+                    <div><span>Giá KM:</span><span class="item-price" style="color:red">@String.Format("{0:0,0}", Model.Price - (Model.Price * 20 / 100))&#8363;</span></div>
+                </div>
+                <div class="occasion-cart">
+                    <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
+                        <a class="button" href="@Url.Action("AddCart","Cart", new {@id=Model.Id})">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<script>
+    // Can also be used with $(document).ready()
+    $(window).load(function () {
+        $('.flexslider').flexslider({
+            animation: "slide",
+            controlNav: "thumbnails"
+        });
+    });
+</script>

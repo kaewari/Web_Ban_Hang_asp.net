@@ -29,7 +29,7 @@ namespace SNShop.DAO
                 }
             }
         }
-        public User GetUserByName(string email)
+        public User GetUserByEmail(string email)
         {
             return db.Users.SingleOrDefault(s => s.Email == email);
         }

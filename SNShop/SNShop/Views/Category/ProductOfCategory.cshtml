@@ -1,0 +1,31 @@
+﻿@*@model IEnumerable<SNShop.Models.Product>*@
+@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<SNShop.Models.Product>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="section group">
+    @foreach (var item in Model)
+    {
+        <div class="grid_1_of_4 images_1_of_4">
+            <a href="@Url.Action("Detail", new { id = item.Id })"><img src="@item.Name" alt="" /></a>
+            <h2>@item.Name </h2>
+            <div class="price-details">
+                <div class="price-number" style="width:100%">
+                    <p style="font-size:15px; padding:0;margin:0;"><span class="rupees" style="color:red">@String.Format("{0:0,0}", @item.Price)&#8363;</span></p>
+                </div>
+                <div class="add-cart" style="float:none">
+                    <h4><a href="@Url.Action("Detail","Home", new { id = item.Id })">Xem chi tiết</a></h4>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    }
+</div>
+<br />
+@Html.PagedListPager(Model, page => Url.Action("ProductOfCategory",
+new { page, ViewBag.PageSize }))

@@ -55,12 +55,20 @@
       <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -136,14 +144,19 @@
     <Compile Include="Common\UserLogin.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AddProvinceDistrictController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Common\Encode.cs" />
+    <Compile Include="Controllers\MyBaseController.cs" />
     <Compile Include="DAO\UserDao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartModel.cs" />
+    <Compile Include="Models\ChangePassword.cs" />
+    <Compile Include="Models\EditModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\Picture.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\SNOnlineShop.designer.cs">
       <AutoGen>True</AutoGen>
@@ -154,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="asset\client\css\easy-responsive-tabs.css" />
+    <Content Include="asset\client\css\flexslider.css" />
     <Content Include="asset\client\css\global.css" />
     <Content Include="asset\client\css\slider.css" />
     <Content Include="asset\client\css\style.css" />
@@ -193,6 +207,9 @@
     <Content Include="asset\client\images\productslide-6.jpg" />
     <Content Include="asset\client\images\quality-rating.png" />
     <Content Include="asset\client\images\search.png" />
+    <Content Include="asset\client\images\si1.jpg" />
+    <Content Include="asset\client\images\si2.jpg" />
+    <Content Include="asset\client\images\si3.jpg" />
     <Content Include="asset\client\images\skype.png" />
     <Content Include="asset\client\images\slide-1-image.png" />
     <Content Include="asset\client\images\slide-2-image.jpg" />
@@ -213,6 +230,7 @@
     <Content Include="asset\client\js\jquery-1.7.2.min.js" />
     <Content Include="asset\client\js\jquery.accordion.js" />
     <Content Include="asset\client\js\jquery.easing.js" />
+    <Content Include="asset\client\js\jquery.flexslider.js" />
     <Content Include="asset\client\js\move-top.js" />
     <Content Include="asset\client\js\script.js" />
     <Content Include="asset\client\js\slides.min.jquery.js" />
@@ -221,6 +239,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -249,6 +268,9 @@
     <Content Include="Images\ruouoxo.jpg" />
     <Content Include="Images\RuouVangNho.jpg" />
     <Content Include="Images\ruouxuanthanh.jpg" />
+    <Content Include="Images\si1.jpg" />
+    <Content Include="Images\si2.jpg" />
+    <Content Include="Images\si3.jpg" />
     <Content Include="Images\TeaPlus.jpg" />
     <Content Include="Images\tivisharp.jpg" />
     <Content Include="Images\tivisony.jpg" />
@@ -292,10 +314,16 @@
     <Content Include="Views\AddProvinceDistrict\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\ShowProfile.cshtml" />
+    <Content Include="Views\Home\Detail.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Home\AddImage.cshtml" />
+    <Content Include="Views\Cart\ListCart.cshtml" />
+    <Content Include="Views\Category\ProductOfCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Json\" />
+    <Folder Include="Views\MyBase\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

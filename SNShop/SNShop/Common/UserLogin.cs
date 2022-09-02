@@ -12,5 +12,6 @@ namespace SNShop.Common
         public string UserName { set; get; }
         public string Email { set; get; }
         public string GroupID { set; get; }
+        public string Picture { set; get; } 
     }
 }

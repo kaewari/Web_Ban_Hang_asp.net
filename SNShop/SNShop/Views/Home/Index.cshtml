@@ -1,5 +1,7 @@
-﻿@model IEnumerable<SNShop.Models.Product>
-
+﻿@*@model IEnumerable<SNShop.Models.Product>*@
+@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<SNShop.Models.Product>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,18 +13,10 @@
             <div class="categories">
                 <ul>
                     <li><h3>Categories</h3></li>
-                    <li><a href="#">Mobile Phones</a></li>
-                    <li><a href="#">Desktop</a></li>
-                    <li><a href="#">Laptop</a></li>
-                    <li><a href="#">Accessories</a></li>
-                    <li><a href="#">Software</a></li>
-                    <li><a href="#">Sports &amp; Fitness</a></li>
-                    <li><a href="#">Footwear</a></li>
-                    <li><a href="#">Jewellery</a></li>
-                    <li><a href="#">Clothing</a></li>
-                    <li><a href="#">Home Decor &amp; Kitchen</a></li>
-                    <li><a href="#">Beauty &amp; Healthcare</a></li>
-                    <li><a href="#">Toys, Kids &amp; Babies</a></li>
+                    @foreach (var item in ViewBag.Category)
+                    {
+                        <li><a href="@Url.Action("ProductOfCategory", "Category", new {Id = item.Id})">@item.Name</a></li>
+                    }
                 </ul>
             </div>
         </div>
@@ -92,23 +86,25 @@
     </div>
 
     <div class="section group">
-
         @foreach (var item in Model)
         {
             <div class="grid_1_of_4 images_1_of_4">
-                <a href="preview.html"><img src="@item.Image" alt="" /></a>
+                <a href="@Url.Action("Detail", new { id = item.Id })"><img src="@item.Name" alt="" /></a>
                 <h2>@item.Name </h2>
                 <div class="price-details">
-                    <div class="price-number">
-                        <p><span class="rupees">@item.Price</span></p>
+                    <div class="price-number" style="width:100%">
+                        <p style="font-size:15px; padding:0;margin:0;"><span class="rupees" style="color:red">@String.Format("{0:0,0}", @item.Price)&#8363;</span></p>
                     </div>
-                    <div class="add-cart">
-                        <h4><a href="preview.html">Add to Cart</a></h4>
+                    <div class="add-cart" style="float:none">
+                        <h4> @Html.ActionLink("Xem chi tiết", "Detail", new { id = item.Id })</h4>
                     </div>
                     <div class="clear"></div>
                 </div>
             </div>
         }
     </div>
+    <br />
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, ViewBag.PageSize }))
 </div>
 

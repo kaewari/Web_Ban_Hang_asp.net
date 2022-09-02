@@ -25,8 +25,12 @@
                 if (response.status == true) {
                     var html = '<option value="">--Chọn tỉnh thành--</option>';
                     var data = response.data;
+                    var pID = response.pID;
                     $.each(data, function (i, item) {
-                        html += '<option value="' + item.Id + '">' + item.Name + '</option>'
+                        if (item.Id == pID)
+                            html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
+                        else
+                            html += '<option value="' + item.Id + '">' + item.Name + '</option>'
                     });
                     $('#ddlProvince').html(html);
                 }
@@ -43,8 +47,13 @@
                 if (response.status == true) {
                     var html = '<option value="">--Chọn quận huyện--</option>';
                     var data = response.data;
+  
                     $.each(data, function (i, item) {
-                        html += '<option value="' + item.Id + '">' + item.Name + '</option>'
+                        if (item.Id == 10)
+                            html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
+                        else
+                            html += '<option value="' + item.Id + '">' + item.Name + '</option>'
+
                     });
                     $('#ddlDistrict').html(html);
                 }

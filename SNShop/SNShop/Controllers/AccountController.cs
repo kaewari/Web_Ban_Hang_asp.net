@@ -18,7 +18,7 @@ using Newtonsoft.Json.Linq;
 
 namespace SNShop.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : MyBaseController
     {     
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
 
@@ -95,7 +95,7 @@ namespace SNShop.Controllers
         public ActionResult FacebookCallback(string code)
         {
             var fb = new FacebookClient();
-            var userSession = new Common.UserLogin();
+            var userSession = new UserLogin();
             var user = new User();
             var customer = new Customer();
             var userRole = new UserRole();         
@@ -115,29 +115,37 @@ namespace SNShop.Controllers
             {
                 fb.AccessToken = accessToken;
                 // Get the user's information, like email, first name, middle name etc
-                dynamic me = fb.Get("me?fields=first_name,middle_name,last_name,id,email");
+                dynamic me = fb.Get("me?fields=first_name,middle_name,last_name,id,email,picture");
                 string email = me.email;
                 string firstname = me.first_name;
                 string lastname = me.last_name;
+                var picture = me.picture.data.url;
                 user.Email = email;
-                user.Username = firstname + " " + lastname;             
-                userRole.UserId = user.Id;
-                userRole.RoleId = userDao.GetRole("Customer").Id;
-                customer.Id = user.Id;
+                user.Username = firstname + " " + lastname;
+                user.Image = picture;
+                user.Facebook = true;                            
                 var resultCheck = userDao.CheckEmail(email);
                 if (!resultCheck)
-                {                   
+                {
+                    
                     db.Users.InsertOnSubmit(user);
                     db.SubmitChanges();
-
+                    customer.UserID = user.Id;
+                    userRole.UserId = user.Id;
+                    userRole.RoleId = userDao.GetRole("Users").Id;
+                    db.UserRoles.InsertOnSubmit(userRole);
+                    db.Customers.InsertOnSubmit(customer);
+                    db.SubmitChanges();
                 }
                 userSession.UserName = user.Username;
                 userSession.UserID = user.Id;
                 userSession.Email = user.Email;
+                userSession.Picture = picture;
                 Session.Add(Constants.USER_SESSION, userSession);
                 Session.Add("UserID", userSession.UserID);
                 Session.Add("UserName", userSession.UserName);
                 Session.Add("Email", userSession.Email);
+                Session.Add("Image", userSession.Picture);
                 FormsAuthentication.SetAuthCookie(email, false);
             }
             return Redirect("/");
@@ -161,6 +169,7 @@ namespace SNShop.Controllers
                     u.Address = registerModel.Address;
                     u.PhoneNumber = registerModel.PhoneNumber;
                     u.Username = registerModel.Username;
+                    u.Facebook = false;
                     if (!string.IsNullOrEmpty(registerModel.ProvinceID))
                     {
                         u.ProvinceID = int.Parse(registerModel.ProvinceID);
@@ -174,11 +183,11 @@ namespace SNShop.Controllers
                     c.UserID = u.Id;
                     db.Customers.InsertOnSubmit(c);
                     db.SubmitChanges();
-                    ur.RoleId = userDao.GetRole("Customer").Id;
+                    ur.RoleId = userDao.GetRole("Users").Id;
                     ur.UserId = c.UserID;
                     db.UserRoles.InsertOnSubmit(ur);
                     db.SubmitChanges();
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Login", "Account");
                 }
             }
             return View(registerModel);
@@ -193,7 +202,8 @@ namespace SNShop.Controllers
         public ActionResult Login(LoginModel loginModel, UserDao userDao)
         {
             if (ModelState.IsValid)
-            { var result = userDao.CheckUser(loginModel.Password, loginModel.Email);
+            { 
+                var result = userDao.CheckUser(loginModel.Password, loginModel.Email);
                 if (result == 0)
                 {
                     ModelState.AddModelError("", "Tài khoản không tồn tại.");
@@ -204,7 +214,7 @@ namespace SNShop.Controllers
                 }
                 else if (result == 1)
                 {
-                    var user = userDao.GetUserByName(loginModel.Email);
+                    var user = userDao.GetUserByEmail(loginModel.Email);
                     var userSession = new UserLogin
                     {
                         UserName = user.Username,
@@ -225,22 +235,76 @@ namespace SNShop.Controllers
             Session.RemoveAll();
             return Redirect("/");
         }
-        [HttpGet]
         public ActionResult ShowProfile()
         {
             UserDao userDao = new UserDao();
-            var session = (SNShop.Common.UserLogin)Session[SNShop.Common.Constants.USER_SESSION];
+            EditModel editModel = new EditModel();
+            var session = (UserLogin)Session[Constants.USER_SESSION];
             if (session == null)
                 return RedirectToAction("Index", "Home");
-            var result = userDao.GetUserByName(Session["Email"].ToString());
-            return View(result);
+            var result = userDao.GetUserByEmail(Session["Email"].ToString());
+            editModel.ID = result.Id;
+            editModel.Address = result.Address;
+            editModel.PhoneNumber = result.PhoneNumber;
+            editModel.Username = result.Username;
+            editModel.Email = result.Email;
+            editModel.ProvinceID = result.ProvinceID.ToString();
+            editModel.DistrictID = result.DistrictID.ToString();
+            editModel.Facebook = result.Facebook.Value;
+            if (!string.IsNullOrEmpty(result.ProvinceID.ToString()))
+                ViewBag.ProvinceID = result.ProvinceID;
+            else
+                ViewBag.ProvinceID = 0;
+            if (!string.IsNullOrEmpty(result.ProvinceID.ToString()))
+                ViewBag.DistrictID = result.DistrictID;
+            else
+                ViewBag.DistrictID = 0;
+            return View(editModel);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ShowProfile(User u)
+        public ActionResult ShowProfile(EditModel editModel)
         {
-            
+            User user = db.Users.FirstOrDefault(s => s.Id == editModel.ID);//lay user cần sửa trog db
+            if (ModelState.IsValid)
+            {
+                user.Address = editModel.Address;
+                user.PhoneNumber = editModel.PhoneNumber;
+                user.Username = editModel.Username;
+                user.Email = editModel.Email;
+                if (!string.IsNullOrEmpty(editModel.ProvinceID))
+                {
+                    user.ProvinceID = int.Parse(editModel.ProvinceID);
+                }
+                if (!string.IsNullOrEmpty(editModel.DistrictID))
+                {
+                    user.DistrictID = int.Parse(editModel.DistrictID);
+                }
+                UpdateModel(user);
+                db.SubmitChanges();
+                return RedirectToAction("Index", "Home");
+            }
+            return View(editModel);
+        }
+        public ActionResult ChangePassword()
+        {
+            var session = (UserLogin)Session[Constants.USER_SESSION];
+            if (session == null)
+                return RedirectToAction("Index", "Home");
+
             return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePassword changePassword)
+        {
+            User user = db.Users.FirstOrDefault(s => s.Id == (int)Session["UserID"]);//lay user cần sửa trog db
+            if (!user.PasswordHash.Equals(changePassword.OldPassword))
+                ModelState.AddModelError("", "Mật khẩu không đúng.");
+            else
+            {
+                user.PasswordHash = Encode.GetMD5(changePassword.ConfirmNewPassword);
+                UpdateModel(user);
+            }
+            return View(changePassword);
         }
     }
 }
