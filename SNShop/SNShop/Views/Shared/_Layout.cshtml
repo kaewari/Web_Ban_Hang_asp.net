@@ -14,15 +14,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <title>Free Home Shoppe Website Template | Home :: w3layouts</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <link href="/asset/client/css/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="/asset/client/css/slider.css" rel="stylesheet" type="text/css" media="all" />
-    <script type="text/javascript" src="/asset/client/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="~/asset/client/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="/asset/client/js/move-top.js"></script>
     <script type="text/javascript" src="/asset/client/js/easing.js"></script>
     <script type="text/javascript" src="/asset/client/js/startstop-slider.js"></script>
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>    
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/asset/client/js/Controller/UpdateCart.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
 </head>
 <body>
@@ -58,9 +59,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <a href="@Url.Action("ListCart","Cart")"><i class="fa-solid fa-cart-shopping"></i></a>
                     <p>
                         <div id="dd" class="wrapper-dropdown-2">
-                            @ViewBag.Countproduct item(s) - <span style="color:red">@String.Format("{0:0,0}", @ViewBag.Total, null)&#8363;</span>
+                            <span id="dd1">@ViewBag.Countproduct</span> sản phẩm
                             <ul class="dropdown">
-                                <li>Bạn có @ViewBag.Countproduct trong giỏ hàng</li>
+                                <li>Bạn có <span id="dd2">@ViewBag.Countproduct</span> sản phẩm trong giỏ hàng</li>
                             </ul>
                         </div>
                     </p>

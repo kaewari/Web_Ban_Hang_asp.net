@@ -1,4 +1,5 @@
-﻿using SNShop.Models;
+﻿using SNShop.Common;
+using SNShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace SNShop.Controllers
     {
         // GET: MyBase
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            
-            List<CartModel> carts = Session["Cart"] as List<CartModel>;
+        {          
+            List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
+
             if (carts == null)
             {
                 ViewBag.Countproduct = 0;
@@ -21,8 +22,8 @@ namespace SNShop.Controllers
             }
             else
             {
-                ViewBag.Countproduct = carts.Count();
-                ViewBag.Total = carts.Sum(s => s.Total);
+                ViewBag.Countproduct = (long)carts.Sum(s => s.Quantity);
+                ViewBag.Total = (long)carts.Sum(s => s.Total);
             }
             base.OnActionExecuting(filterContext);
         }

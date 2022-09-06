@@ -5,15 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 style="color:red; text-align:center">GIỎ HÀNG</h2>
+<h2 style="color:red; text-align:center; margin-top: 10px">GIỎ HÀNG</h2>
 
 @if (ViewBag.Countproduct > 0)
 {
     <table class="table">
         <tr>
-            <th>
-                STT
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductName)
             </th>
@@ -23,30 +20,25 @@
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
-            <th>
+            <th colspan="2">
                 @Html.DisplayNameFor(model => model.Total)
             </th>
-            <th></th>
         </tr>
-
+        
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @String.Format("{0:0}", @ViewBag.Count + 1)
-                </td>
-                <td>
                     <a href="@Url.Action("Detail", "Home", new { @id = item.ProductID })">@Html.DisplayFor(modelItem => item.ProductName)</a>
-
                 </td>
                 <td>
-                    <span class="item-price" style="color:red">@String.Format("{0:0,0}", item.UnitPrice - (item.UnitPrice * 20 / 100))&#8363;</span>
+                    <span class="item-price" style="color:red">@String.Format("{0:0,0}", item.UnitPrice) &#8363;</span>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
+                    <input name="quantity" value="@item.Quantity" min="1" type="number" onblur="updateCart(@item.ProductID, this)" />
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Total)
+                    <span class="item-price" id="@item.ProductID" style="color:red">@String.Format("{0:0,0}", item.Total) &#8363;</span>
                 </td>
                 <td>
                     @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
@@ -55,8 +47,8 @@
 
         }
         <tr>
-            <td colspan="2"> So luong san pham: @ViewBag.CountProduct</td>
-            <td colspan="2">Thanh tien: @String.Format("{0:0,0}", ViewBag.ToTal) &#8363;</td>
+            <td colspan="4"> So luong san pham: <span id="countCart">@ViewBag.CountProduct</span></td>
+            <td colspan="2">Thanh tien: <span id="countTotal">@String.Format("{0:0,0}", ViewBag.ToTal) &#8363;</span></td>
             @if (Session["UserID"] != null)
             {
                 <td colspan="2"> @Html.ActionLink("Dat hang", "OrderProduct")</td>
@@ -67,11 +59,11 @@
     {
         <a href="@Url.Action("Login", "Account")"> Bạn chưa đăng nhập </a>
     }
-    
+
     <a href="@Url.Action("Index","Home")"><p style="text-align:center">Tiếp tục mua hàng</p></a>
 }
 else
 {
-    <p style="text-align:center">Không có sản phẩm</p>
-    <a href="@Url.Action("Index","Home")"><p style="text-align:center">Tiếp tục mua hàng</p></a>
+    <p style="text-align:center; margin-top:10px">Không có sản phẩm</p>
+    <a href="@Url.Action("Index","Home")"><p style="text-align:center; margin-top: 10px">Tiếp tục mua hàng</p></a>
 }

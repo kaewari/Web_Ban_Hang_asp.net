@@ -224,13 +224,16 @@
     <Content Include="asset\client\images\twitter.png" />
     <Content Include="asset\client\images\value-rating.png" />
     <Content Include="asset\client\images\wishlist.png" />
+    <Content Include="asset\client\js\bootstrap.min.js" />
     <Content Include="asset\client\js\Controller\GetLocation.js" />
+    <Content Include="asset\client\js\Controller\UpdateCart.js" />
     <Content Include="asset\client\js\easing.js" />
     <Content Include="asset\client\js\easyResponsiveTabs.js" />
+    <Content Include="asset\client\js\jquery-1.11.3.min.js" />
     <Content Include="asset\client\js\jquery-1.7.2.min.js" />
+    <Content Include="asset\client\js\jquery-ui.js" />
     <Content Include="asset\client\js\jquery.accordion.js" />
     <Content Include="asset\client\js\jquery.easing.js" />
-    <Content Include="asset\client\js\jquery.flexslider.js" />
     <Content Include="asset\client\js\move-top.js" />
     <Content Include="asset\client\js\script.js" />
     <Content Include="asset\client\js\slides.min.jquery.js" />
@@ -275,8 +278,6 @@
     <Content Include="Images\tivisharp.jpg" />
     <Content Include="Images\tivisony.jpg" />
     <Content Include="Images\tulanhsanyo.jpg" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="asset\client\font\Amble-Regular-webfont.ttf" />
     <Content Include="asset\client\images\Thumbs.db" />
     <Content Include="Models\SNOnlineShop.dbml">
@@ -287,17 +288,22 @@
     <None Include="Models\SNOnlineShop.dbml.layout">
       <DependentUpon>SNOnlineShop.dbml</DependentUpon>
     </None>
-    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.4.1.js" />
-    <Content Include="Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <None Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -319,6 +325,7 @@
     <Content Include="Views\Home\AddImage.cshtml" />
     <Content Include="Views\Cart\ListCart.cshtml" />
     <Content Include="Views\Category\ProductOfCategory.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -335,8 +342,6 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

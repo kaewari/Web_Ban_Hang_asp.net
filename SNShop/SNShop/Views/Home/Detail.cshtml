@@ -91,16 +91,13 @@
                 </div>
                 <div class="occasion-cart">
                     <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                        <a class="button" href="@Url.Action("AddCart","Cart", new {@id=Model.Id})">Add to cart</a>
+                        <a class="button" href="@Url.Action("AddCart","Cart", new {@id=Model.Id})">Thêm vào giỏ hàng</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
 <script>
     // Can also be used with $(document).ready()
     $(window).load(function () {

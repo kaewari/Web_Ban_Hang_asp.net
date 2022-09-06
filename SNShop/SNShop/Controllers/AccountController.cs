@@ -137,8 +137,9 @@ namespace SNShop.Controllers
                     db.Customers.InsertOnSubmit(customer);
                     db.SubmitChanges();
                 }
+                var u = userDao.GetUserByEmail(user.Email);
                 userSession.UserName = user.Username;
-                userSession.UserID = user.Id;
+                userSession.UserID = u.Id;
                 userSession.Email = user.Email;
                 userSession.Picture = picture;
                 Session.Add(Constants.USER_SESSION, userSession);
