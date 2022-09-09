@@ -159,6 +159,7 @@ namespace SNShop.Controllers
             return View();
         }       
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(UserRole ur, Customer c, User u, RegisterModel registerModel, UserDao userDao)
         {
             if (ModelState.IsValid)
@@ -297,15 +298,17 @@ namespace SNShop.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePassword changePassword)
         {
-            User user = db.Users.FirstOrDefault(s => s.Id == (int)Session["UserID"]);//lay user cần sửa trog db
-            if (!user.PasswordHash.Equals(changePassword.OldPassword))
+            User user = db.Users.FirstOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));//lay user cần sửa trog db
+            if (!user.PasswordHash.Equals(Encode.GetMD5(changePassword.OldPassword)))
                 ModelState.AddModelError("", "Mật khẩu không đúng.");
             else
             {
                 user.PasswordHash = Encode.GetMD5(changePassword.ConfirmNewPassword);
                 UpdateModel(user);
+                db.SubmitChanges();
+                Logout();
             }
-            return View(changePassword);
+            return RedirectToAction("Login", "Account");
         }
     }
 }

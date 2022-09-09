@@ -23,7 +23,7 @@ namespace SNShop.Controllers
             else
             {
                 ViewBag.Countproduct = (long)carts.Sum(s => s.Quantity);
-                ViewBag.Total = (long)carts.Sum(s => s.Total);
+                ViewBag.Total = (double)carts.Sum(s => s.Total);
             }
             base.OnActionExecuting(filterContext);
         }

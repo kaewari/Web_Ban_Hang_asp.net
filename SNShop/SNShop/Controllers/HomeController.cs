@@ -13,21 +13,55 @@ namespace SNShop.Controllers
     public class HomeController : MyBaseController
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
-        public ActionResult Index(int? page, int? pageSize, string SearchString = "")
+  
+        public ActionResult Index(int? page, string SearchString, string sortOrder)
         {
-            if (page == null)
+            var sanPham = new List<Product>();
+            ViewBag.CurrentSortOrder = sortOrder;
+            ViewBag.SortByName = string.IsNullOrEmpty(sortOrder) ? "ten_desc" : "";
+            ViewBag.SortByPrice = (sortOrder == "dongia_desc" ? "dongia" : "dongia_desc");
+            ViewBag.SortByDate = (sortOrder == "ngay_desc" ? "ngay" : "ngay_desc");
+            switch (sortOrder)
+            {
+                case "ten_desc":
+                    sanPham = db.Products.OrderByDescending(s => s.Name).ToList();
+                    break;
+                case "dongia_desc":
+                    sanPham = db.Products.OrderByDescending(s => s.Price).ToList();
+                    break;
+                case "dongia":
+                    sanPham = db.Products.OrderBy(s => s.Price).ToList();
+                    break;
+                case "ngay_desc":
+                    sanPham = db.Products.OrderByDescending(s => s.ModifiedDate).ToList();
+                    break;
+                case "ngay":
+                    sanPham = db.Products.OrderBy(s => s.ModifiedDate).ToList();
+                    break;
+                default:
+                    sanPham = db.Products.OrderBy(s => s.Name).ToList();
+                    break;
+            }
+            if (!page.HasValue)
+            {
                 page = 1;
-            if (pageSize == null)
-                pageSize = 10;
+            }
+            ViewBag.CurrentFilter = SearchString;
+            try
+            {
+                if (!string.IsNullOrEmpty(SearchString))
+                {
+                    sanPham = db.Products.Where(s => s.Name.Contains(SearchString)).ToList();
+                }
+            }
+            catch (Exception) { }
+            sanPham.OrderByDescending(v => v.Id);
+            int pageSize = 12;
             ViewBag.PageSize = pageSize;
             ViewBag.Category = db.Categories.Select(s => s).ToList();
-            var sanPham = from s in db.Products
-                          select s;
-            if (SearchString != "")
-            {
-                sanPham = sanPham.Where(x => x.Name.ToUpper().Contains(SearchString.ToUpper()));
-            }
-            return View(sanPham.ToList().ToPagedList((int)page, (int)pageSize));
+            ViewBag.Brand = db.Brands.Select(b => b).ToList();
+            ViewBag.Check = 0;
+            return View(sanPham.ToList().ToPagedList(page.Value, pageSize));
         }
         public ActionResult Detail(int id)
         {

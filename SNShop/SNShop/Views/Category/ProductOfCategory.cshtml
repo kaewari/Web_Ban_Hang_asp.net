@@ -6,12 +6,27 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
+<div class="dropdown pull-right">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Lọc sản phẩm
+    </button>
+    <ul class="dropdown-menu">
+        <li>
+            @Html.ActionLink("Tên sản phẩm", "ProductOfCategory", new { sortOrder = ViewBag.SortByName })
+        </li>
+        <li>
+            @Html.ActionLink("Đơn giá", "ProductOfCategory", new { sortOrder = ViewBag.SortByPrice })
+        </li>
+        <li>
+            @Html.ActionLink("Ngày thêm", "ProductOfCategory", new { sortOrder = ViewBag.SortByDate })
+        </li>
+    </ul>
+</div>
 <div class="section group">
     @foreach (var item in Model)
     {
         <div class="grid_1_of_4 images_1_of_4">
-            <a href="@Url.Action("Detail", new { id = item.Id })"><img src="@item.Name" alt="" /></a>
+            <a href="@Url.Action("Detail", new { id = item.Id })"><img src="/asset/client/images/slide-2-image.jpg" alt="" /></a>
             <h2>@item.Name </h2>
             <div class="price-details">
                 <div class="price-number" style="width:100%">
@@ -26,5 +41,6 @@
     }
 </div>
 <br />
-@Html.PagedListPager(Model, page => Url.Action("ProductOfCategory",
-new { page, ViewBag.PageSize }))
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) / @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ProductOfCategory",
+    new { page = page, sortOrder = ViewBag.CurrentSortOrder }), PagedListRenderOptions.PageNumbersOnly)

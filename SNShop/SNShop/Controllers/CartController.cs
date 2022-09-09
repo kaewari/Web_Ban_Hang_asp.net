@@ -16,9 +16,8 @@ namespace SNShop.Controllers
     public class CartController : MyBaseController
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
-        public long total_quantity = 0;
-        public long total_amount = 0;
-
+        private long total_quantity = 0;
+        private long total_amount = 0;
         // GET: Cart
         public List<CartModel> GetListCarts()//lay ds gio hang
         {
@@ -31,21 +30,28 @@ namespace SNShop.Controllers
             }
             return carts;
         }
-        public ActionResult AddCart(int id)
+        [HttpPost]
+        public JsonResult AddCart(int id, string name, long price)
         {
             List<CartModel> carts = GetListCarts();//lay DSGH
-            CartModel c = carts.Find(s => s.ProductID == id);
-            if (c == null)
+            var checkExits = carts.FirstOrDefault(x => x.ProductID == id);
+            if (checkExits == null)
             {
-                c = new CartModel(id);
-                carts.Add(c);
+                checkExits = new CartModel(id);
+                checkExits.ProductName = name;
+                checkExits.UnitPrice = price;
+                carts.Add(checkExits);
             }
             else
             {
-                c.Quantity++;
+                checkExits.Quantity++;
             }
-            
-            return Redirect("/");
+            return Json(new
+            {
+                cartsData = cart_stat(carts),
+                cartItem = cart_item(checkExits),
+                success = true,
+            });
         }
         public ActionResult Delete(int id)
         {
@@ -72,7 +78,6 @@ namespace SNShop.Controllers
             }
             return total_quantity;
         }
-
         public decimal? Total()
         {
             List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
@@ -100,8 +105,8 @@ namespace SNShop.Controllers
                         {
                             OrderId = order.Id,
                             ProductID = item.ProductID,
-                            Quantity = int.Parse(item.Quantity.ToString()),
-                            UnitPrice = (int)item.UnitPrice,
+                            Quantity = long.Parse(item.Quantity.ToString()),
+                            UnitPrice = (long)item.UnitPrice,
                             ModifiedDate = DateTime.Now,
                         };
 
@@ -117,7 +122,7 @@ namespace SNShop.Controllers
                     return Redirect("/");
                 }
             }
-            return Redirect("/");
+            return RedirectToAction("Success", "Cart");
         }
         public ActionResult ListCart()// hien thi gio hang
         {
@@ -149,7 +154,7 @@ namespace SNShop.Controllers
             long amount = 0;
             if (carts != null)
             {
-                quantity = carts.Quantity;
+                quantity = (long)carts.Quantity;
                 amount = (long)carts.Total;
             }
             return new
@@ -158,8 +163,16 @@ namespace SNShop.Controllers
                 amount = amount,
             };
         }
+        public ActionResult Success()
+        {
+            return View();
+        }
+        public ActionResult Failure()
+        {
+            return View();
+        }
         [HttpPost]
-        public JsonResult UpdateCart(int id, int quantity)
+        public JsonResult UpdateCart(int id, long quantity)
         {
             List<CartModel> carts = GetListCarts();
 
@@ -176,8 +189,7 @@ namespace SNShop.Controllers
                         success = true,
                     });
                 }
-            }
-            
+            }          
             return Json(new
             {
                 success = false,

@@ -8,7 +8,7 @@
 <h2>ShowProfile</h2>
 <div class="row">
     <hr />
-    <div class="col-md-10 col-xs-12">
+    <div class="col-md-9 col-xs-12">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -70,29 +70,24 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-default" />
+                        <input type="submit" value="Save" class="btn btn-danger" />
                     </div>
                 </div>
             </div>
         }
     </div>
-    <div class="col-md-2">
+    <div class="col-md-3 col-xs-12">
+        <img src="@Model.Username" width="200" height="200" alt="@Model.Username"/>
         @if (@Model.Facebook)
         {
             <form class="form-group" action="@Url.Action("LoginFacebook", "Account")">
                 <button class="btn" style="color: #4267B2" disabled><i class="fa-brands fa-square-facebook"></i>Đã liên kết Facebook</button>
             </form>
         }
-        <div class="btn">
-            @Html.ActionLink("Đổi mật khẩu", "ChangePassword")
+        <div style="margin-top:10px">
+            <a class="btn btn-info" href="@Url.Action("ChangePassword","Account")">Đổi mật khẩu</a>
         </div>
     </div>
-</div>
-
-
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
 <script>
     var user = {

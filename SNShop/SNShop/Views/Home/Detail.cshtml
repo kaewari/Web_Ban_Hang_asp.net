@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="~/asset/client/css/flexslider.css" type="text/css" media="screen" />
-<script src="~/asset/client/js/jquery.flexslider.js"></script>
+<script src="~/asset/client/js/jquery.flexslider.js" defer></script>
 
 <div class="banner-bootom-w3-agileits py-5">
     <div class="container py-xl-4 py-lg-2">
@@ -42,7 +42,7 @@
             </div>
 
             <div class="col-lg-7 single-right-left simpleCart_shelfItem" style="font-size:20px">
-                <h3 class="mb-3">@Html.DisplayFor(model => model.Name)</h3>
+                <h2 class="mb-3" style="color:red">@Html.DisplayFor(model => model.Name)</h2>
                 <div class="single-infoagile">
                     <ul>
                         <li class="mb-3">
@@ -91,7 +91,7 @@
                 </div>
                 <div class="occasion-cart">
                     <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                        <a class="button" href="@Url.Action("AddCart","Cart", new {@id=Model.Id})">Thêm vào giỏ hàng</a>
+                        <a class="button" onclick="addCart(@Model.Id, '@Model.Name', @Model.Price)">Thêm vào giỏ hàng</a>
                     </div>
                 </div>
             </div>

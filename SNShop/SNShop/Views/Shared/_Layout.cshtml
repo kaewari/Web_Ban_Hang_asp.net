@@ -11,20 +11,29 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Free Home Shoppe Website Template | Home :: w3layouts</title>
+    <title>SHSHOP</title>
+    <!--Add shortcut icon-->
+    <link rel="shortcut icon" type="image/x-icon" href="~/Images/logo.png" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <link href="/asset/client/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="/asset/client/css/slider.css" rel="stylesheet" type="text/css" media="all" />
-    <script type="text/javascript" src="~/asset/client/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/asset/client/js/move-top.js"></script>
-    <script type="text/javascript" src="/asset/client/js/easing.js"></script>
-    <script type="text/javascript" src="/asset/client/js/startstop-slider.js"></script>
-    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/asset/client/css/Failure.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="~/asset/client/css/Success.css" rel="stylesheet" type="text/css" media="all" />
     <script src="~/asset/client/js/Controller/UpdateCart.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <script src="~/asset/client/js/Controller/AddCart.js"></script>
+    <script src="~/asset/client/js/Controller/CurrencyFormat.js"></script>
+    <script src="~/Scripts/SmoothScroll.min.js"></script>
+    <script src="~/asset/client/js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="wrap">
@@ -44,7 +53,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         else
                         {
                             <li><span style="color:red">Xin chào:</span><a href="@Url.Action("ShowProfile", "Account")"><span><img src="@session.Picture" width="25" height="25" /></span> @session.UserName</a></li>
-                            <li>@Html.ActionLink("Logout", "Logout", "Account")</li>                           
+                            <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+
                         }
 
                     </ul>
@@ -103,25 +113,19 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <li> <div class="clear"></div></li>
                     </ul>
                 </div>
-                @*<div class="search_box">
-                        <form>
-                            <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}"><input type="submit" value="">
-                        </form>
-                    </div>*@
-                @using (Html.BeginForm())
-                {
-                    <div class="navbar-form navbar-right" style="margin-right:-10px">
-                        Tìm sản phẩm: @Html.TextBox("SearchString", "", new { @class = "form-control" })
+                <div class="search_box">
+                    <form>
+                        <input type="text" name="SearchString" placeholder="Nhập tên sản phẩm" value="@ViewBag.CurrentFilter" />
                         <input type="submit" class="btn btn-danger" value="Search" />
-                    </div>
-                }@*giao diện 2*@
+                    </form>
+                </div>
                 <div class="clear"></div>
             </div>
             @RenderSection("slide", required: false)
 
         </div>
         <div class="main">
-            @RenderBody();
+            @RenderBody()
         </div>
     </div>
     <div class="footer">
@@ -190,4 +194,3 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 </body>
 </html>
 @RenderSection("scripts", required: false)
-

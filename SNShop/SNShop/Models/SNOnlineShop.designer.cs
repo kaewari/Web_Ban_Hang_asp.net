@@ -54,15 +54,15 @@ namespace SNShop.Models
     partial void InsertProduct(Product instance);
     partial void UpdateProduct(Product instance);
     partial void DeleteProduct(Product instance);
+    partial void InsertProduct_Image(Product_Image instance);
+    partial void UpdateProduct_Image(Product_Image instance);
+    partial void DeleteProduct_Image(Product_Image instance);
     partial void InsertProvince(Province instance);
     partial void UpdateProvince(Province instance);
     partial void DeleteProvince(Province instance);
     partial void InsertRole(Role instance);
     partial void UpdateRole(Role instance);
     partial void DeleteRole(Role instance);
-    partial void InsertProduct_Image(Product_Image instance);
-    partial void UpdateProduct_Image(Product_Image instance);
-    partial void DeleteProduct_Image(Product_Image instance);
     partial void InsertUserClaim(UserClaim instance);
     partial void UpdateUserClaim(UserClaim instance);
     partial void DeleteUserClaim(UserClaim instance);
@@ -168,6 +168,14 @@ namespace SNShop.Models
 			}
 		}
 		
+		public System.Data.Linq.Table<Product_Image> Product_Images
+		{
+			get
+			{
+				return this.GetTable<Product_Image>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Province> Provinces
 		{
 			get
@@ -181,14 +189,6 @@ namespace SNShop.Models
 			get
 			{
 				return this.GetTable<Role>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Product_Image> Product_Images
-		{
-			get
-			{
-				return this.GetTable<Product_Image>();
 			}
 		}
 		
@@ -1016,9 +1016,9 @@ namespace SNShop.Models
 		
 		private int _ProductID;
 		
-		private int _Quantity;
+		private long _Quantity;
 		
-		private int _UnitPrice;
+		private long _UnitPrice;
 		
 		private System.DateTime _ModifiedDate;
 		
@@ -1034,9 +1034,9 @@ namespace SNShop.Models
     partial void OnOrderIdChanged();
     partial void OnProductIDChanging(int value);
     partial void OnProductIDChanged();
-    partial void OnQuantityChanging(int value);
+    partial void OnQuantityChanging(long value);
     partial void OnQuantityChanged();
-    partial void OnUnitPriceChanging(int value);
+    partial void OnUnitPriceChanging(long value);
     partial void OnUnitPriceChanged();
     partial void OnModifiedDateChanging(System.DateTime value);
     partial void OnModifiedDateChanged();
@@ -1097,8 +1097,8 @@ namespace SNShop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Int NOT NULL")]
-		public int Quantity
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="BigInt NOT NULL")]
+		public long Quantity
 		{
 			get
 			{
@@ -1117,8 +1117,8 @@ namespace SNShop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitPrice", DbType="Int NOT NULL")]
-		public int UnitPrice
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UnitPrice", DbType="BigInt NOT NULL")]
+		public long UnitPrice
 		{
 			get
 			{
@@ -1522,7 +1522,7 @@ namespace SNShop.Models
 		
 		private string _VGA;
 		
-		private System.Nullable<decimal> _Price;
+		private System.Nullable<int> _Price;
 		
 		private System.DateTime _ModifiedDate;
 		
@@ -1564,7 +1564,7 @@ namespace SNShop.Models
     partial void OnReleaseChanged();
     partial void OnVGAChanging(string value);
     partial void OnVGAChanged();
-    partial void OnPriceChanging(System.Nullable<decimal> value);
+    partial void OnPriceChanging(System.Nullable<int> value);
     partial void OnPriceChanged();
     partial void OnModifiedDateChanging(System.DateTime value);
     partial void OnModifiedDateChanged();
@@ -1847,8 +1847,8 @@ namespace SNShop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Money")]
-		public System.Nullable<decimal> Price
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int")]
+		public System.Nullable<int> Price
 		{
 			get
 			{
@@ -2023,6 +2023,157 @@ namespace SNShop.Models
 		{
 			this.SendPropertyChanging();
 			entity.Product = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product_Image")]
+	public partial class Product_Image : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private int _ProductID;
+		
+		private string _Thumbnail_Photo;
+		
+		private EntityRef<Product> _Product;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnProductIDChanging(int value);
+    partial void OnProductIDChanged();
+    partial void OnThumbnail_PhotoChanging(string value);
+    partial void OnThumbnail_PhotoChanged();
+    #endregion
+		
+		public Product_Image()
+		{
+			this._Product = default(EntityRef<Product>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int NOT NULL")]
+		public int ProductID
+		{
+			get
+			{
+				return this._ProductID;
+			}
+			set
+			{
+				if ((this._ProductID != value))
+				{
+					if (this._Product.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProductIDChanging(value);
+					this.SendPropertyChanging();
+					this._ProductID = value;
+					this.SendPropertyChanged("ProductID");
+					this.OnProductIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Thumbnail_Photo", DbType="NVarChar(MAX)")]
+		public string Thumbnail_Photo
+		{
+			get
+			{
+				return this._Thumbnail_Photo;
+			}
+			set
+			{
+				if ((this._Thumbnail_Photo != value))
+				{
+					this.OnThumbnail_PhotoChanging(value);
+					this.SendPropertyChanging();
+					this._Thumbnail_Photo = value;
+					this.SendPropertyChanged("Thumbnail_Photo");
+					this.OnThumbnail_PhotoChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_Image", Storage="_Product", ThisKey="ProductID", OtherKey="Id", IsForeignKey=true)]
+		public Product Product
+		{
+			get
+			{
+				return this._Product.Entity;
+			}
+			set
+			{
+				Product previousValue = this._Product.Entity;
+				if (((previousValue != value) 
+							|| (this._Product.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Product.Entity = null;
+						previousValue.Product_Images.Remove(this);
+					}
+					this._Product.Entity = value;
+					if ((value != null))
+					{
+						value.Product_Images.Add(this);
+						this._ProductID = value.Id;
+					}
+					else
+					{
+						this._ProductID = default(int);
+					}
+					this.SendPropertyChanged("Product");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -2303,157 +2454,6 @@ namespace SNShop.Models
 		{
 			this.SendPropertyChanging();
 			entity.Role = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product_Image")]
-	public partial class Product_Image : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private int _ProductID;
-		
-		private string _Thumbnail_Photo;
-		
-		private EntityRef<Product> _Product;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnProductIDChanging(int value);
-    partial void OnProductIDChanged();
-    partial void OnThumbnail_PhotoChanging(string value);
-    partial void OnThumbnail_PhotoChanged();
-    #endregion
-		
-		public Product_Image()
-		{
-			this._Product = default(EntityRef<Product>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductID", DbType="Int NOT NULL")]
-		public int ProductID
-		{
-			get
-			{
-				return this._ProductID;
-			}
-			set
-			{
-				if ((this._ProductID != value))
-				{
-					if (this._Product.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnProductIDChanging(value);
-					this.SendPropertyChanging();
-					this._ProductID = value;
-					this.SendPropertyChanged("ProductID");
-					this.OnProductIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Thumbnail_Photo", DbType="NVarChar(MAX)")]
-		public string Thumbnail_Photo
-		{
-			get
-			{
-				return this._Thumbnail_Photo;
-			}
-			set
-			{
-				if ((this._Thumbnail_Photo != value))
-				{
-					this.OnThumbnail_PhotoChanging(value);
-					this.SendPropertyChanging();
-					this._Thumbnail_Photo = value;
-					this.SendPropertyChanged("Thumbnail_Photo");
-					this.OnThumbnail_PhotoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_Image", Storage="_Product", ThisKey="ProductID", OtherKey="Id", IsForeignKey=true)]
-		public Product Product
-		{
-			get
-			{
-				return this._Product.Entity;
-			}
-			set
-			{
-				Product previousValue = this._Product.Entity;
-				if (((previousValue != value) 
-							|| (this._Product.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Product.Entity = null;
-						previousValue.Product_Images.Remove(this);
-					}
-					this._Product.Entity = value;
-					if ((value != null))
-					{
-						value.Product_Images.Add(this);
-						this._ProductID = value.Id;
-					}
-					else
-					{
-						this._ProductID = default(int);
-					}
-					this.SendPropertyChanged("Product");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	

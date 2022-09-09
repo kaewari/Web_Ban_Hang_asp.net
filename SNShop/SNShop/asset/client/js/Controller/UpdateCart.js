@@ -1,18 +1,13 @@
 ﻿function updateCart(id, obj) {
     Update(id, obj);
 }
-function FormatCurrency(money) {
-    return Intl.NumberFormat('vi-VN', {
-        style: "currency",
-        currency: "VND",
-    }).format(money)
-}
+
 function Update(id, obj) {
     fetch('/Cart/UpdateCart', {
         method: 'post',
         body: JSON.stringify({
             'id': id,
-            'quantity': parseInt(obj.value)
+            'quantity': parseFloat(obj.value)
         }),
         headers: {
             'Content-Type': 'application/json'
