@@ -1,8 +1,31 @@
-﻿
-@{
-    ViewBag.Title = "Contact";
+﻿@{ ViewBag.Title = "Contact";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <h2> Thông tin liên hệ</h2>
+            <div class="ttlh">
+                <b>Tổng đài hổ trợ(mễn phí gọi)</b>
+                <p> <span>Gọi mua:  </span><a href="tel://0346303152"> 0346303152 </a></p>
+                <p> <span>Kỹ thuật:  </span><a href="tel://0927718471"> 0927718471 </a></p>
+                <p> Website: <a href="@Url.Action("Index", "Home")"> SNSHOP </a></p>
+            </div>
+            <hr />
+            <div>
+                <h2> Địa chỉ</h2>
+                <p><i class="fa-solid fa-location-dot"></i> Chi nhánh 1:    97 Võ Văn Tần, P. Võ Thị Sáu, Q. 3,    TP. Hồ Chí Minh.</p>
+                <p><i class="fa-solid fa-location-dot"></i> Chi nhánh 2:    02 Mai Thị Lựu, P. Đa Kao, Q. 1, TP. Hồ Chí Minh.</p>
+                <p><i class="fa-solid fa-location-dot"></i> Chi nhánh 3:    371 Nguyễn Kiệm, P. 3, Q. Gò Vấp, TP. Hồ Chí Minh.</p>
+                <p><i class="fa-solid fa-location-dot"></i> Chi nhánh 4:    35-37 Hồ Hảo Hớn, P. Cô Giang, Q. 1 , TP. Hồ Chí Minh.</p>
+                <p><i class="fa-solid fa-location-dot"></i> Chi nhánh 5:    68 Lê Thị Trung, P. Phú Lợi, TP. Thủ Dầu Một.</p>
+            </div>
+            <hr style="border:1px solid black"/>
+            <div class="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.930758775242!2d106.67637871474926!3d10.816610892294229!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528e195f816b7%3A0xfb5c0101490d8870!2zMzcxIE5ndXnhu4VuIEtp4buHbSwgUGjGsOG7nW5nIDMsIEfDsiBW4bqlcCwgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaWV0bmFt!5e0!3m2!1ses!2s!4v1662655922931!5m2!1ses!2s" style="border:0; width:100%; height:500px" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h2>Contact</h2>
 

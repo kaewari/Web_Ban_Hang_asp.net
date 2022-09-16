@@ -21,6 +21,7 @@ namespace SNShop.Controllers
             ViewBag.SortByName = string.IsNullOrEmpty(sortOrder) ? "ten_desc" : "";
             ViewBag.SortByPrice = (sortOrder == "dongia_desc" ? "dongia" : "dongia_desc");
             ViewBag.SortByDate = (sortOrder == "ngay_desc" ? "ngay" : "ngay_desc");
+            ViewBag.SubCategory = db.SubCategories.Where(sc => sc.CategoryID == Id).ToList();
             switch (sortOrder)
             {
                 case "ten_desc":

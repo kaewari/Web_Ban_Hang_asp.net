@@ -6,6 +6,16 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<div class="sub_category_menu">
+    <ul>
+        @foreach (var subitem in ViewBag.SubCategory)
+        {
+            <li class="item">
+                <a class="sub_item" href="#">@subitem.Name</a>
+            </li>
+        }
+    </ul>
+</div>
 <div class="dropdown pull-right">
     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
         Lọc sản phẩm

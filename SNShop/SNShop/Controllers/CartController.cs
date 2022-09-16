@@ -10,6 +10,7 @@ using TransactionScope = System.Transactions.TransactionScope;
 using System.Globalization;
 using SNShop.Common;
 using System.Web.Script.Serialization;
+using SNShop.DAO;
 
 namespace SNShop.Controllers
 {
@@ -94,8 +95,9 @@ namespace SNShop.Controllers
                 try
                 {
                     Order order = new Order();
+                    UserDao userDao = new UserDao();
                     order.ModifiedDate = DateTime.Now;
-                    order.CustomerID = int.Parse(Session["UserID"].ToString());
+                    order.CustomerID = userDao.GetUserById(int.Parse(Session["UserID"].ToString()));
                     db.Orders.InsertOnSubmit(order);
                     db.SubmitChanges();
                     List<CartModel> carts = GetListCarts();
@@ -119,7 +121,7 @@ namespace SNShop.Controllers
                 catch
                 {
                     tranScope.Dispose();
-                    return Redirect("/");
+                    return RedirectToAction("Failure", "Cart");
                 }
             }
             return RedirectToAction("Success", "Cart");

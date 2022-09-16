@@ -15,6 +15,7 @@ using System.Data.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SNShop.Areas.Admin.Models;
 
 namespace SNShop.Controllers
 {
@@ -132,7 +133,7 @@ namespace SNShop.Controllers
                     db.SubmitChanges();
                     customer.UserID = user.Id;
                     userRole.UserId = user.Id;
-                    userRole.RoleId = userDao.GetRole("Users").Id;
+                    userRole.RoleId = userDao.GetRoleByRoleName("Users").Id;
                     db.UserRoles.InsertOnSubmit(userRole);
                     db.Customers.InsertOnSubmit(customer);
                     db.SubmitChanges();
@@ -185,7 +186,7 @@ namespace SNShop.Controllers
                     c.UserID = u.Id;
                     db.Customers.InsertOnSubmit(c);
                     db.SubmitChanges();
-                    ur.RoleId = userDao.GetRole("Users").Id;
+                    ur.RoleId = userDao.GetRoleByRoleName("Users").Id;
                     ur.UserId = c.UserID;
                     db.UserRoles.InsertOnSubmit(ur);
                     db.SubmitChanges();
@@ -234,7 +235,11 @@ namespace SNShop.Controllers
         }
         public ActionResult Logout()
         {
-            Session.RemoveAll();
+            Session.Abandon();
+            Session["UserID"] = null;
+            Session["UserName"] = null;
+            Session["Email"] = null;
+            Session.Remove(HttpContext.Session.SessionID);
             return Redirect("/");
         }
         public ActionResult ShowProfile()
@@ -296,7 +301,7 @@ namespace SNShop.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult ChangePassword(ChangePassword changePassword)
+        public ActionResult ChangePassword(ChangeAdminPasswordModel changePassword)
         {
             User user = db.Users.FirstOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));//lay user cần sửa trog db
             if (!user.PasswordHash.Equals(Encode.GetMD5(changePassword.OldPassword)))

@@ -19,26 +19,6 @@
                     {
                         <li class="dropright">
                             <a href="@Url.Action("ProductOfCategory", "Category", new { Id = item.Id })">@item.Name</a>
-                            <div class="dropright-content">
-                                @foreach (var itemBrand in ViewBag.Brand)
-                                {
-                                    if (itemBrand.Name != "Apple" && item.Name != "Apple")
-                                    {
-                                        <a class="sub_item" href="#"><i class="fa-solid fa-laptop"></i> @itemBrand.Name</a>
-                                    }
-                                    else
-                                    {
-                                        if (itemBrand.Name == "Apple" && item.Name == "Apple")
-                                        {
-                                            <a class="sub_item" href="#"><i class="fa-brands fa-apple"></i> Macbook Air</a>
-                                            <a class="sub_item" href="#"><i class="fa-brands fa-apple"></i> Macbook Pro 13</a>
-                                            <a class="sub_item" href="#"><i class="fa-brands fa-apple"></i> Macbook Pro 14</a>
-                                            <a class="sub_item" href="#"><i class="fa-brands fa-apple"></i> Macbook Pro 16</a>
-                                            <a class="sub_item" href="#"><i class="fa-brands fa-apple"></i> Macbook M1</a>
-                                        }
-                                    }
-                                }
-                            </div>
                         </li>                       
                     }
                 </ul>
@@ -158,7 +138,7 @@
 <div class="content">
     <div class="content_top">
         <div class="heading">
-            <h3>Sản phẩm hiện có</h3>
+            <h3 style="font-family:Arial; font-weight:bold; text-align:center">Sản phẩm hiện có</h3>
         </div>
 
         <div class="clear"></div>
@@ -190,7 +170,7 @@
                         <p style="font-size:15px; padding:0;margin:0;"><span class="rupees" style="color:red">@String.Format("{0:0,0}", item.Price)&#8363;</span></p>
                     </div>
                     <div class="add-cart" style="float:none; margin:0">
-                        <a class="button" style="text-decoration: none; color: white; margin: 10px; cursor: pointer" onclick="addCart(@item.Id, '@item.Name', @item.Price)">Thêm vào giỏ hàng</a>
+                        <a class="button" style="background-color:red ;text-decoration: none; color: white; padding:7px; cursor: pointer" onclick="addCart(@item.Id, '@item.Name', @item.Price)">Thêm vào giỏ hàng</a>
                     </div>
                     <div class="clear"></div>
                 </div>

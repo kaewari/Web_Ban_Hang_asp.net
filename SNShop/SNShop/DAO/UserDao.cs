@@ -33,9 +33,18 @@ namespace SNShop.DAO
         {
             return db.Users.SingleOrDefault(s => s.Email == email);
         }
-        public Role GetRole(string roleName)
+        public int GetUserById(int Id)
+        {
+            return db.Customers.SingleOrDefault(s => s.UserID == Id).Id;
+        }
+        public Role GetRoleByRoleName(string roleName)
         {
             var result = db.Roles.SingleOrDefault(s => s.Name == roleName);
+            return result;
+        }
+        public Role GetRoleById(int id)
+        {
+            var result = db.UserRoles.First(s=>s.UserId == id).Role;
             return result;
         }
     }

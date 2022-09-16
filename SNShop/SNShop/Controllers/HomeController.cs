@@ -59,7 +59,6 @@ namespace SNShop.Controllers
             int pageSize = 12;
             ViewBag.PageSize = pageSize;
             ViewBag.Category = db.Categories.Select(s => s).ToList();
-            ViewBag.Brand = db.Brands.Select(b => b).ToList();
             ViewBag.Check = 0;
             return View(sanPham.ToList().ToPagedList(page.Value, pageSize));
         }
@@ -87,10 +86,10 @@ namespace SNShop.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddImage(Product_Image product_Image)
+        public ActionResult AddImage(ProductImage product_Image)
         {
 
-            db.Product_Images.InsertOnSubmit(product_Image);
+            db.ProductImages.InsertOnSubmit(product_Image);
             db.SubmitChanges();
             return RedirectToAction("Index");
         }

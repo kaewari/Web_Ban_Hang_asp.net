@@ -1,0 +1,31 @@
+﻿@model SNShop.Areas.Admin.Models.ImageModel
+
+@{
+    ViewBag.Title = "ChangeImage";
+}
+
+<h2>ChangeImage</h2>
+
+@using (Html.BeginForm("ChangeImage","Account", FormMethod.Post, new {enctype= "multipart/form-data"}))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ImageModel</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Path, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div>
+                @*<a href="@Url.Action("ChangeImage", "Account")">Thay ảnh đại diện</a>*@
+                <input name="File" type="file" accept="image/*" value="Thay ảnh đại diện" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
