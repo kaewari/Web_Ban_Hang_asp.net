@@ -32,7 +32,6 @@
     <!-- Bootstrap core JavaScript-->
     <script src="/asset/admin/vendor/jquery/jquery.min.js"></script>
     <script src="/asset/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
     <!-- Core plugin JavaScript-->
     <script src="/asset/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
@@ -97,8 +96,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <a class="collapse-item" href="@Url.Action("Components_Buttons","Home")">Buttons</a>
+                        <a class="collapse-item" href="@Url.Action("Components_Cards","Home")">Cards</a>
                     </div>
                 </div>
             </li>
@@ -114,10 +113,10 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
+                        <a class="collapse-item" href="@Url.Action("Utilities_Colors","Home")">Colors</a>
+                        <a class="collapse-item" href="@Url.Action("Utilities_Borders","Home")">Borders</a>
+                        <a class="collapse-item" href="@Url.Action("Utilities_Animations","Home")">Animations</a>
+                        <a class="collapse-item" href="@Url.Action("Utilities_Others","Home")">Other</a>
                     </div>
                 </div>
             </li>
@@ -142,20 +141,19 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                        <a class="collapse-item" href="@Url.Action("Pages_Login","Home")">Login</a>
+                        <a class="collapse-item" href="@Url.Action("Pages_ForgotPassword","Home")">Forgot Password</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
+                        <a class="collapse-item" href="@Url.Action("Pages_404","Home")">404 Page</a>
+                        <a class="collapse-item" href="@Url.Action("Pages_Blank","Home")">Blank Page</a>
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="@Url.Action("Charts","Home")">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Charts</span>
                 </a>
@@ -163,10 +161,31 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="@Url.Action("Tables","Home")">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Tables</span>
                 </a>
+            </li>
+
+            <!-- Nav Item - Create -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCreate"
+                   aria-expanded="true" aria-controls="collapseCreate">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Create</span>
+                </a>
+                <div id="collapseCreate" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Category Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("Create_Categories","Home")">Create Categories</a>
+                        <h6 class="collapse-header">Sub Category Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("Create_Sub_Categories","Home")">Create Sub Categories</a>
+                        <h6 class="collapse-header">Product Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("Create_Products","Home")">Create Products</a>
+                        <h6 class="collapse-header">Roles Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("Create_Roles","Home")">Create Roles</a>
+                    </div>
+                </div>
             </li>
 
             <!-- Divider -->
@@ -368,7 +387,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">@session.UserName</span>
                                 <img class="img-profile rounded-circle"
-                                     src="/asset/admin/img/undraw_profile.svg">
+                                     src="@session.Image">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -376,10 +395,6 @@
                                 <a class="dropdown-item" href="@Url.Action("ShowProfile", "Account")">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -442,4 +457,4 @@
     </div>
 </body>
 </html>
-
+@RenderSection("scripts", required: false)

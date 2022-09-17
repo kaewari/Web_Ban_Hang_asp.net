@@ -61,6 +61,7 @@ namespace SNShop.Areas.Admin.Controllers
                         UserName = user.Username,
                         UserID = user.Id,
                         Email = user.Email,
+                        Image = user.Image,
                         Roles = userDao.GetRoleById(user.Id).Name,
                     };
                     Session.Add(Constants.USER_SESSION, userSession);
@@ -68,6 +69,7 @@ namespace SNShop.Areas.Admin.Controllers
                     Session.Add("UserName", userSession.UserName);
                     Session.Add("Email", userSession.Email);
                     Session.Add("Roles", userSession.Roles);
+                    Session.Add("Image", userSession.Image);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -230,17 +232,21 @@ namespace SNShop.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult ChangeImage(ImageModel imageModel)
         {
-            User user = db.Users.SingleOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));
-            string fileName = Path.GetFileNameWithoutExtension(imageModel.File.FileName);
-            string extension = Path.GetExtension(imageModel.File.FileName);
-            fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-            imageModel.Path = "~/Images/Avartars" + fileName;
-            fileName = Path.Combine(Server.MapPath("~/Images/Avartars"), fileName);
-            imageModel.File.SaveAs(fileName);
-            user.Image = imageModel.Path.Remove(0,1);
-            UpdateModel(user);
-            db.SubmitChanges();
-            return RedirectToAction("ShowProfile", "Home");
+            try
+            {
+                User user = db.Users.SingleOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));
+                string fileName = Path.GetFileNameWithoutExtension(imageModel.File.FileName);
+                string extension = Path.GetExtension(imageModel.File.FileName);
+                fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                imageModel.Path = "~/Images/Avatars/" + fileName;
+                fileName = Path.Combine(Server.MapPath("~/Images/Avatars/"), fileName);
+                imageModel.File.SaveAs(fileName);
+                user.Image = imageModel.Path.Remove(0, 1);
+                UpdateModel(user);
+                db.SubmitChanges();
+            }
+            catch {}
+            return RedirectToAction("ShowProfile", "Account");
         }
         public ActionResult ChangeAdminPassword()
         {

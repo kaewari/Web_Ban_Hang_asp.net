@@ -11,7 +11,7 @@ namespace SNShop.Areas.Admin.Common
         public long UserID { set; get; }
         public string UserName { set; get; }
         public string Email { set; get; }
-        public string Picture { set; get; }
+        public string Image { set; get; }
         public string Roles { set; get; }
     }
 }

@@ -1972,40 +1972,12 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\7Up.jpg" />
-    <Content Include="Images\ball2.png" />
-    <Content Include="Images\bau.jpg" />
-    <Content Include="Images\bia33thung.jpg" />
-    <Content Include="Images\biabenthanhchai.jpg" />
-    <Content Include="Images\biaheinekenchai.jpg" />
-    <Content Include="Images\biasaigonchai.jpg" />
-    <Content Include="Images\biasapporochai.jpg" />
-    <Content Include="Images\biatigerthung.jpg" />
-    <Content Include="Images\butchiden.jpg" />
-    <Content Include="Images\butlongkim.jpg" />
-    <Content Include="Images\butsap.jpg" />
-    <Content Include="Images\cassetsharp.jpg" />
-    <Content Include="Images\cassetsharp500w.jpg" />
-    <Content Include="Images\cocacolathung.jpg" />
-    <Content Include="Images\image.png" />
     <Content Include="Images\logo.png" />
-    <Content Include="Images\pepsithung.jpg" />
-    <Content Include="Images\ruouchampagne.jpg" />
-    <Content Include="Images\ruouchatdo.jpg" />
-    <Content Include="Images\ruounapoleon.jpg" />
-    <Content Include="Images\ruounepgoden.jpg" />
-    <Content Include="Images\ruouoxo.jpg" />
-    <Content Include="Images\RuouVangNho.jpg" />
-    <Content Include="Images\ruouxuanthanh.jpg" />
-    <Content Include="Images\si1.jpg" />
-    <Content Include="Images\si2.jpg" />
-    <Content Include="Images\si3.jpg" />
-    <Content Include="Images\TeaPlus.jpg" />
-    <Content Include="Images\tivisharp.jpg" />
-    <Content Include="Images\tivisony.jpg" />
-    <Content Include="Images\tulanhsanyo.jpg" />
     <Content Include="asset\client\font\Amble-Regular-webfont.ttf" />
     <Content Include="asset\client\images\Thumbs.db" />
+    <Content Include="Images\Products\si1.jpg" />
+    <Content Include="Images\Products\si2.jpg" />
+    <Content Include="Images\Products\si3.jpg" />
     <Content Include="Models\SNOnlineShop.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>SNOnlineShop.designer.cs</LastGenOutput>
@@ -2195,6 +2167,18 @@
     <Content Include="Areas\Admin\Views\Account\UpdatePasswordSuccess.cshtml" />
     <Content Include="Areas\Admin\Views\Account\ShowProfile.cshtml" />
     <Content Include="Areas\Admin\Views\Account\ChangeImage.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Components_Buttons.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Components_Cards.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Utilities_Colors.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Utilities_Borders.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Utilities_Animations.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Utilities_Others.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Pages_404.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Pages_Login.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Pages_ForgotPassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Pages_Blank.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Charts.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Tables.cshtml" />
     <None Include="Models\SNOnlineShop.dbml.layout">
       <DependentUpon>SNOnlineShop.dbml</DependentUpon>
     </None>
@@ -2242,6 +2226,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\Avatars\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
