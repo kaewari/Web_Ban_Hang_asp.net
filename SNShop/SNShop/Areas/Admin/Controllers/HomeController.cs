@@ -90,10 +90,6 @@ namespace SNShop.Areas.Admin.Controllers
         {
             return View();
         }
-        public ActionResult Pages_404()
-        {
-            return View();
-        }
         public ActionResult Pages_Login()
         {
             return View();

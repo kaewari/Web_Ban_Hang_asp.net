@@ -4,14 +4,13 @@
     ViewBag.Title = "ChangeImage";
 }
 
-<h2>ChangeImage</h2>
+<h2>Đổi ảnh đại diện</h2>
 
 @using (Html.BeginForm("ChangeImage","Account", FormMethod.Post, new {enctype= "multipart/form-data"}))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>ImageModel</h4>
         <hr />
 
         <div class="form-group">

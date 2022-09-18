@@ -29,6 +29,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/asset/admin/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <!-- Bootstrap core JavaScript-->
     <script src="/asset/admin/vendor/jquery/jquery.min.js"></script>
     <script src="/asset/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -44,7 +45,8 @@
     <!--Chart.js-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="/asset/admin/js/demo/datatables-demo.js"></script>
 </head>
 
 <body id="page-top">
@@ -167,7 +169,7 @@
                 </a>
             </li>
 
-            <!-- Nav Item - Create -->
+            <!-- Nav Item - List -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCreate"
                    aria-expanded="true" aria-controls="collapseCreate">
@@ -177,13 +179,15 @@
                 <div id="collapseCreate" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Category Pages:</h6>
-                        <a class="collapse-item" href="@Url.Action("Create_Categories","Home")">Create Categories</a>
+                        <a class="collapse-item" href="@Url.Action("List_Categories","Category")">Danh sách danh mục</a>
                         <h6 class="collapse-header">Sub Category Pages:</h6>
-                        <a class="collapse-item" href="@Url.Action("Create_Sub_Categories","Home")">Create Sub Categories</a>
+                        <a class="collapse-item" href="@Url.Action("List_SubCategories","SubCategory")">Danh sách danh mục con</a>
                         <h6 class="collapse-header">Product Pages:</h6>
-                        <a class="collapse-item" href="@Url.Action("Create_Products","Home")">Create Products</a>
+                        <a class="collapse-item" href="@Url.Action("List_Products","Product")">Danh sách sản phẩm</a>
+                        <h6 class="collapse-header">Product Image Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_Product_Image","ProductImage")">Danh sách ảnh sản phẩm</a>
                         <h6 class="collapse-header">Roles Pages:</h6>
-                        <a class="collapse-item" href="@Url.Action("Create_Roles","Home")">Create Roles</a>
+                        <a class="collapse-item" href="#" @*href="@Url.Action("List_Roles","Role")"*@>Danh sách vai trò</a>
                     </div>
                 </div>
             </li>
@@ -420,7 +424,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; SNShop 9/2022</span>
                     </div>
                 </div>
             </footer>

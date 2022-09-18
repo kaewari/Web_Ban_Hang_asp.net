@@ -79,9 +79,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-12", @style = "padding: 0" })
             <div class="col-md-12" style="padding:0">
-                <img src="@Model.Image" alt="@Model.Username" width="200" height="200" style="border-radius:100px; border:1px solid none"/>
+                <img src="@Model.Image" alt="@Model.Username" width="200" height="200" style="border-radius:100px; border:1px solid none" />
             </div>
         </div>
+        <p class="text-danger">@ViewData["loi"]</p>
         @using (Html.BeginForm("ChangeImage", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()

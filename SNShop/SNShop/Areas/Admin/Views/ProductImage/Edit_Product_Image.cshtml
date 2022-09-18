@@ -1,0 +1,42 @@
+﻿@model SNShop.Models.ProductImage
+
+@{
+    ViewBag.Title = "Edit_Product_Image";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sửa ảnh sản phẩm</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SP", null, htmlAttributes: new { @class = "form-control", @style = "width:100%" })
+                @Html.ValidationMessageFor(model => model.ProductID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Thumbnail_Photo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <img src="@Model.Thumbnail_Photo" name="Thumbnail_Photo" id="Thumbnail_Photo" width="250" height="250" />
+                @Html.ValidationMessageFor(model => model.Thumbnail_Photo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-12 row">
+                <input type="submit" value="Save" class="btn btn-danger" />
+                <a class="btn btn-primary" style="margin-left:5px" href="@Url.Action("List_Product_Image","ProductImage")">Back to List</a>
+            </div>
+        </div>
+    </div>
+}

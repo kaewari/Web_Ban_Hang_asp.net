@@ -1,12 +1,9 @@
-﻿using SNShop.Common;
-using SNShop.DAO;
+﻿using SNShop.DAO;
 using SNShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using SNShop.Areas.Admin.Models;
 using SNShop.Areas.Admin.Common;
 using Constants = SNShop.Areas.Admin.Common.Constants;
@@ -14,14 +11,9 @@ using Encode = SNShop.Areas.Admin.Common.Encode;
 using System.IO;
 using System.Net.Mail;
 using System.Net;
-using System.Web.Helpers;
 using System.Threading.Tasks;
-using System.Security.Policy;
 using System.Web.UI.WebControls;
 using ChangeAdminPasswordModel = SNShop.Areas.Admin.Models.ChangeAdminPasswordModel;
-using System.Security.Principal;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
 
 namespace SNShop.Areas.Admin.Controllers
 {
@@ -245,7 +237,10 @@ namespace SNShop.Areas.Admin.Controllers
                 UpdateModel(user);
                 db.SubmitChanges();
             }
-            catch {}
+            catch 
+            {
+                ViewData["loi"] = "Bạn vui lòng chọn ảnh.";
+            }
             return RedirectToAction("ShowProfile", "Account");
         }
         public ActionResult ChangeAdminPassword()

@@ -1,0 +1,34 @@
+﻿@model SNShop.Models.Category
+
+@{
+    ViewBag.Title = "Details_Categories";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chi tiết danh mục</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <a class="btn btn-warning" href="@Url.Action("Edit_Categories","Category", new { id = Model.Id })">Edit</a> |
+    <a class="btn btn-primary" href="@Url.Action("List_Categories","Category")">Back to List</a>
+</p>

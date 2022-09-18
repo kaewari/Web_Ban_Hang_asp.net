@@ -1,0 +1,50 @@
+﻿@model IEnumerable<SNShop.Models.Category>
+
+@{
+    ViewBag.Title = "List_Categories";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Danh sách danh mục</h2>
+<a class="btn btn-primary" style="margin-bottom:5px" href="@Url.Action("Create_Categories","Category")">Tạo mới</a>
+<h3 class="text-danger">@ViewData["loi"]</h3>
+<table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>
+            <th>
+                Chức năng
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td>
+                    <a class="btn btn-warning" href="@Url.Action("Edit_Categories","Category", new { id = item.Id })">Edit</a> |
+                    <a class="btn btn-info" href="@Url.Action("Details_Categories","Category", new { id = item.Id })">Details</a> |
+                    <a class="btn btn-danger" href="@Url.Action("Delete_Categories","Category", new { id = item.Id })">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

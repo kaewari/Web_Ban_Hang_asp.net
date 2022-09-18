@@ -1,0 +1,50 @@
+﻿@model SNShop.Models.ProductImage
+
+@{
+    ViewBag.Title = "Details_Product_Image";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chi tiết ảnh của sản phẩm</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductID)
+        </dt>
+
+        <dd class="text-danger">
+            <h3> @Html.DisplayFor(model => model.Product.Name)</h3>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Thumbnail_Photo)
+        </dt>
+
+        <dd>
+            <img src="@Model.Thumbnail_Photo" name="Thumbnail_Photo" id="Thumbnail_Photo" width="250" height="250" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+    </dl>
+</div>
+<p>
+    <a class="btn btn-warning" href="@Url.Action("Edit_Product_Image","ProductImage", new { id = Model.Id })">Edit</a>
+    <a class="btn btn-primary" href="@Url.Action("List_Product_Image","ProductImage")">Back to list</a>
+</p>

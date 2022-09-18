@@ -93,5 +93,17 @@ namespace SNShop.Controllers
             db.SubmitChanges();
             return RedirectToAction("Index");
         }
+        [Route("404")]
+        public ActionResult Pages_404()
+        {
+            Response.StatusCode = 404;  //you may want to set this to 200
+            return View();
+        }
+        [Route("500")]
+        public ActionResult Pages_500()
+        {
+            Response.StatusCode = 500;  //you may want to set this to 200
+            return View();
+        }
     }
 }

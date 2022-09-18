@@ -127,8 +127,7 @@ namespace SNShop.Controllers
                 user.Facebook = true;                            
                 var resultCheck = userDao.CheckEmail(email);
                 if (!resultCheck)
-                {
-                    
+                {                   
                     db.Users.InsertOnSubmit(user);
                     db.SubmitChanges();
                     customer.UserID = user.Id;

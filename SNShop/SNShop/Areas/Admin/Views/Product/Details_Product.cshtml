@@ -1,0 +1,165 @@
+﻿@model SNShop.Models.Product
+
+@{
+    ViewBag.Title = "Details_Product";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chi tiết sản phẩm</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal row">
+        <div class="col-md-6 col-xs-12">
+            <dt>
+                @Html.DisplayNameFor(model => model.CategoryID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Category.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BrandID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Brand.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CPU)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CPU)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PIN)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PIN)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OS)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OS)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Screen)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Screen)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.RAM)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.RAM)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Color)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Color)
+            </dd>
+        </div>
+        <div class="col-md-6 col-xs-12">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Design)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Design)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Release)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Release)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.VGA)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.VGA)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.QuantityPerUnit)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.QuantityPerUnit)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UnitsInStock)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UnitsInStock)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UnitsOnOrder)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.UnitsOnOrder)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Discontinued)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Discontinued)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedDate)
+            </dd>
+        </div>
+    </dl>
+</div>
+<p>
+    <a class="btn btn-warning" href="@Url.Action("Edit_Product","Product", new { id = Model.Id })">Edit</a> |
+    <a class="btn btn-primary" href="@Url.Action("List_Products","Product")">Back to list</a> |
+</p>

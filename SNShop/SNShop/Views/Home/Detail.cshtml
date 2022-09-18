@@ -5,8 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="~/asset/client/css/flexslider.css" type="text/css" media="screen" />
-<script src="~/asset/client/js/jquery.flexslider.js" defer></script>
-
+<script type="text/javascript" src="~/asset/client/js/jquery.min.js"></script>
+<script defer type="text/javascript" src="~/asset/client/js/jquery.flexslider.js"></script>
 <div class="banner-bootom-w3-agileits py-5">
     <div class="container py-xl-4 py-lg-2">
         <!-- //tittle heading -->
@@ -15,24 +15,24 @@
                 <div class="grid">
                     <div class="flexslider">
                         <ul class="slides">
-                            <li data-thumb="/Images/si1.jpg">
+                            <li data-thumb="/Images/Products/si1.jpg">
                                 <div class="thumb-image">
-                                    <img src="/Images/si1.jpg" data-imagezoom="true" class="img-fluid" alt="">
+                                    <img src="/Images/Products/si1.jpg" data-imagezoom="true" class="img-fluid" alt="">
                                 </div>
                             </li>
-                            <li data-thumb="/Images/si2.jpg">
+                            <li data-thumb="/Images/Products/si2.jpg">
                                 <div class="thumb-image">
-                                    <img src="/Images/si2.jpg" data-imagezoom="true" class="img-fluid" alt="">
+                                    <img src="/Images/Products/si2.jpg" data-imagezoom="true" class="img-fluid" alt="">
                                 </div>
                             </li>
-                            <li data-thumb="/Images/si3.jpg">
+                            <li data-thumb="/Images/Products/si3.jpg">
                                 <div class="thumb-image">
-                                    <img src="/Images/si3.jpg" data-imagezoom="true" class="img-fluid" alt="">
+                                    <img src="/Images/Products/si3.jpg" data-imagezoom="true" class="img-fluid" alt="">
                                 </div>
                             </li>
-                            <li data-thumb="/Images/si3.jpg">
+                            <li data-thumb="/Images/Products/si3.jpg">
                                 <div class="thumb-image">
-                                    <img src="/Images/si3.jpg" data-imagezoom="true" class="img-fluid" alt="">
+                                    <img src="/Images/Products/si3.jpg" data-imagezoom="true" class="img-fluid" alt="">
                                 </div>
                             </li>
                         </ul>
@@ -91,7 +91,7 @@
                 </div>
                 <div class="occasion-cart">
                     <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                        <a class="button" onclick="addCart(@Model.Id, '@Model.Name', @Model.Price)">Thêm vào giỏ hàng</a>
+                        <a class="btn btn-danger text-white" onclick="addCart(@Model.Id, '@Model.Name', @Model.Price)">Thêm vào giỏ hàng</a>
                     </div>
                 </div>
             </div>
