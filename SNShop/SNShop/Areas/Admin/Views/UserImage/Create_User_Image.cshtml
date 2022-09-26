@@ -1,0 +1,29 @@
+﻿@model SNShop.Models.User
+@{
+    ViewBag.Title = "Create_User_Image";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create_User_Image", "UserImage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <img src="@Model.Image" name="Image" id="Image" width="250" height="250" />
+            @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <h4 class="text-danger">Chỉ chọn ảnh có đuôi file là .png hoặc .jpg</h4>
+    <div class="form-horizontal">
+        <input name="File" type="file" accept="image/*" id="File" required />
+        <div class="form-group" style="margin-top:10px">
+            <div class="col-md-offset-2">
+                <input class="btn btn-success" type="submit" value="Thêm ảnh" autocomplete="off" />
+                <a class="btn btn-primary" style="margin-left:5px" href="@Url.Action("List_Users","User")">Back to list</a>
+                <a class="btn btn-danger" href="@Url.Action("Delete_User_Image","UserImage", new { id = Model.Id, url = ViewBag.Title })">Xóa ảnh</a>
+            </div>
+        </div>
+    </div>
+}

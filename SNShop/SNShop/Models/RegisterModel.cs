@@ -12,6 +12,10 @@ namespace SNShop.Models
         [DataType(DataType.EmailAddress)]
         public string Email { set; get; }
 
+        [Required(ErrorMessage = "Yêu cầu nhập tên thật")]
+        [Display(Name = "Truename")]
+        public string Truename { set; get; }
+
         [Required(ErrorMessage = "Yêu cầu nhập username")]
         [Display(Name = "Username")]
         public string Username { set; get; }
@@ -33,10 +37,10 @@ namespace SNShop.Models
         public string ConfirmPassword { set; get; }
 
         [Display(Name = "Tỉnh/thành")]
-        public string ProvinceID { set; get; }
+        public int ProvinceID { set; get; }
 
         [Display(Name = "Quận/Quyện")]
-        public string DistrictID { set; get; }
+        public int DistrictID { set; get; }
 
         [Display(Name = "Địa chỉ")]
         public string Address { set; get; }

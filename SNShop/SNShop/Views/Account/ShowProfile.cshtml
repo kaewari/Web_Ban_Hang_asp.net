@@ -8,93 +8,127 @@
 <h2>Thông tin tài khoản</h2>
 <div class="row">
     <hr />
-    <div class="col-md-9 col-xs-12">
-        @using (Html.BeginForm())
+    <div class="col-md-8 col-xs-12">
+        @using (Html.BeginForm("ShowProfile", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Truename, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Truename, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Truename, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <p class="text-danger">@ViewData["cityNull"]</p>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProvinceID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("PR", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlProvince" })
+                    @Html.ValidationMessageFor(model => model.ProvinceID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <p class="text-danger">@ViewData["districtNull"]</p>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DistrictID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("DT", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlDistrict" })
+                    @Html.ValidationMessageFor(model => model.DistrictID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+    <div class="col-md-4 col-xs-12">
+        @using (Html.BeginForm("Edit_Users_Image", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
-
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.ID)
-
-                @*<input name="" type="file" accept=".png,.jpg"/>*@
-
+            </div>
+            <div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-6" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        <img src="@Model.Image" name="Image" id="Image" width="250" height="250" />
+                        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ProvinceID, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("ProvinceID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlProvince" })
-                        @Html.ValidationMessageFor(model => model.ProvinceID, "Chọn tỉnh/thành phố", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DistrictID, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("DistrictID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlDistrict" })
-                        @Html.ValidationMessageFor(model => model.DistrictID, "Chọn quận/huyện", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-danger" />
+            </div>
+            <h4 class="text-danger">Ảnh có đuôi file là .png hoặc .jpg</h4>
+            <div class="form-horizontal">
+                <input name="File" type="file" accept="image/*" id="File" required />
+                <div class="form-group" style="margin-top:10px">
+                    <div class="col-md-offset-2">
+                        <input class="btn btn-success" type="submit" value="Thay đổi ảnh" autocomplete="off" />
+                        <a class="btn btn-primary" href="@Url.Action("Index","Home")">Back to list</a>
+                        <a class="btn btn-info" href="@Url.Action("ChangePassword","Account", new {id = Model.ID})">Đổi mật khẩu</a>
+                        @*<a class="btn btn-danger" href="@Url.Action("Delete_User_Image","UserImage", new { id = Model.Id, url = ViewBag.Title })">Xóa ảnh</a>*@
                     </div>
                 </div>
             </div>
         }
-    </div>
-    <div class="col-md-3 col-xs-12">
-        <img src="@Model.Username" width="200" height="200" alt="@Model.Username"/>
+
         @if (@Model.Facebook)
         {
             <form class="form-group" action="@Url.Action("LoginFacebook", "Account")">
                 <button class="btn" style="color: #4267B2" disabled><i class="fa-brands fa-square-facebook"></i>Đã liên kết Facebook</button>
             </form>
         }
-        <div style="margin-top:10px">
-            <a class="btn btn-info" href="@Url.Action("ChangePassword","Account")">Đổi mật khẩu</a>
-        </div>
     </div>
 </div>
 <script>
     var user = {
         init: function () {
             user.loadProvince();
-            if (@ViewBag.ProvinceID != 0)
-                user.loadDistrict(@ViewBag.ProvinceID);
+            if (@Model.ProvinceID != null) {
+                user.loadDistrict(@Model.ProvinceID);
+            }
+
             user.registerEvent();
         },
         registerEvent: function () {
@@ -117,8 +151,15 @@
                     if (response.status == true) {
                         var html = '<option value="">--Chọn tỉnh thành--</option>';
                         var data = response.data;
+                        $('#ddlDistrict')
+                            .find('option')
+                            .remove()
+                            .end()
+                            .append('<option value="0"></option>')
+                            .val('0');
+                        console.info(data)
                         $.each(data, function (i, item) {
-                           if (item.Id == @ViewBag.ProvinceID)
+                            if (item.Id == @Model.ProvinceID)
                                 html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
                             else
                                 html += '<option value="' + item.Id + '">' + item.Name + '</option>'
@@ -132,14 +173,15 @@
             $.ajax({
                 url: '/Account/LoadDistrict',
                 type: "POST",
-                data: { provinceID: id},
+                data: { provinceID: id },
                 dataType: "json",
                 success: function (response) {
                     if (response.status == true) {
                         var html = '<option value="">--Chọn quận huyện--</option>';
                         var data = response.data;
+                        console.info(data)
                         $.each(data, function (i, item) {
-                            if (item.Id == @ViewBag.DistrictID)
+                            if (item.Id == @Model.DistrictID)
                                 html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
                             else
                                 html += '<option value="' + item.Id + '">' + item.Name + '</option>'

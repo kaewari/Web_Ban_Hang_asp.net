@@ -1,0 +1,133 @@
+﻿@model SNShop.Models.User
+
+@{
+    ViewBag.Title = "Details_Users";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thông tin chi tiết user</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal row">
+        <div class="col-md-6 col-xs-12">
+            <dt>
+                @Html.DisplayNameFor(model => model.Truename)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Truename)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Username)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Username)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EmailConfirmed)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EmailConfirmed)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PasswordHash)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PasswordHash)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumberConfirmed)
+            </dd>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Image)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Image)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Facebook)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Facebook)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ProvinceID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ProvinceID)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DistrictID)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DistrictID)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ModifiedDate)
+            </dd>
+        </div>
+
+
+    </dl>
+</div>
+<p>
+    <a class="btn btn-primary" href="@Url.Action("List_Users","User")">Back to list</a>
+</p>

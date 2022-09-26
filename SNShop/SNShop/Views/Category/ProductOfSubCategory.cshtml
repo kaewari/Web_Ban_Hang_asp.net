@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SNShop.Models.Product>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="section group">
+    <div class="sub_category_menu">
+        <ul>
+            @foreach (var subitem in ViewBag.SubCategory)
+            {
+                <li class="item">
+                    <a class="sub_item" href="@Url.Action("ProductOfSubCategory", "Category", new {id = subitem.Id})">@subitem.Name</a>
+                </li>
+            }
+        </ul>
+    </div>
+    @foreach (var item in ViewBag.ProductOfSubCategory)
+    {
+        <div class="grid_1_of_4 images_1_of_4">
+            @foreach (var itemImage in ViewBag.PresentImage)
+            {
+                if (item.Id == itemImage.ProductID)
+                {
+                    <a href="@Url.Action("Detail", "Home", new { id = item.Id })"><img src="@itemImage.Thumbnail_Photo" alt="" /></a>
+                    break;
+                }
+            }
+            <h2>@item.Name </h2>
+            <div class="price-details">
+                <div class="price-number" style="width:100%">
+                    <p style="font-size:15px; padding:0;margin:0;"><span class="rupees" style="color:red">@String.Format("{0:0,0}", @item.Price)&#8363;</span></p>
+                </div>
+                <div class="add-cart" style="float:none">
+                    <a class="button" style="background-color: red; margin: 1px; text-decoration: none; color: white; padding: 7px; cursor: pointer" onclick="addCart(@item.Id, '@item.Name', @item.Price)">Thêm vào giỏ hàng</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    }
+</div>

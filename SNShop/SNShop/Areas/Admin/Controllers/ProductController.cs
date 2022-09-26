@@ -1,14 +1,10 @@
-﻿using SNShop.Areas.Admin.Models;
+﻿using Microsoft.Ajax.Utilities;
+using Newtonsoft.Json;
 using SNShop.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-
 namespace SNShop.Areas.Admin.Controllers
 {
     public class ProductController : Controller
@@ -39,41 +35,42 @@ namespace SNShop.Areas.Admin.Controllers
             }
             else
             {
-                product.Name = form["Name"];
-                product.CategoryID = int.Parse(form["LSP"]);
-                product.BrandID = int.Parse(form["NCC"]);
-                product.ModifiedDate = DateTime.Parse(form["Release"]); ;
-                db.Products.InsertOnSubmit(product);
-                db.SubmitChanges();
-                return RedirectToAction("List_Products");
+                try
+                {
+                    product.Name = form["Name"];
+                    product.CategoryID = int.Parse(form["LSP"]);
+                    product.BrandID = int.Parse(form["NCC"]);
+                    product.ModifiedDate = DateTime.Parse(form["Release"]);
+                    if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
+                        product.QuantityPerUnit = int.Parse(form["QuantityPerUnit"]);
+                    if (!string.IsNullOrEmpty(form["Price"]))
+                        product.Price = int.Parse(form["Price"]);
+                    if (!string.IsNullOrEmpty(form["UnitsInStock"]))
+                        product.UnitsInStock = int.Parse(form["UnitsInStock"]);
+                    if (!string.IsNullOrEmpty(form["UnitsOnOrder"]))
+                        product.UnitsOnOrder = int.Parse(form["UnitsOnOrder"]);
+                    if (!string.IsNullOrEmpty(form["Discontinued"]))
+                        product.Discontinued = bool.Parse(form["Discontinued"]);
+                    db.Products.InsertOnSubmit(product);
+                    db.SubmitChanges();
+                    return RedirectToAction("List_Products");
+                }
+                catch (Exception ex)
+                {
+                    ViewData["Loi"] = ex.Message;
+                }
             }
-            if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
-                product.QuantityPerUnit = int.Parse(form["QuantityPerUnit"]);
-            if (!string.IsNullOrEmpty(form["Price"]))
-                product.Price = int.Parse(form["Price"]);
-            if (!string.IsNullOrEmpty(form["UnitsInStock"]))
-                product.UnitsInStock = int.Parse(form["UnitsInStock"]);
-            if (!string.IsNullOrEmpty(form["UnitsOnOrder"]))
-                product.UnitsOnOrder = int.Parse(form["UnitsOnOrder"]);
-            if (!string.IsNullOrEmpty(form["Discontinued"]))
-                product.Discontinued = bool.Parse(form["Discontinued"]);
+
             return View(product);
         }
         public ActionResult Details_Product(int id)
         {
             Product p = db.Products.FirstOrDefault(s => s.Id == id);
-            if (p.UnitsInStock == null || p.UnitsOnOrder == null || p.QuantityPerUnit == null || p.Discontinued == null)
-            {
-                p.UnitsInStock = 0;
-                p.UnitsOnOrder = 0;
-                p.QuantityPerUnit = 0;
-                p.Discontinued = false;
-            }
             return View(p);
         }
         public ActionResult Edit_Product(int id)
         {
-            var p = db.Products.Where(s => s.Id == id).FirstOrDefault();
+            var p = db.Products.FirstOrDefault(s => s.Id == id);
             ViewData["LSP"] = new SelectList(db.Categories, "Id", "Name");
             ViewData["NCC"] = new SelectList(db.Brands, "Id", "Name");
             return View(p);
@@ -82,14 +79,6 @@ namespace SNShop.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Edit_Product(FormCollection form, int id)
         {
-            var formats = new[]
-            {
-                "dd/MM/yyyy",
-                "dd/MM/yyyy HH:mm",
-                "dd/MM/yyyy HH:mm tt",
-                "dd/MM/yyyy HH:mm:ss",
-                "dd/MM/yyyy HH:mm:ss tt",
-            };
             var p = db.Products.Where(s => s.Id == id).FirstOrDefault();
             if (string.IsNullOrEmpty(form["Name"]))
             {
@@ -99,71 +88,122 @@ namespace SNShop.Areas.Admin.Controllers
             }
             else
             {
-                p.BrandID = int.Parse(form["NCC"]);
-                p.CategoryID = int.Parse(form["LSP"]);
-                p.Name = form["Name"];
-                if (!string.IsNullOrEmpty(form["CPU"]))
-                    p.CPU = form["CPU"];
-                if (!string.IsNullOrEmpty(form["RAM"]))
-                    p.RAM = form["RAM"];
-                if (!string.IsNullOrEmpty(form["Color"]))
-                    p.Color = form["Color"];
-                if (!string.IsNullOrEmpty(form["Design"]))
-                    p.Design = form["Design"];
-                if (!string.IsNullOrEmpty(form["PIN"]))
-                    p.PIN = form["PIN"];
-                if (!string.IsNullOrEmpty(form["OS"]))
-                    p.OS = form["OS"];
-                if (!string.IsNullOrEmpty(form["Screen"]))
-                    p.Screen = form["Screen"];
-                if (!string.IsNullOrEmpty(form["Release"]))
-                    p.Release = DateTime.Parse(form["Release"]);
-                if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
-                    p.VGA = form["VGA"];
-                if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
-                    p.QuantityPerUnit = int.Parse(form["QuantityPerUnit"]);
-                if (!string.IsNullOrEmpty(form["Price"]))
-                    p.Price = (int?)decimal.Parse(form["Price"]);
-                if (!string.IsNullOrEmpty(form["UnitsInStock"]))
-                    p.UnitsInStock = int.Parse(form["UnitsInStock"]);
-                if (!string.IsNullOrEmpty(form["UnitsOnOrder"]))
-                    p.UnitsOnOrder = int.Parse(form["UnitsOnOrder"]);
-                if (!string.IsNullOrEmpty(form["Discontinued"]))
-                    p.Discontinued = bool.Parse(form["Discontinued"]);
-                p.ModifiedDate = DateTime.Now;
-                UpdateModel(p);
-                db.SubmitChanges();
-                return RedirectToAction("List_Products");
+                try
+                {
+                    p.BrandID = int.Parse(form["NCC"]);
+                    p.CategoryID = int.Parse(form["LSP"]);
+                    p.Name = form["Name"];
+                    if (!string.IsNullOrEmpty(form["CPU"]))
+                        p.CPU = form["CPU"];
+                    if (!string.IsNullOrEmpty(form["RAM"]))
+                        p.RAM = form["RAM"];
+                    if (!string.IsNullOrEmpty(form["Color"]))
+                        p.Color = form["Color"];
+                    if (!string.IsNullOrEmpty(form["Design"]))
+                        p.Design = form["Design"];
+                    if (!string.IsNullOrEmpty(form["PIN"]))
+                        p.PIN = form["PIN"];
+                    if (!string.IsNullOrEmpty(form["OS"]))
+                        p.OS = form["OS"];
+                    if (!string.IsNullOrEmpty(form["Screen"]))
+                        p.Screen = form["Screen"];
+                    if (!string.IsNullOrEmpty(form["Release"]))
+                        p.Release = DateTime.Parse(form["Release"]);
+                    if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
+                        p.VGA = form["VGA"];
+                    if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
+                        p.QuantityPerUnit = int.Parse(form["QuantityPerUnit"]);
+                    if (!string.IsNullOrEmpty(form["Price"]))
+                        p.Price = (int?)decimal.Parse(form["Price"]);
+                    if (!string.IsNullOrEmpty(form["UnitsInStock"]))
+                        p.UnitsInStock = int.Parse(form["UnitsInStock"]);
+                    if (!string.IsNullOrEmpty(form["UnitsOnOrder"]))
+                        p.UnitsOnOrder = int.Parse(form["UnitsOnOrder"]);
+                    if (!string.IsNullOrEmpty(form["Discontinued"]))
+                        p.Discontinued = bool.Parse(form["Discontinued"]);
+                    p.ModifiedDate = DateTime.Now;
+                    UpdateModel(p);
+                    db.SubmitChanges();
+                    return RedirectToAction("List_Products");
+                }
+                catch (Exception ex)
+                {
+                    ViewData["loi"] = ex.Message;
+                }
             }
-            if (!string.IsNullOrEmpty(form["Release"]))
-                p.Release = DateTime.Now;
-            if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
-                p.QuantityPerUnit = int.Parse(form["QuantityPerUnit"]);
-            if (!string.IsNullOrEmpty(form["Price"]))
-                p.Price = int.Parse(form["Price"]);
-            if (!string.IsNullOrEmpty(form["UnitsInStock"]))
-                p.UnitsInStock = int.Parse(form["UnitsInStock"]);
-            if (!string.IsNullOrEmpty(form["UnitsOnOrder"]))
-                p.UnitsOnOrder = int.Parse(form["UnitsOnOrder"]);
-            if (!string.IsNullOrEmpty(form["Discontinued"]))
-                p.Discontinued = bool.Parse(form["Discontinued"]);
             return View(p);
         }
-
+        [HttpPost]
         public ActionResult Delete_Product(int id)
         {
+            string error = null;
             try
             {
                 var p = db.Products.FirstOrDefault(s => s.Id == id);
                 db.Products.DeleteOnSubmit(p);
                 db.SubmitChanges();
+                error = "Xóa thành công sản phẩm " + id;
+                return Json(new
+                {
+                    success = error,
+                    status = 200
+                });
             }
             catch
             {
-                ViewData["loi"] = "Bạn không thể xóa sản phẩm này.";
+                error = "Bạn không thể xóa sản phẩm " + id;
             }
-            return RedirectToAction("List_Products", new {error = ViewData["loi"] });
+            return Json(new
+            {
+                error = error,
+                status = 400
+            });
         }
-        
+        [HttpPost]
+        public ActionResult Delete_All_Product()
+        {
+            bool check = false;
+            List<int> listSuccess = new List<int>();
+            List<int> listFail = new List<int>();
+            List<ProductImage> pImage = db.ProductImages.DistinctBy(s=>s.ProductID).ToList();
+            List<Product> p = db.Products.ToList();
+            int totalProduct = db.Products.Count();
+            if (pImage.Count() == 0)
+            {
+                db.Products.DeleteAllOnSubmit(p);
+                db.SubmitChanges();
+            }
+            else
+            {
+                foreach (var item in p)
+                {
+                    foreach (var itemj in pImage)
+                    {                        
+                        if (item.Id == itemj.ProductID)
+                        {
+                            check = true;
+                            listFail.Add(item.Id);
+                            break;
+                        }
+                    }
+                    if (check == false)
+                    {
+                        db.Products.DeleteOnSubmit(item);
+                        db.SubmitChanges();
+                        listSuccess.Add(item.Id);
+                    }
+                    check = false;
+                }
+            }
+            string success = "Xóa thành công tất cả sản phẩm.";
+            return Json(new
+            {
+                totalProduct = totalProduct,
+                countSuccess = listSuccess,
+                countFail = listFail,
+                success = success,
+                status = 200
+            });
+        }
     }
 }

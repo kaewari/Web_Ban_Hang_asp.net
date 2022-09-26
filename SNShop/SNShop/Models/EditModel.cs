@@ -12,6 +12,10 @@ namespace SNShop.Models
         [DataType(DataType.EmailAddress)]
         public string Email { set; get; }
 
+        [Required(ErrorMessage = "Yêu cầu nhập tên thật")]
+        [Display(Name = "Truename")]
+        public string Truename { set; get; }
+
         [Required(ErrorMessage = "Yêu cầu nhập username")]
         [Display(Name = "Username")]
         public string Username { set; get; }
@@ -27,11 +31,16 @@ namespace SNShop.Models
 
         public bool Facebook { set; get; }
 
-        [Display(Name = "Tỉnh/thành")]
-        public string ProvinceID { set; get; }
+        [Required(ErrorMessage = "Yêu cầu chọn Tỉnh/Thành")]
+        [Display(Name = "Tỉnh/Thành")]
+        public int ProvinceID { set; get; }
 
-        [Display(Name = "Quận/Quyện")]
-        public string DistrictID { set; get; }
+        [Required(ErrorMessage = "Yêu cầu chọn Quận/Huyện")]
+        [Display(Name = "Quận/Huyện")]
+        public int DistrictID { set; get; }
+
+        [Display(Name = "Ảnh đại diện")]
+        public string Image { set; get; }
 
     }
 }

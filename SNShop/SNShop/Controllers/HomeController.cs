@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using SNShop.Models;
 using PagedList;
+
 namespace SNShop.Controllers
 {
     public class HomeController : MyBaseController
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
-  
+
         public ActionResult Index(int? page, string SearchString, string sortOrder)
-        {
+        {            
             var sanPham = new List<Product>();
             ViewBag.CurrentSortOrder = sortOrder;
             ViewBag.SortByName = string.IsNullOrEmpty(sortOrder) ? "ten_desc" : "";
@@ -56,15 +53,17 @@ namespace SNShop.Controllers
             }
             catch (Exception) { }
             sanPham.OrderByDescending(v => v.Id);
-            int pageSize = 12;
+            int pageSize = 21;
             ViewBag.PageSize = pageSize;
-            ViewBag.Category = db.Categories.Select(s => s).ToList();
+            ViewBag.Category = db.Categories.ToList();
             ViewBag.Check = 0;
+            ViewBag.PresentImage = db.ProductImages.ToList();
             return View(sanPham.ToList().ToPagedList(page.Value, pageSize));
         }
         public ActionResult Detail(int id)
         {
             Product p = db.Products.FirstOrDefault(s => s.Id == id);
+            ViewBag.AllImageOfProduct = p.ProductImages.Where(s => s.ProductID == id);
             return View(p);
         }
         public ActionResult About()

@@ -1,0 +1,130 @@
+﻿@model IEnumerable<SNShop.Models.User>
+
+@{
+    ViewBag.Title = "List_Users";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Danh sách người dùng</h2>
+<a class="btn btn-primary" style="margin-bottom:5px" href="@Url.Action("Create_Users","User")">Tạo mới</a>
+<h3 class="text-danger">@ViewData["loi"]</h3>
+<style>
+    table {
+        display: block;
+        overflow-x: auto;
+        overflow-y: auto;
+        height: 400px;
+        white-space: nowrap;
+    }
+
+    td.tool {
+        width: 20rem;
+        right: 0;
+        position: sticky;
+        top: auto;
+    }
+</style>
+<table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Truename)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PasswordHash)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Facebook)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProvinceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DistrictID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>
+            <th>
+                Chức năng
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Truename)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PasswordHash)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Facebook)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProvinceID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DistrictID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td class="tool">
+                    <a class="btn btn-success" style="margin-left:5px" href="@Url.Action("Create_User_Image","UserImage", new {id = item.Id})">Image</a>
+                    <a class="btn btn-warning" href="@Url.Action("Edit_Users_Image","UserImage", new { id = item.Id })">Edit</a>                </td>
+            </tr>
+        }
+    </tbody>
+</table>

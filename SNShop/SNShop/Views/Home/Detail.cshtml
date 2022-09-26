@@ -15,26 +15,14 @@
                 <div class="grid">
                     <div class="flexslider">
                         <ul class="slides">
-                            <li data-thumb="/Images/Products/si1.jpg">
-                                <div class="thumb-image">
-                                    <img src="/Images/Products/si1.jpg" data-imagezoom="true" class="img-fluid" alt="">
-                                </div>
-                            </li>
-                            <li data-thumb="/Images/Products/si2.jpg">
-                                <div class="thumb-image">
-                                    <img src="/Images/Products/si2.jpg" data-imagezoom="true" class="img-fluid" alt="">
-                                </div>
-                            </li>
-                            <li data-thumb="/Images/Products/si3.jpg">
-                                <div class="thumb-image">
-                                    <img src="/Images/Products/si3.jpg" data-imagezoom="true" class="img-fluid" alt="">
-                                </div>
-                            </li>
-                            <li data-thumb="/Images/Products/si3.jpg">
-                                <div class="thumb-image">
-                                    <img src="/Images/Products/si3.jpg" data-imagezoom="true" class="img-fluid" alt="">
-                                </div>
-                            </li>
+                            @foreach (var item in ViewBag.AllImageOfProduct)
+                            {
+                                <li data-thumb="@item.Thumbnail_Photo">
+                                    <div class="thumb-image">
+                                        <img src="@item.Thumbnail_Photo" data-imagezoom="true" class="img-fluid" alt="">
+                                    </div>
+                                </li>
+                            }
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -43,6 +31,10 @@
 
             <div class="col-lg-7 single-right-left simpleCart_shelfItem" style="font-size:20px">
                 <h2 class="mb-3" style="color:red">@Html.DisplayFor(model => model.Name)</h2>
+                <p class="my-3">
+                    <i class="far fa-hand-point-right mr-2"></i>
+                    <b>Đặc quyền</b>
+                </p>
                 <div class="single-infoagile">
                     <ul>
                         <li class="mb-3">
@@ -59,32 +51,61 @@
                         </li>
                     </ul>
                 </div>
-                <div class="product-single-w3l">
-                    <p class="my-3">
-                        <i class="far fa-hand-point-right mr-2"></i>
-                        Mô tả sản phẩm
-                    </p>
-                    <ul>
-                        <li class="mb-1">
-                            3 GB RAM | 16 GB ROM | Expandable Upto 256 GB
-                        </li>
-                        <li class="mb-1">
-                            5.5 inch Full HD Display
-                        </li>
-                        <li class="mb-1">
-                            13MP Rear Camera | 8MP Front Camera
-                        </li>
-                        <li class="mb-1">
-                            3300 mAh Battery
-                        </li>
-                        <li class="mb-1">
-                            Exynos 7870 Octa Core 1.6GHz Processor
-                        </li>
-                    </ul>
-                    <p class="my-sm-4 my-3">
-                        <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
-                    </p>
+                <p class="my-3">
+                    <i class="far fa-hand-point-right mr-2"></i>
+                    <b>Mô tả sản phẩm</b>
+                </p>
+                <div class="d-flex">
+                    <div class="product-single-w3l">
+
+                        <ul>
+                            <li class="mb-1">
+                                <b>Thương hiệu:</b> @Model.Brand.Name
+                            </li>
+                            <li class="mb-1">
+                                <b>Vi xử lý:</b> @Model.CPU
+                            </li>
+                            <li class="mb-1">
+                                <b>Card đồ họa:</b> @Model.VGA
+                            </li>
+                            <li class="mb-1">
+                                <b>Màn hình:</b> @Model.Screen
+                            </li>
+                            <li class="mb-1">
+                                <b>Bộ nhớ RAM:</b> @Model.RAM
+                            </li>
+                            <li class="mb-1">
+                                <b>Ổ cứng:</b> @Model.ROM
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div class="product-single-w3l">
+                        <ul>
+                            <li class="mb-1">
+                                <b>Hệ điều hành:</b> @Model.OS
+                            </li>
+                            <li class="mb-1">
+                                <b>Màu sắc:</b> @Model.Color
+                            </li>
+                            <li class="mb-1">
+                                <b>Camera:</b> @Model.Webcam
+                            </li>
+                            <li class="mb-1">
+                                <b>PIN:</b> @Model.PIN
+                            </li>
+                            <li class="mb-1">
+                                <b>Thiết kế:</b> @Model.Design
+                            </li>
+                            <li class="mb-1">
+                                <b>Ngày ra mắt:</b> @String.Format($"{@Model.Release: dd/MM/yyyy}")
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+                <p class="my-sm-4 my-3">
+                    <i class="fas fa-retweet mr-3"></i><b>Thanh toán tại của hàng hoặc khi nhận sản phẩm.</b>
+                </p>
                 <div class="mb-3" style="font-size:30px">
                     <div><span>Giá cũ:</span><del class="mx-2 font-weight-light"><span class="rupees" style="color:red">@String.Format("{0:0,0}", Model.Price)&#8363;</span></del></div>
                     <div><span>Giá KM:</span><span class="item-price" style="color:red">@String.Format("{0:0,0}", Model.Price - (Model.Price * 20 / 100))&#8363;</span></div>
@@ -98,6 +119,98 @@
         </div>
     </div>
 </div>
+<hr />
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-start row">
+        <div class="d-flex flex-column col-md-8">
+            <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
+                <div class="profile-image"><img class="rounded-circle" src="https://i.imgur.com/t9toMAQ.jpg" width="70"></div>
+                <div class="d-flex flex-column-reverse flex-grow-0 align-items-center votings ml-1"><i class="fa fa-sort-up fa-2x hit-voting"></i><span>127</span><i class="fa fa-sort-down fa-2x hit-voting"></i></div>
+                <div class="d-flex flex-column ml-3">
+                    <div class="d-flex flex-row post-title">
+                        <h5>Is sketch 3.9.1 stable?</h5><span class="ml-2">(Jesshead)</span>
+                    </div>
+                    <div class="d-flex flex-row align-items-center align-content-center post-title"><span class="bdge mr-1">video</span><span class="mr-2 comments">13 comments&nbsp;</span><span class="mr-2 dot"></span><span>6 hours ago</span></div>
+                </div>
+            </div>
+            <div class="coment-bottom bg-white p-2 px-4">
+                <div class="d-flex flex-row add-comment-section mt-4 mb-4"><img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38"><input type="text" class="form-control mr-3" placeholder="Add comment"><button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModalCenter">Comment</button></div>
+                <div class="commented-section mt-2">
+                    <div class="d-flex flex-row align-items-center commented-user">
+                        <h5 class="mr-2">Corey oates</h5><span class="dot mb-1"></span><span class="mb-1 ml-2">4 hours ago</span>
+                    </div>
+                    <div class="comment-text-sm"><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></div>
+                    <div class="reply-section">
+                        <div class="d-flex flex-row align-items-center voting-icons">
+                            <i class="fa fa-sort-up fa-2x mt-3 hit-voting"></i><i class="fa fa-sort-down fa-2x mb-3 hit-voting"></i><span class="ml-2">10</span><span class="dot ml-2"></span>
+                            <h6 class="ml-2 mt-1">Reply</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-danger" id="exampleModalLongTitle">THÔNG TIN NGƯỜI GỬI</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-group">
+                    <div class="forminfo">
+                        <input type="text" placeholder="Họ tên (bắt buộc)" class="form-control" id="cfmUserName">
+                        <input type="text" placeholder="Email (để nhận phản hồi qua Email)" class="form-control" id="cfmUserEmail">
+                        <input type="text" placeholder="Số điện thoại" class="form-control" id="cfmPhone">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+
+    .bdge {
+        height: 21px;
+        background-color: orange;
+        color: #fff;
+        font-size: 11px;
+        padding: 8px;
+        border-radius: 4px;
+        line-height: 3px;
+    }
+
+    .comments {
+        text-decoration: underline;
+        text-underline-position: under;
+        cursor: pointer;
+    }
+
+    .dot {
+        height: 7px;
+        width: 7px;
+        margin-top: 3px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .hit-voting:hover {
+        color: blue;
+    }
+
+    .hit-voting {
+        cursor: pointer;
+    }
+</style>
 <script>
     // Can also be used with $(document).ready()
     $(window).load(function () {

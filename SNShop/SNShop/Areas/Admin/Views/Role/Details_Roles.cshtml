@@ -1,0 +1,26 @@
+﻿@model SNShop.Models.Role
+
+@{
+    ViewBag.Title = "Details_Roles";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Chi tiết role</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <a class="btn btn-warning" href="@Url.Action("Edit_Roles","Role", new { id = Model.Id })">Edit</a>
+    <a class="btn btn-primary" style="margin-left:5px" href="@Url.Action("List_Roles","Role")">Back to List</a>
+</p>

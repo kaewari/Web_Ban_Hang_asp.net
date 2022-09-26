@@ -106,10 +106,5 @@ namespace SNShop.Areas.Admin.Controllers
         {
             return View();
         }
-        public ActionResult Tables()
-        {
-            ViewBag.UserList = db.Users.ToList();
-            return View();
-        }
     }
 }

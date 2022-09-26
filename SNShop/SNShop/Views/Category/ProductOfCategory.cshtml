@@ -1,6 +1,4 @@
-﻿@using PagedList.Mvc;
-@using PagedList;
-@model IPagedList<SNShop.Models.Product>
+﻿@model IEnumerable<SNShop.Models.Product>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -11,7 +9,7 @@
         @foreach (var subitem in ViewBag.SubCategory)
         {
             <li class="item">
-                <a class="sub_item" href="#">@subitem.Name</a>
+                <a class="sub_item" href="@Url.Action("ProductOfSubCategory", "Category", new {id = subitem.Id})">@subitem.Name</a>
             </li>
         }
     </ul>
@@ -33,24 +31,29 @@
     </ul>
 </div>
 <div class="section group">
-    @foreach (var item in Model)
+    @foreach (var item in ViewBag.ProductOfCategory)
     {
         <div class="grid_1_of_4 images_1_of_4">
-            <a href="@Url.Action("Detail", new { id = item.Id })"><img src="/asset/client/images/slide-2-image.jpg" alt="" /></a>
+            @foreach (var itemImage in ViewBag.PresentImage)
+            {
+                if (item.Id == itemImage.ProductID)
+                {
+                    <a href="@Url.Action("Detail", "Home", new { id = item.Id })"><img src="@itemImage.Thumbnail_Photo" alt="" /></a>
+                    break;
+                }
+            }
             <h2>@item.Name </h2>
             <div class="price-details">
                 <div class="price-number" style="width:100%">
                     <p style="font-size:15px; padding:0;margin:0;"><span class="rupees" style="color:red">@String.Format("{0:0,0}", @item.Price)&#8363;</span></p>
                 </div>
                 <div class="add-cart" style="float:none">
-                    <h4><a href="@Url.Action("Detail","Home", new { id = item.Id })">Xem chi tiết</a></h4>
+                    <a class="button" style="background-color: red; margin: 1px; text-decoration: none; color: white; padding: 7px; cursor: pointer" onclick="addCart(@item.Id, '@item.Name', @item.Price)">Thêm vào giỏ hàng</a>
                 </div>
                 <div class="clear"></div>
             </div>
         </div>
+
     }
 </div>
 <br />
-    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) / @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("ProductOfCategory",
-    new { page = page, sortOrder = ViewBag.CurrentSortOrder }), PagedListRenderOptions.PageNumbersOnly)

@@ -16,6 +16,8 @@ using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SNShop.Areas.Admin.Models;
+using System.IO;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace SNShop.Controllers
 {
@@ -151,35 +153,68 @@ namespace SNShop.Controllers
             }
             return Redirect("/");
         }
-
-        public ActionResult Register()
+        public ImageModel Single_Product_Image(ImageModel imageModel)
+        {
+            string fileName = Path.GetFileNameWithoutExtension(imageModel.File.FileName);
+            string extension = Path.GetExtension(imageModel.File.FileName);
+            if (extension != ".jpg" && extension != ".png")
+                return null;
+            fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+            imageModel.Path = "~/Images/Users/" + fileName;
+            var ServerSavePath = Path.Combine(Server.MapPath("~/Images/Users/"), fileName);
+            //Save file to server folder  
+            imageModel.File.SaveAs(ServerSavePath);
+            //assigning file uploaded status to ViewBag for showing message to user.  
+            ViewBag.UploadStatus = "Thêm thành công.";
+            return imageModel;
+        }
+        public ActionResult Register(RegisterModel registerModel)
         {
             ViewBag.Message = "Trang đăng ký tài khoản.";
-
-            return View();
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
+            if (registerModel.ProvinceID.Equals(null))
+            {
+                registerModel.ProvinceID = -1;
+                registerModel.DistrictID = -1;
+            }
+            return View(registerModel);
         }       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(UserRole ur, Customer c, User u, RegisterModel registerModel, UserDao userDao)
+        public ActionResult Register(RegisterModel registerModel, UserDao userDao, FormCollection formCollection)
         {
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             if (ModelState.IsValid)
             {
+                UserRole ur = new UserRole();
+                Customer c = new Customer();
+                User u = new User();
                 var check = userDao.CheckEmail(registerModel.Email);
                 if (!check)
                 {
+                    u.Truename = registerModel.Truename;
+                    u.Email = registerModel.Email;
                     u.PasswordHash = Encode.GetMD5(registerModel.Password);
                     u.Address = registerModel.Address;
                     u.PhoneNumber = registerModel.PhoneNumber;
                     u.Username = registerModel.Username;
                     u.Facebook = false;
-                    if (!string.IsNullOrEmpty(registerModel.ProvinceID))
+                    if (string.IsNullOrEmpty(formCollection["PR"]) || string.IsNullOrWhiteSpace(formCollection["PR"]))
                     {
-                        u.ProvinceID = int.Parse(registerModel.ProvinceID);
+                        ViewData["cityNull"] = "Bạn chưa chọn tỉnh/thành phố";
+                        return View(registerModel);
                     }
-                    if (!string.IsNullOrEmpty(registerModel.DistrictID))
+                    else
+                        u.ProvinceID = int.Parse(formCollection["PR"]);
+                    if (string.IsNullOrEmpty(formCollection["DT"]) || string.IsNullOrWhiteSpace(formCollection["DT"]))
                     {
-                        u.DistrictID = int.Parse(registerModel.DistrictID);
+                        ViewData["districtNull"] = "Bạn chưa chọn quận/huyện";
+                        return View(registerModel);
                     }
+                    else
+                        u.DistrictID = int.Parse(formCollection["DT"]);
                     db.Users.InsertOnSubmit(u);
                     db.SubmitChanges();
                     c.UserID = u.Id;
@@ -222,11 +257,13 @@ namespace SNShop.Controllers
                         UserName = user.Username,
                         UserID = user.Id,
                         Email = user.Email,
+                        Picture = user.Image,
                     };
                     Session.Add(Constants.USER_SESSION, userSession);
                     Session.Add("UserID", userSession.UserID);
                     Session.Add("UserName", userSession.UserName);
                     Session.Add("Email", userSession.Email);
+                    Session.Add("Picture", userSession.Picture);
                     return Redirect("/");
                 }
             }
@@ -238,81 +275,116 @@ namespace SNShop.Controllers
             Session["UserID"] = null;
             Session["UserName"] = null;
             Session["Email"] = null;
+            Session["Picture"] = null;
             Session.Remove(HttpContext.Session.SessionID);
             return Redirect("/");
         }
-        public ActionResult ShowProfile()
+        public ActionResult ShowProfile(int id)
         {
-            UserDao userDao = new UserDao();
             EditModel editModel = new EditModel();
-            var session = (UserLogin)Session[Constants.USER_SESSION];
-            if (session == null)
-                return RedirectToAction("Index", "Home");
-            var result = userDao.GetUserByEmail(Session["Email"].ToString());
+            User result = db.Users.SingleOrDefault(s => s.Id == id);
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             editModel.ID = result.Id;
+            editModel.Truename = result.Truename;
             editModel.Address = result.Address;
             editModel.PhoneNumber = result.PhoneNumber;
             editModel.Username = result.Username;
             editModel.Email = result.Email;
-            editModel.ProvinceID = result.ProvinceID.ToString();
-            editModel.DistrictID = result.DistrictID.ToString();
+            editModel.Image = result.Image;
             editModel.Facebook = result.Facebook.Value;
-            if (!string.IsNullOrEmpty(result.ProvinceID.ToString()))
-                ViewBag.ProvinceID = result.ProvinceID;
+            if (result.ProvinceID.Equals(null))
+            {
+                editModel.ProvinceID = 0;
+                editModel.DistrictID = 0;
+            }
             else
-                ViewBag.ProvinceID = 0;
-            if (!string.IsNullOrEmpty(result.ProvinceID.ToString()))
-                ViewBag.DistrictID = result.DistrictID;
-            else
-                ViewBag.DistrictID = 0;
+            {
+                editModel.ProvinceID = int.Parse(result.ProvinceID.ToString());
+                editModel.DistrictID = int.Parse(result.DistrictID.ToString());
+            }
+
             return View(editModel);
         }
         [HttpPost]
-        public ActionResult ShowProfile(EditModel editModel)
+        public ActionResult ShowProfile(EditModel editModel, FormCollection formCollection, int id)
         {
-            User user = db.Users.FirstOrDefault(s => s.Id == editModel.ID);//lay user cần sửa trog db
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             if (ModelState.IsValid)
             {
-                user.Address = editModel.Address;
-                user.PhoneNumber = editModel.PhoneNumber;
-                user.Username = editModel.Username;
-                user.Email = editModel.Email;
-                if (!string.IsNullOrEmpty(editModel.ProvinceID))
+                User user = db.Users.FirstOrDefault(s => s.Id == id);//lay user cần sửa trog db
+                if (!editModel.Truename.Equals(null))
+                    user.Truename = editModel.Truename;
+                if (!editModel.Username.Equals(null))
+                    user.Username = editModel.Username;
+                if (editModel.Email.Equals(null))
+                    user.Email = editModel.Email;
+                if (string.IsNullOrEmpty(formCollection["PR"]) || string.IsNullOrWhiteSpace(formCollection["PR"]))
                 {
-                    user.ProvinceID = int.Parse(editModel.ProvinceID);
+                    ViewData["cityNull"] = "Bạn chưa chọn tỉnh/thành phố";
+                    return View(editModel);
                 }
-                if (!string.IsNullOrEmpty(editModel.DistrictID))
+                else
+                    user.ProvinceID = int.Parse(formCollection["PR"]);
+                if (string.IsNullOrEmpty(formCollection["DT"]) || string.IsNullOrWhiteSpace(formCollection["DT"]))
                 {
-                    user.DistrictID = int.Parse(editModel.DistrictID);
-                }
+                    ViewData["districtNull"] = "Bạn chưa chọn quận/huyện";
+                    return View(editModel);
+                }               
+                else
+                    user.DistrictID = int.Parse(formCollection["DT"]);
                 UpdateModel(user);
                 db.SubmitChanges();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ShowProfile", "Account", new { id = id });
             }
             return View(editModel);
         }
-        public ActionResult ChangePassword()
+        public ActionResult Edit_Users_Image(ImageModel imageModel, User p, int id)
+        {
+            try
+            {
+                ImageModel image = Single_Product_Image(imageModel);
+                p = db.Users.FirstOrDefault(s => s.Id == id);
+                p.Image = image.Path.Remove(0, 1);
+                p.ModifiedDate = DateTime.Now;
+                UpdateModel(p);
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewData["loi"] = ex.Message;
+            }
+            return RedirectToAction("ShowProfile", "Account", new {id = id});
+        }
+        public ActionResult ChangePassword(int id)
         {
             var session = (UserLogin)Session[Constants.USER_SESSION];
+            var p = db.Users.SingleOrDefault(s => s.Id == id).Id;
+            ChangePassword changePassword = new ChangePassword();
+            changePassword.ID = id;
             if (session == null)
                 return RedirectToAction("Index", "Home");
 
-            return View();
+            return View(changePassword);
         }
         [HttpPost]
-        public ActionResult ChangePassword(ChangeAdminPasswordModel changePassword)
+        public ActionResult ChangePassword(ChangePassword changePassword, int id)
         {
-            User user = db.Users.FirstOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));//lay user cần sửa trog db
-            if (!user.PasswordHash.Equals(Encode.GetMD5(changePassword.OldPassword)))
-                ModelState.AddModelError("", "Mật khẩu không đúng.");
-            else
+            if (ModelState.IsValid)
             {
-                user.PasswordHash = Encode.GetMD5(changePassword.ConfirmNewPassword);
-                UpdateModel(user);
-                db.SubmitChanges();
-                Logout();
+                User user = db.Users.FirstOrDefault(s => s.Id == id);//lay user cần sửa trog db
+                if (!user.PasswordHash.Equals(Encode.GetMD5(changePassword.OldPassword)))
+                    ModelState.AddModelError("", "Mật khẩu không đúng.");
+                else
+                {
+                    user.PasswordHash = Encode.GetMD5(changePassword.NewPassword);
+                    UpdateModel(user);
+                    db.SubmitChanges();
+                    return RedirectToAction("Logout");
+                }
             }
-            return RedirectToAction("Login", "Account");
+            return View(changePassword);
         }
     }
 }

@@ -30,11 +30,18 @@ namespace SNShop.Areas.Admin.Controllers
             }
             else
             {
-                category.Name = formCollection["Name"];
-                category.ModifiedDate = DateTime.Now;
-                db.Categories.InsertOnSubmit(category);
-                db.SubmitChanges();
-                return RedirectToAction("List_Categories");
+                try
+                {
+                    category.Name = formCollection["Name"];
+                    category.ModifiedDate = DateTime.Now;
+                    db.Categories.InsertOnSubmit(category);
+                    db.SubmitChanges();
+                    return RedirectToAction("List_Categories");
+                }
+                catch (Exception ex)
+                {
+                    ViewData["loi"] = ex.Message;
+                }
             }
             return View(category);
         }
@@ -47,36 +54,46 @@ namespace SNShop.Areas.Admin.Controllers
         public ActionResult Edit_Categories(FormCollection formCollection, int id)
         {
             var p = db.Categories.FirstOrDefault(s => s.Id == id);
-            if (!string.IsNullOrEmpty(formCollection["Name"]) || !string.IsNullOrWhiteSpace(formCollection["Name"]))
-            {
-                p.Name = formCollection["Name"];
-                p.ModifiedDate = DateTime.Now;
-                UpdateModel(p);
-                db.SubmitChanges();
-                return RedirectToAction("List_Categories");
+            if (string.IsNullOrEmpty(formCollection["Name"]) || !string.IsNullOrWhiteSpace(formCollection["Name"]))
+            {              
+                ViewData["loi"] = "Bạn vui lòng nhập tên danh mục.";
             }
             else
-                ViewData["loi"] = "Bạn vui lòng nhập tên danh mục.";
+            {
+                try
+                {
+                    p.Name = formCollection["Name"];
+                    p.ModifiedDate = DateTime.Now;
+                    UpdateModel(p);
+                    db.SubmitChanges();
+                    return RedirectToAction("List_Categories");
+                }
+                catch (Exception ex)
+                {
+                    ViewData["loi"] = ex.Message;
+                }
+            }          
             return View(p);
         }
         public ActionResult Details_Categories(int id)
         {
-            var p = db.Categories.Where(s => s.Id == id).FirstOrDefault();
+            var p = db.Categories.FirstOrDefault(s => s.Id == id);
             return View(p);
         }
         public ActionResult Delete_Categories(int id)
         {
+            string error = null;
             try
             {
-                var p = db.Categories.Where(s => s.Id == id).FirstOrDefault();
+                var p = db.Categories.FirstOrDefault(s => s.Id == id);
                 db.Categories.DeleteOnSubmit(p);
                 db.SubmitChanges();
             }
             catch
             {
-                ViewData["loi"] = "Bạn không thể xóa danh mục này.";
+                error = "Bạn không thể xóa danh mục này. Hãy thử xóa tất cả danh mục con, sản phẩm của danh mục này và thử lại.";
             }
-            return RedirectToAction("List_Categories", new {error = ViewData["loi"] });
+            return RedirectToAction("List_Categories", new {error = error});
         }
     }
 }

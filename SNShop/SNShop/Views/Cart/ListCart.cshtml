@@ -27,7 +27,7 @@
         
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="Product_@item.ProductID">
                 <td>
                     <a href="@Url.Action("Detail", "Home", new { @id = item.ProductID })">@Html.DisplayFor(modelItem => item.ProductName)</a>
                 </td>
@@ -41,7 +41,7 @@
                     <span class="item-price" id="@item.ProductID" style="color:red">@String.Format("{0:0,0}", item.Total) &#8363;</span>
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+                    <input class="btn btn-danger" type="button" onclick="deleteCart(@item.ProductID)" value="Delete"  />
                 </td>
             </tr>
 
@@ -51,7 +51,7 @@
             <td colspan="2"><span style="color:black">Tổng tiền: </span><span id="countTotal" style="color:red">@String.Format("{0:0,0}", ViewBag.ToTal) &#8363;</span></td>
             @if (Session["UserID"] != null)
             {
-                <td colspan="2"> @Html.ActionLink("Dat hang", "OrderProduct")</td>
+                <td colspan="2"><a href="@Url.Action("OrderForm","Cart")">Đặt hàng</a></td>
             }
         </tr>
     </table>

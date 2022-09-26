@@ -16,18 +16,21 @@ function Update(id, obj) {
         console.info(res)
         return res.json()
     }).then(function (data) {
-        let countCart = document.getElementById('countCart')
-        let countTotal = document.getElementById('countTotal')
-        let countTotal1 = document.getElementById(id)
-        let dd1 = document.getElementById('dd1')
-        let dd2 = document.getElementById('dd2')
-        countCart.innerText = data.cartsData.total_quantity
-        countTotal.innerText = FormatCurrency(data.cartsData.total_amount)
-        countTotal1.innerText = FormatCurrency(data.cartItem.amount)
-        dd1.innerText = data.cartsData.total_quantity
-        dd2.innerText = data.cartsData.total_quantity
-        
-        console.info(data)
+        if (data.success == true) {
+            let countCart = document.getElementById('countCart')
+            let countTotal = document.getElementById('countTotal')
+            let countTotal1 = document.getElementById(id)
+            let dd1 = document.getElementById('dd1')
+            let dd2 = document.getElementById('dd2')
+            countCart.innerText = data.cartsData.total_quantity
+            countTotal.innerText = FormatCurrency(data.cartsData.total_amount)
+            countTotal1.innerText = FormatCurrency(data.cartItem.amount)
+            dd1.innerText = data.cartsData.total_quantity
+            dd2.innerText = data.cartsData.total_quantity
+            console.info(data)
+        } else if (data.success == false) {
+            alert(data.error)
+        }
     }).catch(function (err) {
         console.info(err)
     })

@@ -29,6 +29,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/asset/admin/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+    <link href="~/asset/admin/css/sb-admin-2.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
     <!-- Bootstrap core JavaScript-->
     <script src="/asset/admin/vendor/jquery/jquery.min.js"></script>
@@ -37,6 +38,7 @@
     <script src="/asset/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
+    <script src="/asset/admin/js/sb-admin-2.js" defer></script>
     <script src="/asset/admin/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
@@ -47,6 +49,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <script type="text/javascript" charset="utf8" src="/asset/admin/js/demo/datatables-demo.js"></script>
+    <script type="text/javascript" charset="utf8" src="/asset/admin/js/Controller/Delete.js"></script>
 </head>
 
 <body id="page-top">
@@ -133,6 +136,31 @@
                 </div>
             </li>
 
+            <!-- Nav Item - List -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCreate"
+                   aria-expanded="true" aria-controls="collapseCreate">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>List</span>
+                </a>
+                <div id="collapseCreate" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">User Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_Users","User")">Danh sách người dùng</a>
+                        <h6 class="collapse-header">Category Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_Categories","Category")">Danh sách danh mục</a>
+                        <h6 class="collapse-header">Sub Category Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_SubCategories","SubCategory")">Danh sách danh mục con</a>
+                        <h6 class="collapse-header">Product Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_Products","Product")">Danh sách sản phẩm</a>
+                        <h6 class="collapse-header">Product Image Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_Product_Image","ProductImage")">Danh sách ảnh sản phẩm</a>
+                        <h6 class="collapse-header">Roles Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_Roles","Role")">Danh sách vai trò</a>
+                    </div>
+                </div>
+            </li>
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
@@ -159,37 +187,6 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Charts</span>
                 </a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="@Url.Action("Tables","Home")">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span>
-                </a>
-            </li>
-
-            <!-- Nav Item - List -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCreate"
-                   aria-expanded="true" aria-controls="collapseCreate">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Create</span>
-                </a>
-                <div id="collapseCreate" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Category Pages:</h6>
-                        <a class="collapse-item" href="@Url.Action("List_Categories","Category")">Danh sách danh mục</a>
-                        <h6 class="collapse-header">Sub Category Pages:</h6>
-                        <a class="collapse-item" href="@Url.Action("List_SubCategories","SubCategory")">Danh sách danh mục con</a>
-                        <h6 class="collapse-header">Product Pages:</h6>
-                        <a class="collapse-item" href="@Url.Action("List_Products","Product")">Danh sách sản phẩm</a>
-                        <h6 class="collapse-header">Product Image Pages:</h6>
-                        <a class="collapse-item" href="@Url.Action("List_Product_Image","ProductImage")">Danh sách ảnh sản phẩm</a>
-                        <h6 class="collapse-header">Roles Pages:</h6>
-                        <a class="collapse-item" href="#" @*href="@Url.Action("List_Roles","Role")"*@>Danh sách vai trò</a>
-                    </div>
-                </div>
             </li>
 
             <!-- Divider -->
