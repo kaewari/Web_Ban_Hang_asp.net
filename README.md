@@ -5,4 +5,6 @@
 + Đã hoàn thành giỏ hàng.
 + Đã hoàn thành phân trang.
 + Đã hoàn thành trang admin.
-+ Đang làm comment....
++ Đã hoàn thành comment.
++ Đã hoàn thành trang employee.
++ Đã hoàn thành chức năng tạo hóa đơn.
