@@ -1,14 +1,14 @@
-﻿@model SNShop.Models.OrderForm
+﻿@model SNShop.Models.OrderFormModel
 @{
     ViewBag.Title = "OrderForm";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<h3 class="text-center text-danger">THÔNG TIN ĐẶT HÀNG</h3>
+<h5 class="text-danger">Quý khách vui lòng nhập đúng thông tin!!!</h5>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
-        <h4>OrderForm</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -30,7 +30,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                <input type="number" name="PhoneNumber" class="form-control"/>
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -46,7 +46,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" }, @style = "width:100%" })
                 @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -69,7 +69,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-danger" />
             </div>
         </div>
     </div>

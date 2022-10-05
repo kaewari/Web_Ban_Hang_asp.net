@@ -1,0 +1,24 @@
+﻿@model SNShop.Models.Banner
+
+@{
+    ViewBag.Title = "Create_Banner_Image";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<h2>Thêm banner</h2>
+<h3 class="text-danger">@ViewBag.UploadStatus</h3>
+<h3 class="text-danger">@ViewData["loi"]</h3>
+@using (Html.BeginForm("Create_Banner_Image", "Banner", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <h4 class="text-danger">Chỉ chọn ảnh có đuôi file là .png hoặc .jpg</h4>
+    <div class="form-horizontal">
+        <input name="Files" type="file" accept="image/*" id="Files" required multiple/>
+        <div class="form-group" style="margin-top:10px">
+            <div class="col-md-offset-2">
+                <input type="submit" value="Thêm ảnh" class="btn btn-success" autocomplete="off" multiple/>
+                <a class="btn btn-primary" style="margin-left:5px" href="@Url.Action("List_Banners","Banner")">Back to list</a>
+            </div>
+        </div>
+    </div>
+}

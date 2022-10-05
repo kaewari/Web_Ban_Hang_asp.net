@@ -9,57 +9,61 @@
 
 @if (ViewBag.Countproduct > 0)
 {
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th colspan="2">
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-        </tr>
-        
-        @foreach (var item in Model)
-        {
-            <tr id="Product_@item.ProductID">
-                <td>
-                    <a href="@Url.Action("Detail", "Home", new { @id = item.ProductID })">@Html.DisplayFor(modelItem => item.ProductName)</a>
-                </td>
-                <td>
-                    <span class="item-price" style="color:red">@String.Format("{0:0,0}", item.UnitPrice) &#8363;</span>
-                </td>
-                <td>
-                    <input name="quantity" value="@item.Quantity" min="1" type="number" onblur="updateCart(@item.ProductID, this)" />
-                </td>
-                <td>
-                    <span class="item-price" id="@item.ProductID" style="color:red">@String.Format("{0:0,0}", item.Total) &#8363;</span>
-                </td>
-                <td>
-                    <input class="btn btn-danger" type="button" onclick="deleteCart(@item.ProductID)" value="Delete"  />
-                </td>
+    <div id="cart">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th colspan="2">
+                    @Html.DisplayNameFor(model => model.Total)
+                </th>
             </tr>
 
-        }
-        <tr>
-            <td colspan="3"> Số lượng sản phẩm: <span id="countCart">@ViewBag.CountProduct</span></td>
-            <td colspan="2"><span style="color:black">Tổng tiền: </span><span id="countTotal" style="color:red">@String.Format("{0:0,0}", ViewBag.ToTal) &#8363;</span></td>
-            @if (Session["UserID"] != null)
+            @foreach (var item in Model)
             {
-                <td colspan="2"><a href="@Url.Action("OrderForm","Cart")">Đặt hàng</a></td>
-            }
-        </tr>
-    </table>
-    if (Session["UserID"] == null)
-    {
-        <a href="@Url.Action("Login", "Account")"> Bạn chưa đăng nhập </a>
-    }
+                <tr id="Product_@item.ProductID">
+                    <td>
+                        <a href="@Url.Action("Detail", "Home", new { @id = item.ProductID })">@Html.DisplayFor(modelItem => item.ProductName)</a>
+                    </td>
+                    <td>
+                        <span class="item-price text-danger h6" style="color:red">@String.Format("{0:0,0}", item.UnitPrice) &#8363;</span>
+                    </td>
+                    <td>
+                        <input name="quantity" value="@item.Quantity" min="1" type="number" onblur="updateCart(@item.ProductID, this)" />
+                    </td>
+                    <td>
+                        <span class="item-price text-danger h6" id="@item.ProductID">@String.Format("{0:0,0}", item.Total) &#8363;</span>
+                    </td>
+                    <td>
+                        <input class="btn btn-danger" type="button" onclick="deleteCart(@item.ProductID)" value="Delete" />
+                    </td>
+                </tr>
 
+            }
+            <tr>
+                <td colspan="2"> Số lượng sản phẩm: <span id="countCart" class="text-danger h6">@ViewBag.CountProduct</span></td>
+                <td colspan="2"><span style="color:black">Tổng tiền: </span><span id="countTotal" class="text-danger h6">@String.Format("{0:0,0}", ViewBag.ToTal) &#8363;</span></td>
+                <td><input class="btn btn-danger" type="button" onclick="DeleteAll()" value="Xóa tất cả" /></td>
+            </tr>
+        </table>
+        <div class="fa-pull-right">
+            @if (Session["UserID"] == null)
+            {
+                <a href="@Url.Action("Login", "Account", new {url = HttpContext.Current.Request.RawUrl })"> Bạn chưa đăng nhập </a>
+            }
+            else
+            {
+                <a href="@Url.Action("OrderForm","Cart")">Đặt hàng</a>
+            }
+        </div>
+    </div>
     <a href="@Url.Action("Index","Home")"><p style="text-align:center">Tiếp tục mua hàng</p></a>
 }
 else

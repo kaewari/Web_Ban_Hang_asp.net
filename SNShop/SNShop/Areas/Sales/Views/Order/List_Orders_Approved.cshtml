@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SNShop.Models.Order>
+
+@{
+    ViewBag.Title = "List_Orders_Approved";
+    Layout = "~/Areas/Sales/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-danger text-center">Danh sách đơn hàng đã duyệt</h2>
+<style>
+    td.tool {
+        width: 20rem;
+        right: 0;
+        position: sticky;
+        top: auto;
+    }
+</style>
+<div class="container-fluid">
+    <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Tên khách hàng
+                </th>
+                <th>
+                    Tên nhân viên
+                </th>
+                <th>
+                    Ngày duyệt
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.User.Truename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.User.Truename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ModifiedDate)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

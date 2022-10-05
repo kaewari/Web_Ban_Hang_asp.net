@@ -1,8 +1,6 @@
 ﻿using SNShop.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SNShop.Areas.Admin.Controllers
@@ -12,6 +10,7 @@ namespace SNShop.Areas.Admin.Controllers
         // GET: Admin/SubCategory
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         // GET: Admin/Category
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_SubCategories(string error)
         {
             var p = db.SubCategories.Select(s => s).ToList();
@@ -42,12 +41,14 @@ namespace SNShop.Areas.Admin.Controllers
             }
             return View(subCategory);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_SubCategories(int id)
         {
             var p = db.SubCategories.FirstOrDefault(s => s.Id == id);
             ViewData["LSP"] = new SelectList(db.Categories, "Id", "Name");
             return View(p);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         [HttpPost]
         public ActionResult Edit_SubCategories(FormCollection formCollection, int id)
         {
@@ -68,6 +69,7 @@ namespace SNShop.Areas.Admin.Controllers
             }
             return View(p);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Details_SubCategories(int id)
         {
             var p = db.SubCategories.Where(s => s.Id == id).FirstOrDefault();

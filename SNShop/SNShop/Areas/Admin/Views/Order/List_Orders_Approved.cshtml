@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SNShop.Models.Order>
+
+@{
+    ViewBag.Title = "List_Orders_Approved";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Danh sách đơn hàng đã duyệt</h2>
+<style>
+    table {
+        display: block;
+        overflow-x: auto;
+        overflow-y: auto;
+        height: 400px;
+        white-space: nowrap;
+    }
+
+    td.tool {
+        width: 20rem;
+        right: 0;
+        position: sticky;
+        top: auto;
+    }
+</style>
+<a class="btn btn-primary" href="@Url.Action("List_Orders_Not_Approved","Order")">Danh sách đơn hàng cần duyệt</a>
+<hr />
+<table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td class="tool">
+                    <a class="btn btn-info" href="@Url.Action("Details_Orders","Order", new { id = item.Id })">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,9 +1,6 @@
-﻿using Microsoft.Ajax.Utilities;
-using SNShop.Models;
+﻿using SNShop.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SNShop.Areas.Admin.Controllers
@@ -12,6 +9,7 @@ namespace SNShop.Areas.Admin.Controllers
     {
         // GET: Admin/User
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_Users(string error)
         {
             var p = db.Users.Select(s => s).ToList();
@@ -20,42 +18,95 @@ namespace SNShop.Areas.Admin.Controllers
         }
         public ActionResult Create_Users()
         {
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             return View();
         }
         [HttpPost]
         public ActionResult Create_Users(FormCollection formCollection, User user)
         {
-            if (string.IsNullOrEmpty(formCollection["Email"]) || string.IsNullOrWhiteSpace(formCollection["Email"]))
-            {
-                ViewData["Loi"] = "Bạn vui lòng nhập email";
-            }
-            if (string.IsNullOrEmpty(formCollection["Username"]) || string.IsNullOrWhiteSpace(formCollection["Username"]))
-            {
-                ViewData["Loi"] = "Bạn vui lòng nhập username";
-            }
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             if (string.IsNullOrEmpty(formCollection["Truename"]) || string.IsNullOrWhiteSpace(formCollection["Truename"]))
             {
                 ViewData["Loi"] = "Bạn vui lòng nhập họ tên";
             }
             else
             {
-                try
+                if (string.IsNullOrEmpty(formCollection["Username"]) || string.IsNullOrWhiteSpace(formCollection["Username"]))
                 {
-                    user.Email = formCollection["Email"];
-                    user.Username = formCollection["Username"];
-                    user.Truename = formCollection["Truename"];
-                    user.ModifiedDate = DateTime.Now;
-                    db.Users.InsertOnSubmit(user);
-                    db.SubmitChanges();
-                    return RedirectToAction("List_Users");
+                    ViewData["Loi"] = "Bạn vui lòng nhập username";
                 }
-                catch (Exception ex)
+                else
                 {
-                    ViewData["loi"] = ex.Message;
+                    if (string.IsNullOrEmpty(formCollection["Email"]) || string.IsNullOrWhiteSpace(formCollection["Email"]))
+                    {
+                        ViewData["Loi"] = "Bạn vui lòng nhập email";
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(formCollection["PasswordHash"]) || string.IsNullOrWhiteSpace(formCollection["PasswordHash"]))
+                        {
+                            ViewData["Loi"] = "Bạn vui lòng nhập password";
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(formCollection["PhoneNumber"]) || string.IsNullOrWhiteSpace(formCollection["PhoneNumber"]))
+                            {
+                                ViewData["loi"] = "Bạn chưa nhập số điện thoại";
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(formCollection["Address"]) || string.IsNullOrWhiteSpace(formCollection["Address"]))
+                                {
+                                    ViewData["loi"] = "Bạn chưa nhập địa chỉ";
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrEmpty(formCollection["PR"]) || string.IsNullOrWhiteSpace(formCollection["PR"]))
+                                    {
+                                        ViewData["loi"] = "Bạn chưa chọn tỉnh/thành phố";
+                                    }
+                                    else
+                                    {
+                                        if (string.IsNullOrEmpty(formCollection["DT"]) || string.IsNullOrWhiteSpace(formCollection["DT"]))
+                                        {
+                                            ViewData["loi"] = "Bạn chưa chọn quận/huyện";
+                                        }
+                                        else
+                                        {
+                                            try
+                                            {
+                                                user.Email = formCollection["Email"];
+                                                user.Username = formCollection["Username"];
+                                                user.Truename = formCollection["Truename"];
+                                                user.PasswordHash = formCollection["PasswordHash"];
+                                                user.PhoneNumber = formCollection["PhoneNumber"];
+                                                user.DistrictID = int.Parse(formCollection["DT"]);
+                                                user.ProvinceID = int.Parse(formCollection["PR"]);
+                                                user.ModifiedDate = DateTime.Now;
+                                                db.Users.InsertOnSubmit(user);
+                                                db.SubmitChanges();
+                                                return RedirectToAction("List_Users");
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                ViewData["loi"] = ex.Message;
+                                            }
+                                        }
+                                    }
+                                }
+                            }                         
+                        }
+                        
+                    }
+                    
                 }
-            }
+                
+            }           
             return View(user);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Details_Users(int id)
         {
             var p = db.Users.FirstOrDefault(s => s.Id == id);

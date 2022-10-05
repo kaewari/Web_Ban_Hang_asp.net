@@ -8,7 +8,6 @@
 
 <h2>Thông tin tài khoản</h2>
 <div class="row">
-    <hr />
     <div class="col-md-9 col-xs-12">
         @using (Html.BeginForm("ShowProfile", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
@@ -54,7 +53,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProvinceID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("ProvinceID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlProvince" })
+                        @Html.DropDownList("PR", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlProvince" })
                         @Html.ValidationMessageFor(model => model.ProvinceID, "Chọn tỉnh/thành phố", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -62,7 +61,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.DistrictID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("DistrictID", new SelectList(new string[] { }), new { @class = "form-control", @id = "ddlDistrict" })
+                        @Html.DropDownList("DT", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlDistrict" })
                         @Html.ValidationMessageFor(model => model.DistrictID, "Chọn quận/huyện", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -104,8 +103,10 @@
     var user = {
         init: function () {
             user.loadProvince();
-            if (@ViewBag.ProvinceID != 0)
-                user.loadDistrict(@ViewBag.ProvinceID);
+            if (@Model.ProvinceID != null) {
+                user.loadDistrict(@Model.ProvinceID);
+            }
+
             user.registerEvent();
         },
         registerEvent: function () {
@@ -128,8 +129,14 @@
                     if (response.status == true) {
                         var html = '<option value="">--Chọn tỉnh thành--</option>';
                         var data = response.data;
+                        $('#ddlDistrict')
+                            .find('option')
+                            .remove()
+                            .end()
+                            .append('<option value="0"></option>')
+                            .val('0');
                         $.each(data, function (i, item) {
-                           if (item.Id == @ViewBag.ProvinceID)
+                            if (item.Id == @Model.ProvinceID)
                                 html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
                             else
                                 html += '<option value="' + item.Id + '">' + item.Name + '</option>'
@@ -143,14 +150,14 @@
             $.ajax({
                 url: '/Account/LoadDistrict',
                 type: "POST",
-                data: { provinceID: id},
+                data: { provinceID: id },
                 dataType: "json",
                 success: function (response) {
                     if (response.status == true) {
                         var html = '<option value="">--Chọn quận huyện--</option>';
                         var data = response.data;
                         $.each(data, function (i, item) {
-                            if (item.Id == @ViewBag.DistrictID)
+                            if (item.Id == @Model.DistrictID)
                                 html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
                             else
                                 html += '<option value="' + item.Id + '">' + item.Name + '</option>'

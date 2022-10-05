@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SNShop.Areas.Admin.Models
 {
@@ -33,10 +28,10 @@ namespace SNShop.Areas.Admin.Models
         public string Address { set; get; }
 
         [Display(Name = "Tỉnh/thành")]
-        public string ProvinceID { set; get; }
+        public int ProvinceID { set; get; }
 
         [Display(Name = "Quận/Quyện")]
-        public string DistrictID { set; get; }
+        public int DistrictID { set; get; }
 
     }
 }

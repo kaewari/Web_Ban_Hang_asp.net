@@ -28,7 +28,7 @@
     }
 </style>
 
-<table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+    <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
     <thead>
         <tr>
             <th>
@@ -153,7 +153,7 @@
                     <a class="btn btn-success" href="@Url.Action("Create_Product_Image","ProductImage", new { id = item.Id })">Image</a>
                     <a class="btn btn-warning" href="@Url.Action("Edit_Product","Product", new { id = item.Id })">Edit</a>
                     <a class="btn btn-info" href="@Url.Action("Details_Product","Product", new { id = item.Id })">Details</a>
-                    <a class="btn btn-danger" onclick="DeleteProduct(@item.Id), changIndex()" @*href="@Url.Action("Delete_Product","Product", new { id = item.Id })"*@>Delete</a>
+                    <a class="btn btn-danger" onclick="DeleteProduct(@item.Id), changIndex()">Delete</a>
                 </td>
             </tr>
         }

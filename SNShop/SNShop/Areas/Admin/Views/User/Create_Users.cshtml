@@ -6,7 +6,7 @@
 }
 
 <h2>Tạo user</h2>
-
+<h3 class="text-danger">@ViewData["loi"]</h3>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -63,6 +63,10 @@
                 </div>
             </div>
 
+        </div>
+
+        <div class="col-md-6 col-xs-12">
+
             <div class="form-group">
                 @Html.LabelFor(model => model.PhoneNumberConfirmed, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -70,9 +74,7 @@
                     @Html.ValidationMessageFor(model => model.PhoneNumberConfirmed, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
 
-        <div class="col-md-6 col-xs-12">
             <div class="form-group">
                 @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -90,17 +92,9 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
                 @Html.LabelFor(model => model.ProvinceID, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.ProvinceID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("PR", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlProvince" })
                     @Html.ValidationMessageFor(model => model.ProvinceID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -108,18 +102,11 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.DistrictID, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.DistrictID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("DT", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlDistrict" })
                     @Html.ValidationMessageFor(model => model.DistrictID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ModifiedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ModifiedDate, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ModifiedDate, "", new { @class = "text-danger" })
-                </div>
-            </div>
         </div>
 
         <div class="form-group form-horizontal row text-center" style="width:100%">
@@ -130,3 +117,69 @@
         </div>
     </div>
 }
+<script>
+    var user = {
+        init: function () {
+
+            user.loadProvince();
+            user.registerEvent();
+        },
+        registerEvent: function () {
+            $('#ddlProvince').off('change').on('change', function () {
+                var id = $(this).val();
+                if (id != '') {
+                    user.loadDistrict(parseInt(id));
+                }
+                else {
+                    $('#ddlDistrict').html('');
+                }
+            });
+        },
+        loadProvince: function () {
+
+            $.ajax({
+                url: '/Account/LoadProvince',
+                type: "POST",
+                dataType: "json",
+                success: function (response) {
+                    if (response.status == true) {
+                        var html = '<option value="">--Chọn tỉnh thành--</option>';
+                        var data = response.data;
+                        $('#ddlDistrict')
+                            .find('option')
+                            .remove()
+                            .end()
+                            .append('<option value="0"></option>')
+                            .val('0');
+                        console.info(data)
+                        $.each(data, function (i, item) {
+                            html += '<option value="' + item.Id + '">' + item.Name + '</option>'
+                        });
+                        $('#ddlProvince').html(html);
+                    }
+                }
+            })
+        },
+        loadDistrict: function (id) {
+            $.ajax({
+                url: '/Account/LoadDistrict',
+                type: "POST",
+                data: { provinceID: id },
+                dataType: "json",
+                success: function (response) {
+                    if (response.status == true) {
+                        var html = '<option value="">--Chọn quận huyện--</option>';
+                        var data = response.data;
+                        console.info(data)
+
+                        $.each(data, function (i, item) {
+                            html += '<option value="' + item.Id + '">' + item.Name + '</option>'
+                        });
+                        $('#ddlDistrict').html(html);
+                    }
+                }
+            })
+        }
+    }
+    user.init();
+</script>

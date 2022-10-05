@@ -3,7 +3,7 @@
 }
 
 function Delete(Id) {
-    if (confirm('Ban chac chan xoa san pham!!!') == true) {
+    if (confirm('Bạn có chắc muốn xóa sản phẩm này không?') == true) {
         fetch('/Cart/DeleteCart', {
             method: 'post',
             body: JSON.stringify({

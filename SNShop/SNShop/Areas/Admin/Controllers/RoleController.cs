@@ -1,8 +1,6 @@
 ﻿using SNShop.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SNShop.Areas.Admin.Controllers
@@ -11,6 +9,7 @@ namespace SNShop.Areas.Admin.Controllers
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         // GET: Admin/Role
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_Roles(string error)
         {
             ViewData["loi"] = error;
@@ -38,11 +37,13 @@ namespace SNShop.Areas.Admin.Controllers
             }
             return View(role);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Roles(int id)
         {
             return View(db.Roles.Where(s=>s.Id == id).FirstOrDefault());
         }
         [HttpPost]
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Roles(FormCollection formCollection, Role role, int id)
         {
             var p = db.Roles.Where(s => s.Id == id).FirstOrDefault();
@@ -57,6 +58,7 @@ namespace SNShop.Areas.Admin.Controllers
             }
             return View(role);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Details_Roles(int id)
         {
             return View(db.Roles.Where(s => s.Id == id).FirstOrDefault());

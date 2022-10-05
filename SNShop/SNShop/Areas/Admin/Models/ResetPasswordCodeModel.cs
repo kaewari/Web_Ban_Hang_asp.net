@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SNShop.Areas.Admin.Models
 {
-	public class ResetPasswordCodeModel
+    public class ResetPasswordCodeModel
 	{
 		[Required(ErrorMessage = "Yêu cầu nhập mã")]
 		[Display(Name = "Mã bảo mật")]

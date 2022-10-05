@@ -1,5 +1,4 @@
 ﻿using Microsoft.Ajax.Utilities;
-using Newtonsoft.Json;
 using SNShop.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ namespace SNShop.Areas.Admin.Controllers
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         // GET: Admin/Product
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_Products(string error)
         {
             var p = db.Products.Select(s => s).ToList();
@@ -42,7 +42,7 @@ namespace SNShop.Areas.Admin.Controllers
                     product.BrandID = int.Parse(form["NCC"]);
                     product.ModifiedDate = DateTime.Parse(form["Release"]);
                     if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
-                        product.QuantityPerUnit = int.Parse(form["QuantityPerUnit"]);
+                        product.QuantityPerUnit = form["QuantityPerUnit"];
                     if (!string.IsNullOrEmpty(form["Price"]))
                         product.Price = int.Parse(form["Price"]);
                     if (!string.IsNullOrEmpty(form["UnitsInStock"]))
@@ -63,11 +63,13 @@ namespace SNShop.Areas.Admin.Controllers
 
             return View(product);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Details_Product(int id)
         {
             Product p = db.Products.FirstOrDefault(s => s.Id == id);
             return View(p);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Product(int id)
         {
             var p = db.Products.FirstOrDefault(s => s.Id == id);
@@ -77,6 +79,7 @@ namespace SNShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Product(FormCollection form, int id)
         {
             var p = db.Products.Where(s => s.Id == id).FirstOrDefault();
@@ -112,7 +115,7 @@ namespace SNShop.Areas.Admin.Controllers
                     if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
                         p.VGA = form["VGA"];
                     if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
-                        p.QuantityPerUnit = int.Parse(form["QuantityPerUnit"]);
+                        p.QuantityPerUnit = form["QuantityPerUnit"];
                     if (!string.IsNullOrEmpty(form["Price"]))
                         p.Price = (int?)decimal.Parse(form["Price"]);
                     if (!string.IsNullOrEmpty(form["UnitsInStock"]))

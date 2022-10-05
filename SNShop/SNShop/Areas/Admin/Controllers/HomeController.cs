@@ -1,19 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SNShop.Areas.Admin.Models;
-using SNShop.Models;
+﻿using SNShop.Models;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Common.CommandTrees;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Security;
-
 namespace SNShop.Areas.Admin.Controllers
 {
     public class HomeController : Controller
@@ -24,8 +12,8 @@ namespace SNShop.Areas.Admin.Controllers
         {
             if (Session["UserID"] != null && Session["Roles"].ToString() == "Admin")
             {
-                long sumMonthly = 0;
-                long sumYearly = 0;
+                decimal? sumMonthly = 0;
+                decimal? sumYearly = 0;
                 try
                 {
                     sumMonthly = db.OrderDetails
@@ -64,7 +52,7 @@ namespace SNShop.Areas.Admin.Controllers
                 ViewBag.Roles = roleName;
                 return View();
             }
-            return RedirectToAction("LoginAdmin", "Account");
+            return RedirectToAction("AdminLogin", "Account");
         }
         public ActionResult Components_Buttons()
         {

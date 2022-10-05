@@ -1,0 +1,440 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Sales/Views/Shared/_Layout.cshtml";
+}
+<input class="form-control rounded" type="text" id="search" placeholder="Nhập tên sản phẩm để tìm kiếm..." title="Type in a name">
+<div style="display:flex; flex-wrap:wrap">
+    <div style="max-width: 100%">
+        <table class="table table-bordered" id="myTable" cellpadding="0">
+            <thead>
+                <tr class="myHead">
+                    <th>Id</th>
+                    <th>Tên</th>
+                    <th>Kho</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in ViewBag.Data)
+                {
+                    <tr id="Product_@item.Id" class="product_info">
+                        <td>
+                            @item.Id
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.UnitsInStock
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div style="max-width:100%">
+        <table class="table table-bordered" cellpadding="0">
+            <thead>
+                <tr>
+                    <th>
+                        Mã SP
+                    </th>
+                    <th>
+                        Số lượng
+                    </th>
+                    <th>
+                        Chức năng
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="myTBody">
+                @foreach (var item in Model.ListProductForm)
+                {
+                    <tr id="Product_Form_@item.productID">
+                        <td>
+                            <a class="btn btn-primary" href="/Home/Detail/@item.productID">@item.productID</a>
+                        </td>
+                        <td>
+                            @item.quantity
+                        </td>
+                        <td>
+                            <input type="button" class="btn btn-danger" onclick="DeleteProduct(@item.productID)" value="Xóa" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="add" class="text-center" style="max-width:100%;">
+        <form id="form_customer" style="min-width: 120%">
+            <div style="display: flex;">
+                @if (Model.Card_ID.Id == null)
+                {
+
+                    <input class="form-control rounded" type="text" id="search_customer" placeholder="Nhập số chứng minh thư..." title="Type in a id card">
+                }
+                else
+                {
+                    <input class="form-control rounded" type="text" id="search_customer" value="@Model.Card_ID.Id" placeholder="Nhập số chứng minh thư..." title="Type in a id card">
+                }
+                <input type="button" onclick="CheckCustomer()" class="btn btn-success text-white rounded" id="submit_customer" autocomplete="off" value="Check">
+            </div>
+        </form>
+        <div class="row" style="width:100%">
+            <div class="my-4" id="show">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px; padding: 0 20px 0 20px">
+                    <a class="btn btn-primary text-white rounded" onclick="Create_Input()">Thêm sản phẩm</a>
+                    <a class="btn btn-danger text-white rounded" onclick="Delete_All_Input()">Xóa tất cả</a>
+                </div>
+                <form id="form" method="post" enctype="multipart/form-data" style="padding:0 20px 0 20px">
+                    <input type="button" onclick="submitForm()" class="btn btn-success text-white rounded" id="submit" value="Xác nhận">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    Table{
+        display: block;
+        max-width: 100%;
+        overflow-y: auto;
+        height: 500px;
+    }
+    .product_info:hover{
+        cursor:pointer;
+    }
+    #show {
+        display: none
+    }
+</style>
+<script>
+    var id = null;
+    var inp = null;
+    var cus_id_check = null;
+    var checkDuplicate = [];
+    var $rows = $('#myTable tr');
+    $("#search") .keyup(function () {
+
+        var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
+            reg = RegExp(val, 'i'),
+            text;
+
+        $rows.show().filter(function () {
+            text = $(this).text().replace(/\s+/g, ' ');
+            return !reg.test(text);
+        }).hide();
+    });
+    function CheckCustomer() {
+        var customer = document.getElementById("search_customer");
+        fetch('/Sales/Home/CheckCustomer', {
+            method: 'post',
+            body: JSON.stringify({
+                'id': parseInt(customer.value),
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (res) {
+            console.info(res)
+            return res.json()
+        }).then(function (data) {
+            if (data.status == 200) {
+                cus_id_check = data.cus_id
+                var show = document.getElementById('show');
+                show.style.display = 'block';
+            } else {
+                alert("Không có ID này. Vui lòng nhờ Admin tạo User mới");
+            }
+        }).catch(function (err) {
+            console.info(err)
+        })
+    }
+    function submitForm() {
+        var parent = document.getElementById("form");
+        if (checkDuplicate.length != parent.childElementCount - 1) {
+            alert("Bạn chưa check tất cả sản phẩm hoặc không tồn tại sản phẩm!!!")
+        }
+        else {
+            fetch('/Sales/Home/Create_Receipt', {
+                method: 'post',
+                body: JSON.stringify({
+                    'id': cus_id_check,
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (res) {
+                console.info(res)
+                return res.json()
+            }).then(function (data) {
+                if (data.status == 200) {
+                    console.log(data)
+                    checkDuplicate = []
+                    var checkForm = document.getElementById('form');
+                    if (checkForm.hasChildNodes && checkForm.lastElementChild != checkForm.firstElementChild) {
+                        while (checkForm.hasChildNodes()) {
+                            if (checkForm.lastElementChild == checkForm.firstElementChild)
+                                break;
+                            else
+                                checkForm.removeChild(checkForm.firstChild);
+                        }
+                        checkDuplicate = []
+                    }
+                    location.reload();
+                    alert("Tạo hóa đơn thành công.")
+                }               
+            }).catch(function (err) {
+                console.info(err)
+            })
+        }
+    }
+
+    function Show_Product_Info(id, quantity) {
+        var tbody = document.getElementById("myTBody");
+
+        var tr = document.createElement("tr")
+        tr.id = "Product_Form_" + id;
+        tbody.appendChild(tr);
+
+        var td1 = document.createElement("td");
+        tr.appendChild(td1)
+
+        var a = document.createElement("a");
+        a.href = "/Home/Detail/" + id;
+        a.innerHTML = id;
+        a.className = "btn btn-primary";
+        td1.appendChild(a);
+
+        var td2 = document.createElement("td");
+        td2.innerHTML = quantity;
+        tr.appendChild(td2)
+
+        var td3 = document.createElement("td");
+        tr.appendChild(td3)
+
+        var input = document.createElement("input");
+        input.type = "button";
+        input.value = "Xóa";
+        input.className = "btn btn-danger";
+        input.onclick = function () {
+            DeleteProduct(id);
+        }
+        td3.appendChild(input)
+    }
+
+    function Create_Input() {
+        //Count div
+        var countDiv = document.querySelector('#form').querySelectorAll('div').length + 1;
+        var parent = document.getElementById("form");
+        //Add div
+        var div = document.createElement("div");
+        div.style = 'display:flex; margin-top: 5px';
+        div.id = 'div_' + countDiv;
+        parent.insertBefore(div, parent.lastElementChild);
+        //Add search
+        var input = document.createElement("input");
+        input.type = "number";
+        input.title = "Type in a Id"
+        input.className = "form-control";
+        input.id = "inp_" + countDiv;
+        input.autocomplete = "off";
+        input.placeholder = "Nhập mã sản phẩm";
+        div.appendChild(input);
+        //Add quantity
+        var inputQuantity = document.createElement("input");
+        inputQuantity.type = 'number';
+        inputQuantity.placeholder = 'Nhập số lượng sản phẩm'
+        inputQuantity.className = 'form-control'
+        inputQuantity.min = 1;
+        inputQuantity.value = 1;
+        inputQuantity.autocomplete = "off";
+        div.appendChild(inputQuantity);
+        //Add check
+        var inputCheckExit = document.createElement("input");
+        inputCheckExit.type = 'button';
+        inputCheckExit.placeholder = 'Check';
+        inputCheckExit.className = 'bg-success text-white p-2';
+        inputCheckExit.name = 'Check';
+        inputCheckExit.autocomplete = "off";
+        inputCheckExit.value = 'Check'
+        inputCheckExit.onclick = function () {
+            Check_Product(input.value, inputQuantity.value, div);
+        }
+        div.appendChild(inputCheckExit);
+        //Add delete
+        var deleteInput = document.createElement("input");
+        deleteInput.type = 'button'
+        deleteInput.value = 'Xóa'
+        deleteInput.className = 'bg-danger text-white p-2'
+        deleteInput.autocomplete = "off"
+        deleteInput.onclick = function () {
+            Delete_Input(div.id,  input.value);
+        }
+        div.appendChild(deleteInput)
+    }
+    function Check_Product(id, quantity, div) {
+        if (id == null || id == "") {
+            alert("Bạn chưa nhập mã sản phẩm!!!");
+        } else {
+            if (checkDuplicate.includes(id)) {
+                alert("Mã sản phẩm đã tồn tại!!!");
+            } else {
+                if (id <= 0 || id > @ViewBag.Data.Count) {
+                    alert("Mã sản phẩm không tồn tại")
+                } else {
+                    if (quantity == null || quantity == "") {
+                        alert("Số lượng không được để trống!!!")
+                    } else {
+                        var checkStock = document.getElementById("Product_" + id);
+                        if (quantity <= 0 || quantity > parseInt(checkStock.lastElementChild.textContent)) {
+                            alert("Số lượng không được < 0 hoặc lớn hơn số lượng tồn kho");
+                        } else {
+                            fetch('/Sales/Home/CheckProduct', {
+                                method: 'post',
+                                body: JSON.stringify({
+                                    'id': parseInt(id),
+                                    'quantity': parseInt(quantity)
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            }).then(function (res) {
+                                console.info(res)
+                                return res.json()
+                            }).then(function (data) {
+                                if (data.success == true && data.valid == true) {
+                                    var x = div.getElementsByTagName('*')
+                                    for (var i = 0; i < x.length - 1; i++) {
+                                        x[i].disabled = true;
+                                    }
+                                    checkDuplicate.push(id);
+                                    Show_Product_Info(id, quantity)
+                                   /* alert("Thêm sản phẩm vào hóa đơn thành công.");*/
+                                }
+                                else {
+                                    if (data.success == true && data.valid == false) {
+                                        alert(data.msg)
+                                    } else {
+                                        if (success == false) {
+                                            alert("Không có mã sản phẩm này!!!")
+                                        }
+                                    }                                   
+                                }                                
+                            }).catch(function (err) {
+                                console.info(err)
+                            })
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function DeleteProduct(Id) {
+        if (confirm('Warning!!! Bạn có chắc muốn xóa sản phẩm không') == true) {
+            fetch('/Sales/Home/Delete_Input', {
+                method: 'post',
+                body: JSON.stringify({
+                    'id': Id,
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+
+            }).then(function (res) {
+                console.info(res)
+                return res.json()
+            }).then(function (data) {
+                if (data.status == 200) {
+                    let r = document.getElementById("Product_Form_" + Id)
+                    r.style.display = 'none'
+                    console.info(data)
+                } else if (data.status == 400) {
+                    alert(data.error)
+                }
+            }).catch(err => console.info(err))
+        }
+    }
+    function Delete_Input(divID, id) {
+        if (checkDuplicate.includes(id)) {
+            if (confirm('Warning!!! Bạn có chắc muốn xóa sản phẩm này không?') == true) {
+                fetch('/Sales/Home/Delete_Input', {
+                    method: 'post',
+                    body: JSON.stringify({
+                        'id': parseInt(id),
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function (res) {
+                    console.info(res)
+                    return res.json()
+                }).then(function (data) {
+                    if (data.status == 200) {
+                        document.getElementById(divID).remove();
+                        var index = checkDuplicate.indexOf(id);
+                        if (checkDuplicate != null && index > -1) {
+                            checkDuplicate.splice(index, 1);
+                            alert("Xóa thành công.")
+                        }
+                        console.info(data)
+                    }
+
+                }).catch(function (err) {
+                    console.info(err)
+                })
+            }
+        }
+        else {
+            if (confirm('Warning!!! Bạn có chắc muốn xóa sản phẩm này không?') == true) {
+                document.getElementById(divID).remove();
+            }
+        }
+    }
+    function Delete_All_Input() {
+        if (checkDuplicate.length != 0) {
+            if (confirm('Warning!!! Bạn có chắc muốn xóa tất cả sản phẩm không?') == true) {
+                fetch('/Sales/Home/Delete_All_Input', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(function (res) {
+                    console.info(res)
+                    return res.json()
+                }).then(function (data) {
+                    if (data.status == 200) {
+                        var checkForm = document.getElementById('form');
+                        if (checkForm.hasChildNodes && checkForm.lastElementChild != checkForm.firstElementChild) {
+                            while (checkForm.hasChildNodes()) {
+                                if (checkForm.lastElementChild == checkForm.firstElementChild)
+                                    break;
+                                else
+                                    checkForm.removeChild(checkForm.firstChild);
+                            }
+                            checkDuplicate = []
+                        } else {
+                            alert("Không có sản phẩm nào hiện tại.");
+                        }
+                        console.info(data)
+                    }
+
+                }).catch(function (err) {
+                    console.info(err)
+                })
+            }
+        } else {
+            var checkForm = document.getElementById('form');
+            if (checkForm.hasChildNodes && checkForm.lastElementChild != checkForm.firstElementChild) {
+                while (checkForm.hasChildNodes()) {
+                    if (checkForm.lastElementChild == checkForm.firstElementChild)
+                        break;
+                    else
+                        checkForm.removeChild(checkForm.firstChild);
+                }
+            } else {
+                alert("Không có sản phẩm nào hiện tại.");
+            }
+        }
+    }
+</script>

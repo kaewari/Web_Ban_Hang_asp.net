@@ -8,6 +8,23 @@
       <Association Name="Brand_Product" Member="Products" ThisKey="Id" OtherKey="BrandID" Type="Product" />
     </Type>
   </Table>
+  <Table Name="dbo.Customer" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Customer_Order" Member="Orders" ThisKey="Id" OtherKey="CustomerID" Type="Order" />
+      <Association Name="User_Customer" Member="User" ThisKey="UserID" OtherKey="Id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Banner" Member="Banners">
+    <Type Name="Banner">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EmployeeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Path" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Employee_Banner" Member="Employee" ThisKey="EmployeeID" OtherKey="Id" Type="Employee" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Category" Member="Categories">
     <Type Name="Category">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -15,26 +32,6 @@
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Category_Product" Member="Products" ThisKey="Id" OtherKey="CategoryID" Type="Product" />
       <Association Name="Category_SubCategory" Member="SubCategories" ThisKey="Id" OtherKey="CategoryID" Type="SubCategory" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Customer" Member="Customers">
-    <Type Name="Customer">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Customer_Comment" Member="Comments" ThisKey="Id" OtherKey="CustomerID" Type="Comment" />
-      <Association Name="Customer_Order" Member="Orders" ThisKey="Id" OtherKey="CustomerID" Type="Order" />
-      <Association Name="User_Customer" Member="User" ThisKey="UserID" OtherKey="Id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Comment" Member="Comments">
-    <Type Name="Comment">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="CustomerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="EmployeeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ProductID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="Customer_Comment" Member="Customer" ThisKey="CustomerID" OtherKey="Id" Type="Customer" IsForeignKey="true" />
-      <Association Name="Employee_Comment" Member="Employee" ThisKey="EmployeeID" OtherKey="Id" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.District" Member="Districts">
@@ -51,20 +48,9 @@
     <Type Name="Employee">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Employee_Comment" Member="Comments" ThisKey="Id" OtherKey="EmployeeID" Type="Comment" />
+      <Association Name="Employee_Banner" Member="Banners" ThisKey="Id" OtherKey="EmployeeID" Type="Banner" />
       <Association Name="Employee_Order" Member="Orders" ThisKey="Id" OtherKey="EmployeeID" Type="Order" />
       <Association Name="User_Employee" Member="User" ThisKey="UserID" OtherKey="Id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.OrderDetails" Member="OrderDetails">
-    <Type Name="OrderDetail">
-      <Column Name="OrderId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Quantity" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="UnitPrice" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Order_OrderDetail" Member="Order" ThisKey="OrderId" OtherKey="Id" Type="Order" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="Product_OrderDetail" Member="Product" ThisKey="ProductID" OtherKey="Id" Type="Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Orders" Member="Orders">
@@ -76,6 +62,17 @@
       <Association Name="Order_OrderDetail" Member="OrderDetails" ThisKey="Id" OtherKey="OrderId" Type="OrderDetail" />
       <Association Name="Customer_Order" Member="Customer" ThisKey="CustomerID" OtherKey="Id" Type="Customer" IsForeignKey="true" />
       <Association Name="Employee_Order" Member="Employee" ThisKey="EmployeeID" OtherKey="Id" Type="Employee" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderDetails" Member="OrderDetails">
+    <Type Name="OrderDetail">
+      <Column Name="OrderId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Order_OrderDetail" Member="Order" ThisKey="OrderId" OtherKey="Id" Type="Order" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Product_OrderDetail" Member="Product" ThisKey="ProductID" OtherKey="Id" Type="Product" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Product" Member="Products">
@@ -96,7 +93,7 @@
       <Column Name="Price" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Webcam" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="ROM" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="QuantityPerUnit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="QuantityPerUnit" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="UnitsInStock" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="UnitsOnOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Discontinued" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
@@ -108,15 +105,6 @@
       <Association Name="Category_Product" Member="Category" ThisKey="CategoryID" OtherKey="Id" Type="Category" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.ProductImage" Member="ProductImages">
-    <Type Name="ProductImage">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Thumbnail_Photo" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Product_ProductImage" Member="Product" ThisKey="ProductID" OtherKey="Id" Type="Product" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Province" Member="Provinces">
     <Type Name="Province">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -124,6 +112,15 @@
       <Column Name="Code" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Province_District" Member="Districts" ThisKey="Id" OtherKey="ProvinceID" Type="District" />
       <Association Name="Province_User" Member="Users" ThisKey="Id" OtherKey="ProvinceID" Type="User" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductImage" Member="ProductImages">
+    <Type Name="ProductImage">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Thumbnail_Photo" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Product_ProductImage" Member="Product" ThisKey="ProductID" OtherKey="Id" Type="Product" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.ResetPasswordCode" Member="ResetPasswordCodes">
@@ -159,25 +156,15 @@
       <Association Name="User_UserRole" Member="User" ThisKey="UserId" OtherKey="Id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.UserClaims" Member="UserClaims">
-    <Type Name="UserClaim">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ClaimType" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ClaimValue" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Association Name="User_UserClaim" Member="User" ThisKey="UserId" OtherKey="Id" Type="User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Users" Member="Users">
     <Type Name="User">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ID_Card" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
       <Column Name="Truename" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Username" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Email" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="EmailConfirmed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="PhoneNumberConfirmed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="Status" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="Address" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
@@ -189,7 +176,6 @@
       <Association Name="User_Employee" Member="Employees" ThisKey="Id" OtherKey="UserID" Type="Employee" />
       <Association Name="User_ResetPasswordCode" Member="ResetPasswordCodes" ThisKey="Id" OtherKey="UserID" Type="ResetPasswordCode" />
       <Association Name="User_UserRole" Member="UserRoles" ThisKey="Id" OtherKey="UserId" Type="UserRole" />
-      <Association Name="User_UserClaim" Member="UserClaims" ThisKey="Id" OtherKey="UserId" Type="UserClaim" />
       <Association Name="District_User" Member="District" ThisKey="DistrictID" OtherKey="Id" Type="District" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="Province_User" Member="Province" ThisKey="ProvinceID" OtherKey="Id" Type="Province" IsForeignKey="true" DeleteRule="CASCADE" />
     </Type>

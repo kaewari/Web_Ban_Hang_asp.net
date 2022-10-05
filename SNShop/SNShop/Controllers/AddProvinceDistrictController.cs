@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using SNShop.Models;
-using SNShop.Common;
 namespace SNShop.Controllers
 {
     public class AddProvinceDistrictController : Controller

@@ -1,33 +1,25 @@
 ﻿using System;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using SNShop.Models;
-using System.Transactions;
 using TransactionScope = System.Transactions.TransactionScope;
-using System.Globalization;
 using SNShop.Common;
-using System.Web.Script.Serialization;
 using SNShop.DAO;
-using SNShop.Areas.Admin.Models;
 using System.Net.Mail;
 using System.Net;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
 
 namespace SNShop.Controllers
 {
     public class CartController : MyBaseController
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
-        private long total_quantity = 0;
-        private long total_amount = 0;
+        private decimal? total_quantity = 0;
+        private decimal? total_amount = 0;
         // GET: Cart
         public List<CartModel> GetListCarts()//lay ds gio hang
         {
-
             List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
             if (carts == null)
             {
@@ -37,7 +29,7 @@ namespace SNShop.Controllers
             return carts;
         }
         [HttpPost]
-        public JsonResult AddCart(int id, string name, long price)
+        public JsonResult AddCart(int id, string name, decimal? price)
         {
             List<CartModel> carts = GetListCarts();//lay DSGH
             var checkExits = carts.FirstOrDefault(x => x.ProductID == id);
@@ -59,10 +51,10 @@ namespace SNShop.Controllers
                 success = true,
             });
         }
-        public long Count()
+        public decimal? Count()
         {
             List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
-            if (carts != null)
+            if (carts.Any())
             {
                 total_quantity = carts.Sum(s => s.Quantity);
             }
@@ -71,9 +63,9 @@ namespace SNShop.Controllers
         public decimal? Total()
         {
             List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
-            if (carts != null)
+            if (carts.Any())
             {
-                total_amount = (long)carts.Sum(s => s.Total);
+                total_amount = carts.Sum(s => s.Total);
             }
             return total_amount;
         }
@@ -96,7 +88,7 @@ namespace SNShop.Controllers
                         {
                             OrderId = order.Id,
                             ProductID = item.ProductID,
-                            Quantity = long.Parse(item.Quantity.ToString()),
+                            Quantity = decimal.Parse(item.Quantity.ToString()),
                             UnitPrice = item.UnitPrice,
                             ModifiedDate = DateTime.Now,
                         };
@@ -122,12 +114,12 @@ namespace SNShop.Controllers
         }
         public object cart_stat(List<CartModel> carts)
         {
-            if (carts != null)
+            if (carts.Any())
             {
                 foreach(var c in carts)
                 {
-                    total_quantity += (long)c.Quantity;
-                    total_amount += (long)c.Total;
+                    total_quantity += c.Quantity;
+                    total_amount += c.Total;
                 }
             }
             ViewBag.Countproduct = total_quantity;
@@ -139,12 +131,12 @@ namespace SNShop.Controllers
         }
         public object cart_item(CartModel carts)
         {
-            long quantity = 0;
-            long amount = 0;
+            decimal? quantity = 0;
+            decimal? amount = 0;
             if (carts != null)
             {
-                quantity = (long)carts.Quantity;
-                amount = (long)carts.Total;
+                quantity = carts.Quantity;
+                amount = carts.Total;
             }
             return new
             {
@@ -161,11 +153,11 @@ namespace SNShop.Controllers
             return View();
         }
         [HttpPost]
-        public JsonResult UpdateCart(int id, long quantity)
+        public JsonResult UpdateCart(int id, decimal? quantity)
         {
             List<CartModel> carts = GetListCarts();
             string error = null;
-            if (carts != null)
+            if (carts.Any())
             {
                 var checkExits = carts.FirstOrDefault(x => x.ProductID == id);
                 if (checkExits != null)
@@ -194,7 +186,7 @@ namespace SNShop.Controllers
         {
             List<CartModel> carts = GetListCarts();
             string error = null;
-            if (carts != null)
+            if (carts.Any())
             {
                 var checkExits = carts.FirstOrDefault(x => x.ProductID == id);
                 if (checkExits != null)
@@ -218,14 +210,36 @@ namespace SNShop.Controllers
                 error = error,
             });
         }
+        public JsonResult DeleteAllCart()
+        {
+            List<CartModel> carts = GetListCarts();
+            if (carts.Any())
+            {
+                carts.Clear();
+                return Json(new
+                {
+                    status = 200,
+                    cartsData = cart_stat(carts),
+                });
+            }
+            return Json(new
+            {
+                status = 400,
+                cartsData = cart_stat(carts),
+            });
+        }
         public ActionResult OrderForm()
         {
-            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
-            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
-            return View();
+            if (Session["UserID"] != null && Session["Roles"].ToString() == "Users")
+            {
+                ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+                ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
+                return View();
+            }
+            return RedirectToAction("Login", "Account");
         }
         [HttpPost]
-        public async Task<ActionResult> OrderForm(OrderForm orderForm, FormCollection formCollection)
+        public async Task<ActionResult> OrderForm(OrderFormModel orderForm, FormCollection formCollection)
         {
             ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
             ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
@@ -276,7 +290,7 @@ namespace SNShop.Controllers
                         var credential = new NetworkCredential
                         {
                             UserName = "1951052171son@ou.edu.vn",
-                            Password = "caygame1080@"
+                            Password = "Caygame10800@"
                         };
                         smtp.Credentials = credential;
                         smtp.Host = "smtp.gmail.com";
@@ -294,9 +308,8 @@ namespace SNShop.Controllers
                         }
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    ViewData["loi"] = ex.Message;
                     return RedirectToAction("Failure");
                 }
 

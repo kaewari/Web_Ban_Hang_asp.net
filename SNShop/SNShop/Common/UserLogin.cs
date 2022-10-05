@@ -1,16 +1,11 @@
-﻿using SNShop.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace SNShop.Common
+﻿namespace SNShop.Common
 {
     public class UserLogin
     {
-        public long UserID { set; get; }
+        public int UserID { set; get; }
         public string UserName { set; get; }
         public string Email { set; get; }
-        public string Picture { set; get; } 
+        public string Image { set; get; }
+        public string Roles { set; get; }
     }
 }

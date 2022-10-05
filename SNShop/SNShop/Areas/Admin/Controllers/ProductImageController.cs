@@ -1,16 +1,12 @@
-﻿using Microsoft.Ajax.Utilities;
-using SNShop.Areas.Admin.Models;
+﻿using SNShop.Areas.Admin.Models;
 using SNShop.Models;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using System.Web.UI.WebControls;
-using static System.Net.WebRequestMethods;
 
 namespace SNShop.Areas.Admin.Controllers
 {
@@ -18,9 +14,11 @@ namespace SNShop.Areas.Admin.Controllers
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         // GET: Admin/ProductImage
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_Product_Image(string error)
         {
-            var p = db.ProductImages.ToList();
+            _ = new List<ProductImage>(1500);
+            List<ProductImage> p = db.ProductImages.ToList();
             ViewData["loi"] = error;
             return View(p);
         }
@@ -135,11 +133,13 @@ namespace SNShop.Areas.Admin.Controllers
             catch { }
             return View(productImage);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Details_Product_Image(int id)
         {
             var p = db.ProductImages.FirstOrDefault(s => s.Id == id);
             return View(p);
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Product_Image(int id)
         {
             var p = db.ProductImages.FirstOrDefault(s => s.Id == id);
@@ -147,6 +147,7 @@ namespace SNShop.Areas.Admin.Controllers
             return View(p);
         }
         [HttpPost]
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Product_Image(ImageModel imageModel, FormCollection formCollection, ProductImage p, int id)
         {
             try

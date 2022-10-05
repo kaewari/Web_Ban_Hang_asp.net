@@ -1,10 +1,8 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 @{
     var session = (SNShop.Areas.Admin.Common.AdminLogin)Session[SNShop.Areas.Admin.Common.Constants.USER_SESSION];
-
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -31,25 +29,16 @@
     <link href="/asset/admin/css/sb-admin-2.min.css" rel="stylesheet" type="text/css">
     <link href="~/asset/admin/css/sb-admin-2.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+    <script>
+        window.TrackJS && TrackJS.install({
+            token: "e13fc63ba22e4749a96d2c13de32f241",
+            application: "snshop"
+        });
+    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="/asset/admin/vendor/jquery/jquery.min.js"></script>
     <script src="/asset/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="/asset/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="/asset/admin/js/sb-admin-2.js" defer></script>
-    <script src="/asset/admin/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="/asset/admin/vendor/chart.js/Chart.min.js"></script>
-
-    <!--Chart.js-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" src="/asset/admin/js/demo/datatables-demo.js"></script>
-    <script type="text/javascript" charset="utf8" src="/asset/admin/js/Controller/Delete.js"></script>
 </head>
 
 <body id="page-top">
@@ -145,6 +134,10 @@
                 </a>
                 <div id="collapseCreate" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Orders Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_Orders_Not_Approved","Order")">Đơn hàng cần duyệt</a>
+                        <h6 class="collapse-header">Banners Pages:</h6>
+                        <a class="collapse-item" href="@Url.Action("List_Banners","Banner")">Danh sách banner</a>
                         <h6 class="collapse-header">User Pages:</h6>
                         <a class="collapse-item" href="@Url.Action("List_Users","User")">Danh sách người dùng</a>
                         <h6 class="collapse-header">Category Pages:</h6>
@@ -255,140 +248,19 @@
                             </div>
                         </li>
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
-
-                        <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="/asset/admin/img/undraw_profile_1.svg"
-                                             alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">
-                                            Hi there! I am wondering if you can help me with a
-                                            problem I've been having.
-                                        </div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="/asset/admin/img/undraw_profile_2.svg"
-                                             alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">
-                                            I have the photos that you ordered last month, how
-                                            would you like them sent to you?
-                                        </div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="/asset/admin/img/undraw_profile_3.svg"
-                                             alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">
-                                            Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!
-                                        </div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                             alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">
-                                            Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...
-                                        </div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
-
-                        <li> <div class="topbar-divider d-none d-sm-block"></div></li>
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">@session.UserName</span>
-                                <img class="img-profile rounded-circle"
-                                     src="@session.Image">
+                                @if (session.Image != null)
+                                {
+                                    <img class="img-profile rounded-circle" src="@session.Image">
+                                }
+                                else
+                                {
+                                    <img class="img-profile rounded-circle" src="~/Images/Avatars/man-avatar.jpg">
+                                }
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -421,7 +293,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; SNShop 9/2022</span>
+                        <span>&copy; 2022 <a href="@Url.Action("Index", "Home")" class="font-weight-bold ml-1" target="_blank">SNShop</a></span>
                     </div>
                 </div>
             </footer>
@@ -459,3 +331,20 @@
 </body>
 </html>
 @RenderSection("scripts", required: false)
+
+<!-- Core plugin JavaScript-->
+<script src="/asset/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/asset/admin/js/sb-admin-2.js" defer></script>
+<script src="/asset/admin/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/asset/admin/vendor/chart.js/Chart.min.js"></script>
+
+<!--Chart.js-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/asset/admin/js/demo/datatables-demo.js"></script>
+<script type="text/javascript" charset="utf8" src="/asset/admin/js/Controller/Delete.js"></script>

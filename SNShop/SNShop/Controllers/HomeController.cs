@@ -4,13 +4,13 @@ using System.Linq;
 using System.Web.Mvc;
 using SNShop.Models;
 using PagedList;
+using System.Dynamic;
 
 namespace SNShop.Controllers
 {
     public class HomeController : MyBaseController
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
-
         public ActionResult Index(int? page, string SearchString, string sortOrder)
         {            
             var sanPham = new List<Product>();
@@ -53,18 +53,20 @@ namespace SNShop.Controllers
             }
             catch (Exception) { }
             sanPham.OrderByDescending(v => v.Id);
-            int pageSize = 21;
+            int pageSize = 12;
             ViewBag.PageSize = pageSize;
             ViewBag.Category = db.Categories.ToList();
             ViewBag.Check = 0;
             ViewBag.PresentImage = db.ProductImages.ToList();
+            ViewBag.Banner = db.Banners.ToList();
             return View(sanPham.ToList().ToPagedList(page.Value, pageSize));
         }
         public ActionResult Detail(int id)
         {
-            Product p = db.Products.FirstOrDefault(s => s.Id == id);
-            ViewBag.AllImageOfProduct = p.ProductImages.Where(s => s.ProductID == id);
-            return View(p);
+            dynamic dynamicModel = new ExpandoObject();
+            dynamicModel.ProductImages = db.Products.FirstOrDefault(s => s.Id == id).ProductImages.Where(s => s.ProductID == id);
+            dynamicModel.Products = db.Products.FirstOrDefault(s => s.Id == id);
+            return View(dynamicModel);
         }
         public ActionResult About()
         {
@@ -79,29 +81,20 @@ namespace SNShop.Controllers
 
             return View();
         }
-        public ActionResult AddImage()
+        public ActionResult Comment_Rule()
         {
-
             return View();
-        }
-        [HttpPost]
-        public ActionResult AddImage(ProductImage product_Image)
-        {
-
-            db.ProductImages.InsertOnSubmit(product_Image);
-            db.SubmitChanges();
-            return RedirectToAction("Index");
         }
         [Route("404")]
         public ActionResult Pages_404()
         {
-            Response.StatusCode = 404;  //you may want to set this to 200
+            Response.StatusCode = 404;
             return View();
         }
         [Route("500")]
         public ActionResult Pages_500()
         {
-            Response.StatusCode = 500;  //you may want to set this to 200
+            Response.StatusCode = 500;
             return View();
         }
     }

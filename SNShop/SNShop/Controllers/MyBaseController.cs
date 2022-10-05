@@ -1,9 +1,7 @@
 ﻿using SNShop.Common;
 using SNShop.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SNShop.Controllers
@@ -22,8 +20,8 @@ namespace SNShop.Controllers
             }
             else
             {
-                ViewBag.Countproduct = (long)carts.Sum(s => s.Quantity);
-                ViewBag.Total = (double)carts.Sum(s => s.Total);
+                ViewBag.Countproduct = carts.Sum(s => s.Quantity);
+                ViewBag.Total = (decimal)carts.Sum(s => s.Total);
             }
             base.OnActionExecuting(filterContext);
         }

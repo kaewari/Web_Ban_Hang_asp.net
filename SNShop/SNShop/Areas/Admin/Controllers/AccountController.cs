@@ -20,52 +20,53 @@ namespace SNShop.Areas.Admin.Controllers
     public class AccountController : Controller
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
-        // GET: Admin/Account
-        public ActionResult Index()
+        public void ReloadSession(User user)
         {
-            return View();
+            UserDao userDao = new UserDao();
+            var userSession = new AdminLogin()
+            {
+                UserName = user.Username,
+                UserID = user.Id,
+                Email = user.Email,
+                Image = user.Image,
+                Roles = userDao.GetRoleById(user.Id).Name,
+            };
+            Session.Add(Constants.USER_SESSION, userSession);
+            Session.Add("UserID", userSession.UserID);
+            Session.Add("UserName", userSession.UserName);
+            Session.Add("Email", userSession.Email);
+            Session.Add("Roles", userSession.Roles);
+            Session.Add("Image", userSession.Image);
         }
-        public ActionResult LoginAdmin()
+        // GET: Admin/Account
+        public ActionResult AdminLogin()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult LoginAdmin(LoginAdminModel loginAdminModel)
+        public ActionResult AdminLogin(AdminLoginModel adminLoginModel)
         {
             UserDao userDao = new UserDao();
             if (ModelState.IsValid)
             {
-                var result = userDao.CheckUser(loginAdminModel.Password, loginAdminModel.Email);
+                var result = userDao.CheckAdmin(adminLoginModel.Password, adminLoginModel.Email);
                 if (result == 0)
-                {
-                    ModelState.AddModelError("", "Tài khoản không tồn tại.");
-                }
-                else if (result == -1)
                 {
                     ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng.");
                 }
+                else if (result == -1)
+                {
+                    ModelState.AddModelError("", "Bạn không có quyền vào trang này.");
+                }
                 else if (result == 1)
                 {
-                    var user = userDao.GetUserByEmail(loginAdminModel.Email);
-                    var userSession = new AdminLogin()
-                    {
-                        UserName = user.Username,
-                        UserID = user.Id,
-                        Email = user.Email,
-                        Image = user.Image,
-                        Roles = userDao.GetRoleById(user.Id).Name,
-                    };
-                    Session.Add(Constants.USER_SESSION, userSession);
-                    Session.Add("UserID", userSession.UserID);
-                    Session.Add("UserName", userSession.UserName);
-                    Session.Add("Email", userSession.Email);
-                    Session.Add("Roles", userSession.Roles);
-                    Session.Add("Image", userSession.Image);
+                    var user = userDao.GetUserByEmail(adminLoginModel.Email);
+                    ReloadSession(user);
                     return RedirectToAction("Index", "Home");
                 }
             }
-            return View(loginAdminModel);
+            return View(adminLoginModel);
         }
         public ActionResult Logout()
         {
@@ -73,8 +74,10 @@ namespace SNShop.Areas.Admin.Controllers
             Session["UserID"] = null;
             Session["UserName"] = null;
             Session["Email"] = null;
+            Session["Roles"] = null;
+            Session["Image"] = null;
             Session.Remove(HttpContext.Session.SessionID);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("AdminLogin", "Account");
         }
         public ActionResult ForgotPassword()
         {
@@ -178,6 +181,8 @@ namespace SNShop.Areas.Admin.Controllers
             var session = (AdminLogin)Session[Constants.USER_SESSION];
             if (session == null)
                 return RedirectToAction("Index", "Home");
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             var result = userDao.GetUserByEmail(Session["Email"].ToString());
             editModel.ID = result.Id;
             editModel.Address = result.Address;
@@ -185,39 +190,48 @@ namespace SNShop.Areas.Admin.Controllers
             editModel.Username = result.Username;
             editModel.Email = result.Email;
             editModel.Image = result.Image;
-            editModel.ProvinceID = result.ProvinceID.ToString();
-            editModel.DistrictID = result.DistrictID.ToString();
-            if (!string.IsNullOrEmpty(result.ProvinceID.ToString()))
-                ViewBag.ProvinceID = result.ProvinceID;
+            if (result.ProvinceID.Equals(null))
+            {
+                editModel.ProvinceID = 0;
+                editModel.DistrictID = 0;
+            }
             else
-                ViewBag.ProvinceID = 0;
-            if (!string.IsNullOrEmpty(result.ProvinceID.ToString()))
-                ViewBag.DistrictID = result.DistrictID;
-            else
-                ViewBag.DistrictID = 0;
+            {
+                editModel.ProvinceID = int.Parse(result.ProvinceID.ToString());
+                editModel.DistrictID = int.Parse(result.DistrictID.ToString());
+            }
             return View(editModel);
         }
         [HttpPost]
-        public ActionResult ShowProfile(EditAdminModel editModel)
+        public ActionResult ShowProfile(EditAdminModel editModel, FormCollection formCollection)
         {
-            User user = db.Users.FirstOrDefault(s => s.Id == editModel.ID);//lay user cần sửa trog db
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             if (ModelState.IsValid)
             {
+                User user = db.Users.FirstOrDefault(s => s.Id == editModel.ID);
                 user.Address = editModel.Address;
                 user.PhoneNumber = editModel.PhoneNumber;
                 user.Username = editModel.Username;
                 user.Email = editModel.Email;
-                if (!string.IsNullOrEmpty(editModel.ProvinceID))
+                if (string.IsNullOrEmpty(formCollection["PR"]) || string.IsNullOrWhiteSpace(formCollection["PR"]))
                 {
-                    user.ProvinceID = int.Parse(editModel.ProvinceID);
+                    ViewData["cityNull"] = "Bạn chưa chọn tỉnh/thành phố";
+                    return View(editModel);
                 }
-                if (!string.IsNullOrEmpty(editModel.DistrictID))
+                else
+                    user.ProvinceID = int.Parse(formCollection["PR"]);
+                if (string.IsNullOrEmpty(formCollection["DT"]) || string.IsNullOrWhiteSpace(formCollection["DT"]))
                 {
-                    user.DistrictID = int.Parse(editModel.DistrictID);
+                    ViewData["districtNull"] = "Bạn chưa chọn quận/huyện";
+                    return View(editModel);
                 }
+                else
+                    user.DistrictID = int.Parse(formCollection["DT"]);
                 UpdateModel(user);
-                db.SubmitChanges();
-                return RedirectToAction("Index", "Home");
+                db.SubmitChanges();             
+                ReloadSession(user);
+                return RedirectToAction("ShowProfile", "Account");
             }
             return View(editModel);
         }
@@ -236,6 +250,7 @@ namespace SNShop.Areas.Admin.Controllers
                 user.Image = imageModel.Path.Remove(0, 1);
                 UpdateModel(user);
                 db.SubmitChanges();
+                ReloadSession(user);
             }
             catch 
             {
@@ -247,7 +262,7 @@ namespace SNShop.Areas.Admin.Controllers
         {
             var session = (AdminLogin)Session[Constants.USER_SESSION];
             if (session == null)
-                return RedirectToAction("LoginAdmin", "Account");
+                return RedirectToAction("AdminLogin", "Account");
             return View();
         }
         [HttpPost]

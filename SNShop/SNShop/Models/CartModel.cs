@@ -1,8 +1,4 @@
-﻿using SNShop.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 
 namespace SNShop.Models
 {
@@ -11,8 +7,8 @@ namespace SNShop.Models
         private SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         public int ProductID { get; set; }
         public string ProductName { get; set; }
-        public long UnitPrice { get; set; }
-        public long Quantity { get; set; }
+        public decimal? UnitPrice { get; set; }
+        public decimal? Quantity { get; set; }
         public decimal? Total { get { return UnitPrice * Quantity; } }
         public CartModel(int productID)
         {            

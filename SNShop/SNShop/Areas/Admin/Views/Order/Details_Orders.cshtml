@@ -1,0 +1,58 @@
+﻿@model SNShop.Models.Order
+
+@{
+    ViewBag.Title = "Details_Orders";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details_Orders</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.User.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.User.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.User.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.User.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <a class="btn btn-danger" href="@Url.Action("List_Orders_Approved","Order")">Back to list</a>
+</p>

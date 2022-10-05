@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using SNShop.Models;
 using PagedList;
@@ -11,6 +8,7 @@ namespace SNShop.Controllers
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         // GET: Category
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult ProductOfCategory(int? page, string sortOrder, int id)
         {
             var sanPham = db.Products.ToList();
@@ -55,6 +53,7 @@ namespace SNShop.Controllers
             ViewBag.PresentImage = db.ProductImages.ToList();
             return View(sanPham.ToList().ToPagedList(page.Value, pageSize));
         }
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult ProductOfSubCategory(int id)
         {
             var x = db.SubCategories.FirstOrDefault(a => a.Id == id).CategoryID;

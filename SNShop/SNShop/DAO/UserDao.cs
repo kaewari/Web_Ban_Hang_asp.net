@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using SNShop.Models;
 
 namespace SNShop.DAO
@@ -13,20 +10,43 @@ namespace SNShop.DAO
         {
             return db.Users.Count(x => x.Email == email) > 0;
         }
-        public int CheckUser(string password, string email)
+        public int CheckCustomer(string password, string email)
         {
             password = Encode.GetMD5(password);
             var result = db.Users.SingleOrDefault(x => x.Email == email);
-            if (result == null)
+            if (result == null || result.PasswordHash != password)
                 return 0;
             else
             {
-                if (result.PasswordHash != password)
-                    return -1;
-                else
-                {
+                if (db.UserRoles.FirstOrDefault(s => s.UserId == result.Id).Role.Name == "Users")
                     return 1;
-                }
+                return -1;
+            }
+        }
+        public int CheckSales(string password, string email)
+        {
+            password = Encode.GetMD5(password);
+            var result = db.Users.SingleOrDefault(x => x.Email == email);
+            if (result == null || result.PasswordHash != password)
+                return 0;
+            else
+            {
+                if (db.UserRoles.FirstOrDefault(s => s.UserId == result.Id).Role.Name == "Members")
+                    return 1;
+                return -1;
+            }
+        }
+        public int CheckAdmin(string password, string email)
+        {
+            password = Encode.GetMD5(password);
+            var result = db.Users.SingleOrDefault(x => x.Email == email);
+            if (result == null || result.PasswordHash != password)
+                return 0;
+            else
+            {
+                if (db.UserRoles.FirstOrDefault(s => s.UserId == result.Id).Role.Name == "Admin")
+                    return 1;
+                return -1;
             }
         }
         public User GetUserByEmail(string email)
