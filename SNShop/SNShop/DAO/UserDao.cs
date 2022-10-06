@@ -8,7 +8,30 @@ namespace SNShop.DAO
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         public bool CheckEmail(string email)
         {
-            return db.Users.Count(x => x.Email == email) > 0;
+            var checkDuplicate = db.Users.FirstOrDefault(s => s.Email == email);
+            if (checkDuplicate != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool CheckEmail(string email, int id)
+        {
+            var checkDuplicate = db.Users.FirstOrDefault(s => s.Id == id).Email;
+            if (checkDuplicate == email)
+            {
+                return false;
+            }
+            return true;
+        }
+        public bool CheckUsername(string username, int id)
+        {
+            var checkDuplicate = db.Users.FirstOrDefault(s => s.Id == id).Username;
+            if(checkDuplicate == username)
+            {
+                return false;
+            }
+            return true;
         }
         public int CheckCustomer(string password, string email)
         {

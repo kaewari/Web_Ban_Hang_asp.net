@@ -118,21 +118,21 @@ namespace SNShop.Controllers
             Session["AccessToken"] = accessToken;
             if (!string.IsNullOrEmpty(accessToken))
             {
-                fb.AccessToken = accessToken;
+                    fb.AccessToken = accessToken;
                 // Get the user's information, like email, first name, middle name etc
                 dynamic me = fb.Get("me?fields=first_name,middle_name,last_name,id,email,picture");
                 string email = me.email;
                 string firstname = me.first_name;
                 string lastname = me.last_name;
-                var picture = me.picture.data.url;
+                var picture = me.picture.data.url;                          
+                var resultCheck = userDao.CheckEmail(email);
                 user.Email = email;
                 user.Username = firstname + " " + lastname;
                 user.Truename = user.Username;
                 user.Image = picture;
-                user.Facebook = true;                            
-                var resultCheck = userDao.CheckEmail(email);
+                user.Facebook = true;
                 if (!resultCheck)
-                {                   
+                {
                     db.Users.InsertOnSubmit(user);
                     db.SubmitChanges();
                     customer.UserID = user.Id;
@@ -142,8 +142,7 @@ namespace SNShop.Controllers
                     db.Customers.InsertOnSubmit(customer);
                     db.SubmitChanges();
                 }
-                var u = userDao.GetUserByEmail(user.Email);
-                user.Id = u.Id;
+                user.Id = userDao.GetUserByEmail(email).Id;
                 ReloadSession(user);
                 FormsAuthentication.SetAuthCookie(email, false);
             }
@@ -308,15 +307,28 @@ namespace SNShop.Controllers
             string msg = null;
             try
             {
+                UserDao userDao = new UserDao();
                 if (ModelState.IsValid && Session["UserID"] != null)
                 {
                     User user = db.Users.FirstOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));//lay user cần sửa trog db
                     if (!editModel.Truename.Equals(null))
                         user.Truename = editModel.Truename;
-                    if (!editModel.Username.Equals(null))
+                    if (userDao.CheckUsername(editModel.Username, user.Id) == false)
                         user.Username = editModel.Username;
-                    if (editModel.Email.Equals(null))
+                    else
+                    {
+                        ViewData["duplicateUsername"] = "Username đã tồn tại";
+                        return View(editModel);
+                    }
+                    if (userDao.CheckEmail(editModel.Email, user.Id) == false)
+                    {
                         user.Email = editModel.Email;
+                    }
+                    else
+                    {
+                        ViewData["duplicateEmail"] = "Email đã tồn tại";
+                        return View(editModel);
+                    }
                     if (string.IsNullOrEmpty(formCollection["PR"]) || string.IsNullOrWhiteSpace(formCollection["PR"]))
                     {
                         ViewData["cityNull"] = "Bạn chưa chọn tỉnh/thành phố";

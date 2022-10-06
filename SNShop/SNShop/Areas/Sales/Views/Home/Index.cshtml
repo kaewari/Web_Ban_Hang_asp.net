@@ -67,7 +67,7 @@
         </table>
     </div>
     <div id="add" class="text-center" style="max-width:100%;">
-        <form id="form_customer" style="min-width: 120%">
+        <form id="form_customer" style="min-width: 100%">
             <div style="display: flex;">
                 @if (Model.Card_ID.Id == null)
                 {
@@ -87,6 +87,7 @@
                     <a class="btn btn-primary text-white rounded" onclick="Create_Input()">Thêm sản phẩm</a>
                     <a class="btn btn-danger text-white rounded" onclick="Delete_All_Input()">Xóa tất cả</a>
                 </div>
+
                 <form id="form" method="post" enctype="multipart/form-data" style="padding:0 20px 0 20px">
                     <input type="button" onclick="submitForm()" class="btn btn-success text-white rounded" id="submit" value="Xác nhận">
                 </form>
@@ -95,15 +96,17 @@
     </div>
 </div>
 <style>
-    Table{
+    Table {
         display: block;
         max-width: 100%;
         overflow-y: auto;
         height: 500px;
     }
-    .product_info:hover{
-        cursor:pointer;
+
+    .product_info:hover {
+        cursor: pointer;
     }
+
     #show {
         display: none
     }
@@ -136,16 +139,31 @@
                 'Content-Type': 'application/json'
             }
         }).then(function (res) {
-            console.info(res)
             return res.json()
         }).then(function (data) {
             if (data.status == 200) {
                 cus_id_check = data.cus_id
                 var show = document.getElementById('show');
                 show.style.display = 'block';
+                console.log(data)
             } else {
-                alert("Không có ID này. Vui lòng nhờ Admin tạo User mới");
+                alert(data.msg);
+                console.log(data)
             }
+        }).catch(function (err) {
+            console.info(err)
+        })
+    }
+
+    function updateProduct() {
+        var x = null;
+        fetch('/Sales/Home/UpdateProduct', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (res) {
+            return res.json()
         }).catch(function (err) {
             console.info(err)
         })
@@ -165,11 +183,11 @@
                     'Content-Type': 'application/json'
                 }
             }).then(function (res) {
-                console.info(res)
                 return res.json()
             }).then(function (data) {
                 if (data.status == 200) {
-                    console.log(data)
+                    updateProduct()
+                    alert("Update tồn kho và đơn hàng thành công.")
                     checkDuplicate = []
                     var checkForm = document.getElementById('form');
                     if (checkForm.hasChildNodes && checkForm.lastElementChild != checkForm.firstElementChild) {
@@ -179,18 +197,19 @@
                             else
                                 checkForm.removeChild(checkForm.firstChild);
                         }
-                        checkDuplicate = []
                     }
                     location.reload();
                     alert("Tạo hóa đơn thành công.")
-                }               
+                } else {
+                    alert("Tạo hóa đơn thất bại.")
+                }
             }).catch(function (err) {
                 console.info(err)
             })
         }
     }
 
-    function Show_Product_Info(id, quantity) {
+    function Show_Product_Info(id, quantity, divID) {
         var tbody = document.getElementById("myTBody");
 
         var tr = document.createElement("tr")
@@ -218,7 +237,7 @@
         input.value = "Xóa";
         input.className = "btn btn-danger";
         input.onclick = function () {
-            DeleteProduct(id);
+            DeleteProduct(id, divID);
         }
         td3.appendChild(input)
     }
@@ -244,7 +263,7 @@
         //Add quantity
         var inputQuantity = document.createElement("input");
         inputQuantity.type = 'number';
-        inputQuantity.placeholder = 'Nhập số lượng sản phẩm'
+        inputQuantity.placeholder = 'Nhập số lượng'
         inputQuantity.className = 'form-control'
         inputQuantity.min = 1;
         inputQuantity.value = 1;
@@ -300,7 +319,6 @@
                                     'Content-Type': 'application/json'
                                 }
                             }).then(function (res) {
-                                console.info(res)
                                 return res.json()
                             }).then(function (data) {
                                 if (data.success == true && data.valid == true) {
@@ -309,8 +327,8 @@
                                         x[i].disabled = true;
                                     }
                                     checkDuplicate.push(id);
-                                    Show_Product_Info(id, quantity)
-                                   /* alert("Thêm sản phẩm vào hóa đơn thành công.");*/
+                                    Show_Product_Info(id, quantity, div.id)
+                                    console.log(data)
                                 }
                                 else {
                                     if (data.success == true && data.valid == false) {
@@ -319,8 +337,8 @@
                                         if (success == false) {
                                             alert("Không có mã sản phẩm này!!!")
                                         }
-                                    }                                   
-                                }                                
+                                    }
+                                }
                             }).catch(function (err) {
                                 console.info(err)
                             })
@@ -330,7 +348,7 @@
             }
         }
     }
-    function DeleteProduct(Id) {
+    function DeleteProduct(Id, divID) {
         if (confirm('Warning!!! Bạn có chắc muốn xóa sản phẩm không') == true) {
             fetch('/Sales/Home/Delete_Input', {
                 method: 'post',
@@ -340,14 +358,19 @@
                 headers: {
                     'Content-Type': 'application/json'
                 }
-
             }).then(function (res) {
-                console.info(res)
                 return res.json()
             }).then(function (data) {
                 if (data.status == 200) {
-                    let r = document.getElementById("Product_Form_" + Id)
-                    r.style.display = 'none'
+                    var x = document.getElementById(divID);
+                    if (x != null)
+                        x.remove();
+                    document.getElementById("Product_Form_" + Id).style.display = 'none';
+                    var index = checkDuplicate.indexOf(Id);
+                    if (checkDuplicate != null && index > -1) {
+                        checkDuplicate.splice(index, 1);
+                    }
+                    alert("Xóa thành công.")
                     console.info(data)
                 } else if (data.status == 400) {
                     alert(data.error)
@@ -367,11 +390,11 @@
                         'Content-Type': 'application/json'
                     }
                 }).then(function (res) {
-                    console.info(res)
                     return res.json()
                 }).then(function (data) {
                     if (data.status == 200) {
                         document.getElementById(divID).remove();
+                        document.getElementById("Product_Form_" + id).style.display = 'none'
                         var index = checkDuplicate.indexOf(id);
                         if (checkDuplicate != null && index > -1) {
                             checkDuplicate.splice(index, 1);
@@ -379,7 +402,9 @@
                         }
                         console.info(data)
                     }
-
+                    else {
+                        console.info(data)
+                    }
                 }).catch(function (err) {
                     console.info(err)
                 })
@@ -400,7 +425,6 @@
                         'Content-Type': 'application/json'
                     }
                 }).then(function (res) {
-                    console.info(res)
                     return res.json()
                 }).then(function (data) {
                     if (data.status == 200) {

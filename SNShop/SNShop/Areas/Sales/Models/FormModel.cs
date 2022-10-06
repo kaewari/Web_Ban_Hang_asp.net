@@ -7,7 +7,6 @@ namespace SNShop.Areas.Sales.Models
     {
         private SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         public int productID { get; set; }
-        public int ID_Card { get; set; }
         public string name { get; set; }
         public decimal? unitPrice { get; set; }
         public decimal? quantity { get; set; }
@@ -16,7 +15,6 @@ namespace SNShop.Areas.Sales.Models
         {
             this.productID = productID;
             Product p = db.Products.Single(n => n.Id == productID);
-            ID_Card = 0;
             name = p.Name;
             unitPrice = (decimal)p.Price;
             quantity = 1;

@@ -61,15 +61,10 @@
                 <div class="col-lg-5 col-md-7">
                     <div class="card bg-secondary shadow border-0">
                         <div class="card-body px-lg-5 py-lg-5">
-                            <div class="text-center text-muted mb-4">
-                                <small>Or sign in with credentials</small>
-                            </div>
                             @using (Html.BeginForm())
                             {
                                 @Html.AntiForgeryToken()
-
                                 <div class="form-horizontal">
-                                    <hr />
                                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                                     <div class="form-group mb-3">

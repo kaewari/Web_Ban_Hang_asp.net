@@ -113,7 +113,7 @@ namespace SNShop.Areas.Admin.Controllers
                     var credential = new NetworkCredential
                     {
                         UserName = "1951052171son@ou.edu.vn",
-                        Password = "caygame1080@"
+                        Password = "Caygame10800@"
                     };
                     smtp.Credentials = credential;
                     smtp.Host = "smtp.gmail.com";

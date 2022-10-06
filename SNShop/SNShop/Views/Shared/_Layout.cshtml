@@ -68,7 +68,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         }
                         else
                         {
-                            <li><span style="color:red">Xin chào:</span><a href="@Url.Action("ShowProfile", "Account")"><span><img src="@session.Image" width="25" height="25" /></span> @session.UserName</a></li>
+                            <li>
+                                <span style="color:red">Xin chào:</span><a href="@Url.Action("ShowProfile", "Account")">
+                                    <span>
+
+                                        @if (session.Image != null)
+                                        {
+                                            <img class="rounded-circle" width="30" height="30" src="@session.Image">
+                                        }
+                                        else
+                                        {
+                                            <img class="rounded-circle" width="30" height="30" src="~/Images/Avatars/man-avatar.jpg">
+                                        }
+                                    </span> @session.UserName
+                                </a>
+                            </li>
                             <li><a href="@Url.Action("Logout", "Account", new { url = HttpContext.Current.Request.RawUrl})">Logout</a></li>
 
                         }

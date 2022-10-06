@@ -12,8 +12,7 @@ namespace SNShop.Areas.Sales.Controllers
         // GET: Sales/Orders
         public ActionResult List_Orders_Approved()
         {
-            _ = new List<Order>(100);
-            List<Order> orders = db.Orders.Where(s => s.EmployeeID != null && s.ModifiedDate == DateTime.Now).OrderByDescending(s=>s.ModifiedDate).ToList();
+            List<Order> orders = db.Orders.Where(s => s.EmployeeID != null && s.ModifiedDate.DayOfWeek == DateTime.Now.DayOfWeek).OrderByDescending(s=>s.ModifiedDate).ToList();
             return View(orders);
         }
     }

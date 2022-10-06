@@ -21,14 +21,21 @@ namespace SNShop.Areas.Sales.Controllers
         private decimal? total_amount = 0;
         public ActionResult Index()
         {
-            var pairs = db.Products.ToList();
-            ViewBag.Data = pairs;
-            var listProductsForm = GetListForm();
-            var card_id = GetCardID();
-            dynamic dynamicModel = new ExpandoObject();
-            dynamicModel.ListProductForm = listProductsForm;
-            dynamicModel.Card_ID = card_id;
-            return View(dynamicModel);
+            if (Session["UserID"] != null || Session["Roles"].ToString() == "Members")
+            {
+                var pairs = db.Products.ToList();
+                ViewBag.Data = pairs;
+                var listProductsForm = GetListForm();
+                var card_id = GetCardID();
+                dynamic dynamicModel = new ExpandoObject();
+                dynamicModel.ListProductForm = listProductsForm;
+                dynamicModel.Card_ID = card_id;
+                return View(dynamicModel);
+            }
+            else
+            {
+                return RedirectToAction("EmployeeLogin", "Account");
+            }
         }
         public ID_Card GetCardID()
         {
@@ -57,45 +64,27 @@ namespace SNShop.Areas.Sales.Controllers
                 Session[Constants.CUSTOMER_FORM_ID_CARD_SESSION] = card_id;
                 return Json(new { status = 200, cus_id = cus.Id, card_id = card_id });
             }
-            return Json(new {status = 400});
+            return Json(new {status = 400, msg = "Không có ID này. Vui lòng nhờ Admin tạo User mới" });
         }
-        public JsonResult Create_Receipt(int id)
+        public JsonResult Create_Receipt(int? id)
         {
             List<FormModel> forms = GetListForm();
-            ID_Card iD_Card = GetCardID();
             if (forms.Any())
             {
-                var CustomnerName = db.Customers.SingleOrDefault(s => s.Id == id).User.Truename;
-                var filePath = "D:\\HoaDon.csv";
-                using (StreamWriter writer = new StreamWriter(new FileStream(filePath,
-                FileMode.Create, FileAccess.Write), Encoding.UTF8))
-                {
-                    writer.WriteLine("{0},{1}",null, "=====HÓA ĐƠN=====");
-                    writer.WriteLine("{0},{1}", "Ngày lập:", DateTime.Now.ToString("dd-MM-yyyy"));
-                    writer.WriteLine("{0},{1}", "Customer Name:", CustomnerName);
-                    writer.WriteLine("{0},{1},{2}", "Product Name", "Quantity", "Unit Price");
-                    decimal sum = 0;
-                    for (int i = 0; i < forms.Count(); i++)
-                    {
-                        writer.WriteLine("{0},{1},{2}", forms[i].name, forms[i].quantity, string.Format("{0:#.#}đ", forms[i].unitPrice));                        
-                        sum += (decimal)forms[i].total;
-                    }
-                    writer.WriteLine("{0},{1}", "Total:", string.Format("{0:#.#}đ", sum));
-                    writer.WriteLine("{0},{1}", "Employee Name:", Session["TrueName"]);
-                    writer.Close();
-                }
                 using (TransactionScope tranScope = new TransactionScope())
                 {
                     try
                     {
+                        ID_Card iD_Card = GetCardID();
+                        var CustomnerName = db.Customers.SingleOrDefault(s => s.Id == id).User.Truename;
+                        var filePath = "D:\\HoaDon.csv";
                         Order order = new Order();
                         UserDao userDao = new UserDao();
                         order.ModifiedDate = DateTime.Now;
-                        order.CustomerID = id;
+                        order.CustomerID = (int)id;
                         db.Orders.InsertOnSubmit(order);
                         db.SubmitChanges();
-                        List<FormModel> carts = GetListForm();
-                        foreach (var item in carts)
+                        foreach (var item in forms)
                         {
                             OrderDetail d = new OrderDetail
                             {
@@ -105,22 +94,37 @@ namespace SNShop.Areas.Sales.Controllers
                                 UnitPrice = item.unitPrice,
                                 ModifiedDate = DateTime.Now,
                             };
-
                             db.OrderDetails.InsertOnSubmit(d);
+                        }
+                        using (StreamWriter writer = new StreamWriter(new FileStream(filePath,
+                        FileMode.Create, FileAccess.Write), Encoding.UTF8))
+                        {
+                            writer.WriteLine("{0},{1}", null, "=====HÓA ĐƠN=====");
+                            writer.WriteLine("{0},{1}", "Ngày lập:", DateTime.Now.ToString("dd-MM-yyyy"));
+                            writer.WriteLine("{0},{1}", "Customer Name:", CustomnerName);
+                            writer.WriteLine("{0},{1},{2}", "Product Name", "Quantity", "Unit Price");
+                            decimal sum = 0;
+                            for (int i = 0; i < forms.Count(); i++)
+                            {
+                                writer.WriteLine("{0},{1},{2}", forms[i].name, forms[i].quantity, string.Format("{0:#.#}đ", forms[i].unitPrice));
+                                sum += (decimal)forms[i].total;
+                            }
+                            writer.WriteLine("{0},{1}", "Total:", string.Format("{0:#.#}đ", sum));
+                            writer.WriteLine("{0},{1}", "Employee Name:", Session["TrueName"]);
+                            writer.Close();
                         }
                         db.SubmitChanges();
                         tranScope.Complete();
-                        Session[Constants.FORM_SESSION] = null;
+                        iD_Card = null;
+                        id = null; 
+                        Session[Constants.CUSTOMER_FORM_ID_CARD_SESSION] = iD_Card;
                     }
                     catch
                     {
                         tranScope.Dispose();
                     }
                 }
-                forms.Clear();
-                iD_Card = null;
-                Session[Constants.FORM_SESSION] = forms;
-                Session[Constants.CUSTOMER_FORM_ID_CARD_SESSION] = iD_Card;
+
                 return Json(new
                 {
                     status = 200
@@ -130,6 +134,36 @@ namespace SNShop.Areas.Sales.Controllers
             {
                 status = 400
             });
+        }
+        public JsonResult UpdateProduct()
+        {
+            List<FormModel> forms = GetListForm();
+            using (TransactionScope tranScope = new TransactionScope())
+            {
+                try
+                {
+                    foreach (var item in forms)
+                    {
+                        var p = db.Products.SingleOrDefault(s => s.Id == item.productID);
+                        p.UnitsInStock -= (int)item.quantity;
+                        p.UnitsOnOrder += (int)item.quantity;
+                        UpdateModel(p);
+                        db.SubmitChanges();
+                    }
+                    db.SubmitChanges();
+                    tranScope.Complete();
+                    forms.Clear();
+                    Session[Constants.FORM_SESSION] = forms;
+                }
+                catch
+                {
+                    tranScope.Dispose();
+                }
+                return Json(new
+                {
+                    status = 200
+                });
+            }
         }
         [HttpPost]
         public JsonResult Delete_Input(int id)
