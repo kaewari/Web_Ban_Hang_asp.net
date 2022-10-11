@@ -4,7 +4,6 @@ namespace SNShop.Areas.Admin.Models
 {
     public class AdminLoginModel
     {
-        [Key]
         [Display(Name = "Email")]
         [Required(ErrorMessage = "Bạn phải nhập tài khoản email")]
         [DataType(DataType.EmailAddress)]

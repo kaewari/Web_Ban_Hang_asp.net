@@ -3,12 +3,12 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Sales/Views/Shared/_Layout.cshtml";
 }
-<input class="form-control rounded" type="text" id="search" placeholder="Nhập tên sản phẩm để tìm kiếm..." title="Type in a name">
+<input class="form-control rounded" type="text" id="searchProduct" placeholder="Bạn cần nhập từ khóa để tìm kiếm sản phẩm trước khi tạo hóa đơn..." title="Type in a name">
 <div style="display:flex; flex-wrap:wrap">
-    <div style="max-width: 100%">
-        <table class="table table-bordered" id="myTable" cellpadding="0">
+    <div style="max-width: 100%; display:flex">
+        <table class="table table-bordered" id="myTableProduct" cellpadding="0">
             <thead>
-                <tr class="myHead">
+                <tr>
                     <th>Id</th>
                     <th>Tên</th>
                     <th>Kho</th>
@@ -16,7 +16,7 @@
             </thead>
 
             <tbody>
-                @foreach (var item in ViewBag.Data)
+                @foreach (var item in ViewBag.Products)
                 {
                     <tr id="Product_@item.Id" class="product_info">
                         <td>
@@ -110,23 +110,31 @@
     #show {
         display: none
     }
+    #add{
+        display:none
+    }
 </style>
 <script>
     var id = null;
     var inp = null;
     var cus_id_check = null;
     var checkDuplicate = [];
-    var $rows = $('#myTable tr');
-    $("#search") .keyup(function () {
+    var $rowProducts = $('#myTableProduct tr');
+    $("#searchProduct").keyup(function () {
 
         var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
             reg = RegExp(val, 'i'),
             text;
 
-        $rows.show().filter(function () {
+        $rowProducts.show().filter(function () {
             text = $(this).text().replace(/\s+/g, ' ');
             return !reg.test(text);
         }).hide();
+        if ($("#searchProduct").val() == "") {
+            $("#add").hide();
+        }
+        else
+            $("#add").show();
     });
     function CheckCustomer() {
         var customer = document.getElementById("search_customer");
@@ -299,7 +307,7 @@
             if (checkDuplicate.includes(id)) {
                 alert("Mã sản phẩm đã tồn tại!!!");
             } else {
-                if (id <= 0 || id > @ViewBag.Data.Count) {
+                if (id <= 0 || id > @ViewBag.Products.Count) {
                     alert("Mã sản phẩm không tồn tại")
                 } else {
                     if (quantity == null || quantity == "") {

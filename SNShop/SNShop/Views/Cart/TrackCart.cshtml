@@ -1,0 +1,54 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "TrackCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lịch sử mua hàng</h2>
+<table class="table">
+    <tr>
+        <td class="text-danger">
+            Sản phẩm
+        </td>
+        <td class="text-danger">
+            Đơn giá
+        </td>
+        <td class="text-danger">
+            Số lượng
+        </td>
+        <td class="text-danger">
+            Tổng tiền
+        </td>
+    </tr>
+    @for(int i = 0; i < Model.Date.Length; i++)
+    {
+        foreach (var item in Model.ListOrderDetail)
+        {
+            if (Model.Date[i] == item.Order.ModifiedDate)
+            {
+                <tr>
+                    <td>
+                        <a class="text-decoration-none" href="@Url.Action("Detail", "Home", new {id = item.ProductID})">@item.Product.Name</a>
+                    </td>
+                    <td>
+                        <p class="text-danger font-weight-bold">@String.Format("{0:#,0}", item.UnitPrice)</p>
+                    </td>
+                    <td>
+                        @String.Format("{0:#,0}", item.Quantity)
+                    </td>
+                    <td>@String.Format("{0:#,0}", item.Quantity * item.UnitPrice)</td>
+                </tr>
+            }
+            else
+            {
+                continue;
+            }
+        }
+        <tr>
+            <td colspan="4">
+                <span class="font-weight-bold" style="color:rebeccapurple">Ngày đặt hàng: </span><span class="font-weight-bold">@String.Format("{0:dd/MM/yyyy HH:mm:ss tt}", Model.Date[i])</span>
+            </td>
+        </tr>
+    }
+</table>
+

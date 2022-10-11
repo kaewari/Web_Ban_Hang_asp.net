@@ -8,8 +8,14 @@ using SNShop.Common;
 using Facebook;
 using System.Configuration;
 using System.Web.Security;
-using SNShop.Areas.Admin.Models;
 using System.IO;
+using System.Threading.Tasks;
+using System.Net.Mail;
+using System.Net;
+using SNShop.Areas.Admin.Models;
+using EmailModel = SNShop.Models.EmailModel;
+using ResetPasswordModel = SNShop.Models.ResetPasswordModel;
+using ResetPasswordCodeModel = SNShop.Models.ResetPasswordCodeModel;
 
 namespace SNShop.Controllers
 {
@@ -177,7 +183,7 @@ namespace SNShop.Controllers
         }       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel registerModel, UserDao userDao, FormCollection formCollection)
+        public ActionResult Register(RegisterModel registerModel, UserDao userDao, FormCollection formCollection, string url)
         {
             ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
             ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
@@ -219,6 +225,8 @@ namespace SNShop.Controllers
                     ur.UserId = c.UserID;
                     db.UserRoles.InsertOnSubmit(ur);
                     db.SubmitChanges();
+                    if(url != null)
+                        return Redirect(url);
                     return RedirectToAction("Login", "Account");
                 }
             }
@@ -266,7 +274,9 @@ namespace SNShop.Controllers
             Session["Email"] = null;
             Session["Image"] = null;
             Session.Remove(HttpContext.Session.SessionID);
-            return Redirect(url);
+            if(url != null)
+                return Redirect(url);
+            return RedirectToAction("Login", "Account");
         }
         public ActionResult ShowProfile(string msg)
         {
@@ -405,6 +415,115 @@ namespace SNShop.Controllers
                 }
             }
             return View(changePassword);
+        }
+        public ActionResult ForgotPassword()
+        {
+            EmailModel emailModel = new EmailModel();
+            return View(emailModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ForgotPassword(EmailModel emailModel, FormCollection formCollection)
+        {
+            if (!string.IsNullOrEmpty(formCollection["Email"]) && !string.IsNullOrWhiteSpace(formCollection["Email"]))
+            {
+                User user = db.Users.SingleOrDefault(s => s.Email == emailModel.Email);
+                List<ResetPasswordCode> resetPasswordCodeList = db.ResetPasswordCodes.ToList();
+                ResetPasswordCode resetPasswordCode = new ResetPasswordCode();
+                Random random = new Random();
+                var body = "<p>Chào bạn,</p>" +
+                            "<p>Bạn vui lòng click vào nút Xác thực email dưới đây để xác minh địa chỉ email của bạn.</p>" +
+                            "<h2>Code: {0}</h2>" +
+                            "<h3>SNShop</h3>";
+                int code = random.Next(100000, 999999);
+                while (resetPasswordCodeList.Count(s => s.Code == code) > 0)
+                {
+                    code = random.Next(100000, 999999);
+                }
+                var message = new MailMessage();
+                message.To.Add(new MailAddress(emailModel.Email));
+                message.From = new MailAddress("1951052171son@ou.edu.vn");
+                message.Subject = "Đặt lại mật khẩu";
+                message.Body = string.Format(body, code.ToString());
+                message.IsBodyHtml = true;
+                using (var smtp = new SmtpClient())
+                {
+                    var credential = new NetworkCredential
+                    {
+                        UserName = "1951052171son@ou.edu.vn",
+                        Password = "Caygame10800@"
+                    };
+                    smtp.Credentials = credential;
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.Port = 587;
+                    smtp.EnableSsl = true;
+                    if (user != null)
+                    {
+                        var check = resetPasswordCodeList.Where(s => s.UserID == user.Id);
+                        if (check != null)
+                            db.ResetPasswordCodes.DeleteAllOnSubmit(check);
+                        resetPasswordCode.UserID = user.Id;
+                        resetPasswordCode.Code = code;
+                        resetPasswordCode.ModifiedDate = DateTime.Now;
+                        db.ResetPasswordCodes.InsertOnSubmit(resetPasswordCode);
+                        db.SubmitChanges();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Email chưa đăng ký!!!");
+                        return View(emailModel);
+                    }
+                    await smtp.SendMailAsync(message);
+                    return RedirectToAction("ResetPasswordCode", "Account");
+                }
+            }
+            return View(emailModel);
+        }
+        public ActionResult ResetPasswordCode()
+        {
+            ResetPasswordCodeModel resetPasswordCodeModel = new ResetPasswordCodeModel();
+            return View(resetPasswordCodeModel);
+        }
+        [HttpPost]
+        public ActionResult ResetPasswordCode(ResetPasswordCodeModel resetPasswordCodeModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var code = db.ResetPasswordCodes.SingleOrDefault(s => s.Code == int.Parse(resetPasswordCodeModel.Code));
+                if (code != null)
+                {
+                    return RedirectToAction("ResetPassword", "Account", new { code = int.Parse(resetPasswordCodeModel.Code) });
+                }
+                ModelState.AddModelError("", "Mã bảo mật không đúng");
+            }
+            return View(resetPasswordCodeModel);
+        }
+        public ActionResult ResetPassword()
+        {
+            ResetPasswordModel resetPasswordModel = new ResetPasswordModel();
+            return View(resetPasswordModel);
+        }
+        [HttpPost]
+        public ActionResult ResetPassword(ResetPasswordModel resetPasswordModel, int code)
+        {
+            ResetPasswordCode resetPasswordCode = db.ResetPasswordCodes.SingleOrDefault(s => s.Code == code);
+            if (ModelState.IsValid)
+            {
+                if (resetPasswordCode != null)
+                {
+                    resetPasswordCode.User.PasswordHash = Encode.GetMD5(resetPasswordModel.ConfirmPassword);
+                    UpdateModel(resetPasswordCode.User);
+                    db.ResetPasswordCodes.DeleteOnSubmit(resetPasswordCode);
+                    db.SubmitChanges();
+                    return RedirectToAction("UpdatePasswordSuccess", "Account");
+                }
+                return RedirectToAction("ForgotPassword", "Account");
+            }
+            return View(resetPasswordModel);
+        }
+        public ActionResult UpdatePasswordSuccess()
+        {
+            return View();
         }
     }
 }

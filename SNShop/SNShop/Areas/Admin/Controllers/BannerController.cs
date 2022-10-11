@@ -12,6 +12,7 @@ namespace SNShop.Areas.Admin.Controllers
     public class BannerController : Controller
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
         // GET: Admin/Banner
         public ActionResult List_Banners()
         {

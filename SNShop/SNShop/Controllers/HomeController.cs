@@ -97,5 +97,9 @@ namespace SNShop.Controllers
             Response.StatusCode = 500;
             return View();
         }
+        public ActionResult OrdersReturn()
+        {
+            return View();
+        }
     }
 }

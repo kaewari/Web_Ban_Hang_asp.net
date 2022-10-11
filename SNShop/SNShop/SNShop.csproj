@@ -211,13 +211,17 @@
     <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\EditUserModel.cs" />
+    <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\OrderFormModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\ResetPasswordCodeModel.cs" />
+    <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\SNOnlineShop.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SNOnlineShop.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\TrackCartModel.cs" />
     <Compile Include="Models\UserLoginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -4426,11 +4430,17 @@
     <Content Include="Views\Category\ProductOfSubCategory.cshtml" />
     <Content Include="Views\Cart\OrderForm.cshtml" />
     <Content Include="Views\Home\Comment_Rule.cshtml" />
+    <Content Include="Views\Cart\TrackCart.cshtml" />
+    <Content Include="Views\Cart\TrackCartDetail.cshtml" />
+    <Content Include="Views\Account\ResetPasswordCode.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\UpdatePasswordSuccess.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Home\OrdersReturn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Sales\Data\" />
-    <Folder Include="Areas\Sales\Views\Orders\" />
     <Folder Include="Images\Users\" />
     <Folder Include="Views\Employee\" />
   </ItemGroup>

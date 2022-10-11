@@ -15,7 +15,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input data-val="true" data-val-required="Bạn phải nhập tài khoản email" class="form-control" id="Email" name="Email" type="text" value="">
+                <input data-val="true" data-val-required="Bạn phải nhập tài khoản email" class="form-control" id="Email" name="Email" type="text">
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -26,6 +26,7 @@
                 <input data-val="true" data-val-required="Bạn phải nhập mật khẩu" class="form-control" id="Password" name="Password" type="password">
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
+            <a href="@Url.Action("ForgotPassword","Account")">Forgot password?</a>
         </div>
 
         <div class="form-group">
@@ -34,6 +35,9 @@
                 <a class="btn btn-primary" href="/Account/LoginFacebook">
                     <i class="fa-brands fa-square-facebook"></i>
                     Đăng nhập bằng Facebook
+                </a>
+                <a class="btn btn-success" href="@Url.Action("Register", "Account", new {url = HttpContext.Current.Request.RawUrl})">
+                    Đăng ký tài khoản
                 </a>
             </div>
         </div>

@@ -9,6 +9,9 @@ using SNShop.DAO;
 using System.Net.Mail;
 using System.Net;
 using System.Threading.Tasks;
+using System.Dynamic;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace SNShop.Controllers
 {
@@ -17,7 +20,13 @@ namespace SNShop.Controllers
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         private decimal? total_quantity = 0;
         private decimal? total_amount = 0;
-        // GET: Cart
+        public ActionResult ListCart()// hien thi gio hang
+        {
+            List<CartModel> carts = GetListCarts();//lay DSGH
+            ViewBag.Countproduct = Count();
+            ViewBag.Total = Total();
+            return View(carts);
+        }
         public List<CartModel> GetListCarts()//lay ds gio hang
         {
             List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
@@ -27,6 +36,23 @@ namespace SNShop.Controllers
                 Session[Constants.CartSession] = carts;
             }
             return carts;
+        }
+        public ActionResult TrackCart()
+        {
+            if (Session["UserID"] != null)
+            {
+                List<TrackCartModel> trackCartModels = new List<TrackCartModel>(10);
+                dynamic dynamicModel = new ExpandoObject();
+                int Id = int.Parse(Session["UserID"].ToString());
+                var listOrder = db.Orders.Where(s => s.CustomerID == Id).OrderByDescending(s => s.ModifiedDate);
+                dynamicModel.ListOrderDetail = db.OrderDetails.Where(s => listOrder.Select(a => a.Id).Contains(s.OrderId)).OrderByDescending(s => s.ModifiedDate);
+                dynamicModel.Date = db.Orders.Where(s => s.CustomerID == int.Parse(Session["UserID"].ToString()))
+                    .OrderByDescending(s => s.ModifiedDate)
+                    .Select(s => s.ModifiedDate)
+                    .ToArray();
+                return View(dynamicModel);
+            }
+            return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         public JsonResult AddCart(int id, string name, decimal? price)
@@ -105,13 +131,6 @@ namespace SNShop.Controllers
                 }
             }
         }
-        public ActionResult ListCart()// hien thi gio hang
-        {
-            List<CartModel> carts = GetListCarts();//lay DSGH
-            ViewBag.Countproduct = Count();
-            ViewBag.Total = Total();
-            return View(carts);
-        }
         public object cart_stat(List<CartModel> carts)
         {
             if (carts.Any())
@@ -185,7 +204,6 @@ namespace SNShop.Controllers
         public JsonResult DeleteCart(int id)
         {
             List<CartModel> carts = GetListCarts();
-            string error = null;
             if (carts.Any())
             {
                 var checkExits = carts.FirstOrDefault(x => x.ProductID == id);
@@ -199,15 +217,11 @@ namespace SNShop.Controllers
                         cartsData = cart_stat(carts),
                     });
                 }
-                else
-                {
-                    error = "Khong co san pham tuong ung de xoa!";
-                }
             }
             return Json(new
             {
                 status = 400,
-                error = error,
+                error = "Khong co san pham tuong ung de xoa!",
             });
         }
         public JsonResult DeleteAllCart()
@@ -232,9 +246,10 @@ namespace SNShop.Controllers
         {
             if (Session["UserID"] != null && Session["Roles"].ToString() == "Users")
             {
+                OrderFormModel orderFormModel = new OrderFormModel();
                 ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
                 ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
-                return View();
+                return View(orderFormModel);
             }
             return RedirectToAction("Login", "Account");
         }

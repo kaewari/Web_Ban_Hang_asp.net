@@ -354,6 +354,9 @@ body {
     .menu li:last-child {
         float: right !important;
     }
+    .header_bottom_right{
+        display:none
+    }
 }
 
 @media screen and (max-width: 600px) {

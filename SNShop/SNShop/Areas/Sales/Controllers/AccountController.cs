@@ -10,7 +10,10 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using EmailModel = SNShop.Areas.Sales.Models.EmailModel;
 using Encode = SNShop.Areas.Sales.Common.Encode;
+using ResetPasswordCodeModel = SNShop.Areas.Sales.Models.ResetPasswordCodeModel;
+using ResetPasswordModel = SNShop.Areas.Sales.Models.ResetPasswordModel;
 
 namespace SNShop.Areas.Sales.Controllers
 {

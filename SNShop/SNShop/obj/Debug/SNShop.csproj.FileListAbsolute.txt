@@ -255,3 +255,4 @@ D:\Đồ án ngành\Web_Ban_Hang_asp.net\SNShop\SNShop\bin\System.Runtime.Intero
 D:\Đồ án ngành\Web_Ban_Hang_asp.net\SNShop\SNShop\bin\CsvHelper.dll
 D:\Đồ án ngành\Web_Ban_Hang_asp.net\SNShop\SNShop\bin\System.ValueTuple.dll
 D:\Đồ án ngành\Web_Ban_Hang_asp.net\SNShop\SNShop\bin\CsvHelper.xml
+D:\Đồ án ngành\Web_Ban_Hang_asp.net\SNShop\SNShop\obj\Debug\SNShop.csproj.AssemblyReference.cache

@@ -23,8 +23,8 @@ namespace SNShop.Areas.Sales.Controllers
         {
             if (Session["UserID"] != null || Session["Roles"].ToString() == "Members")
             {
-                var pairs = db.Products.ToList();
-                ViewBag.Data = pairs;
+                var products = db.Products.ToList();
+                ViewBag.Products = products;
                 var listProductsForm = GetListForm();
                 var card_id = GetCardID();
                 dynamic dynamicModel = new ExpandoObject();

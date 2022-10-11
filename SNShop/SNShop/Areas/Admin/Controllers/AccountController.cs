@@ -13,7 +13,9 @@ using System.Net.Mail;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
-using ChangeAdminPasswordModel = SNShop.Areas.Admin.Models.ChangeAdminPasswordModel;
+using EmailModel = SNShop.Areas.Admin.Models.EmailModel;
+using ResetPasswordCodeModel = SNShop.Areas.Admin.Models.ResetPasswordCodeModel;
+using ResetPasswordModel = SNShop.Areas.Admin.Models.ResetPasswordModel;
 
 namespace SNShop.Areas.Admin.Controllers
 {
@@ -41,7 +43,8 @@ namespace SNShop.Areas.Admin.Controllers
         // GET: Admin/Account
         public ActionResult AdminLogin()
         {
-            return View();
+            AdminLoginModel adminLoginModel = new AdminLoginModel();
+            return View(adminLoginModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -81,24 +84,25 @@ namespace SNShop.Areas.Admin.Controllers
         }
         public ActionResult ForgotPassword()
         {
-            return View();
+            EmailModel emailModel = new EmailModel();
+            return View(emailModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(EmailModel emailModel)
+        public async Task<ActionResult> ForgotPassword(EmailModel emailModel, FormCollection formCollection)
         {
-            User user = db.Users.SingleOrDefault(s => s.Email == emailModel.Email);
-            List<ResetPasswordCode> resetPasswordCodeList = db.ResetPasswordCodes.ToList();
-            ResetPasswordCode resetPasswordCode = new ResetPasswordCode();
-            Random random = new Random();
-            if (ModelState.IsValid)
+            if (!string.IsNullOrEmpty(formCollection["Email"]) && !string.IsNullOrWhiteSpace(formCollection["Email"]))
             {
+                User user = db.Users.SingleOrDefault(s => s.Email == emailModel.Email);
+                List<ResetPasswordCode> resetPasswordCodeList = db.ResetPasswordCodes.ToList();
+                ResetPasswordCode resetPasswordCode = new ResetPasswordCode();
+                Random random = new Random();
                 var body = "<p>Chào bạn,</p>" +
                             "<p>Bạn vui lòng click vào nút Xác thực email dưới đây để xác minh địa chỉ email của bạn.</p>" +
                             "<h2>Code: {0}</h2>" +
                             "<h3>SNShop</h3>";
                 int code = random.Next(100000, 999999);
-                while (resetPasswordCodeList.Count(s=>s.Code == code) > 0)
+                while (resetPasswordCodeList.Count(s => s.Code == code) > 0)
                 {
                     code = random.Next(100000, 999999);
                 }
@@ -143,36 +147,45 @@ namespace SNShop.Areas.Admin.Controllers
         }
         public ActionResult ResetPasswordCode()
         {
-            return View();
+            ResetPasswordCodeModel resetPasswordCodeModel = new ResetPasswordCodeModel();
+            return View(resetPasswordCodeModel);
         }
         [HttpPost]
         public ActionResult ResetPasswordCode(ResetPasswordCodeModel resetPasswordCodeModel)
         {
-            var code = db.ResetPasswordCodes.SingleOrDefault(s=>s.Code == int.Parse(resetPasswordCodeModel.Code));
-            if (code != null)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("ResetPassword", "Account", new {code = int.Parse(resetPasswordCodeModel.Code) });
+                var code = db.ResetPasswordCodes.SingleOrDefault(s => s.Code == int.Parse(resetPasswordCodeModel.Code));
+                if (code != null)
+                {
+                    return RedirectToAction("ResetPassword", "Account", new { code = int.Parse(resetPasswordCodeModel.Code) });
+                }
+                ModelState.AddModelError("", "Mã bảo mật không đúng");
             }
-            ModelState.AddModelError("", "Mã bảo mật không đúng");
             return View(resetPasswordCodeModel);
         }
         public ActionResult ResetPassword()
         {
-            return View();
+            ResetPasswordModel resetPasswordModel = new ResetPasswordModel();
+            return View(resetPasswordModel);
         }
         [HttpPost]
         public ActionResult ResetPassword(ResetPasswordModel resetPasswordModel, int code)
         {
             ResetPasswordCode resetPasswordCode = db.ResetPasswordCodes.SingleOrDefault(s => s.Code == code);
-            if (resetPasswordCode != null)
+            if (ModelState.IsValid)
             {
-                resetPasswordCode.User.PasswordHash = Encode.GetMD5(resetPasswordModel.ConfirmPassword);
-                UpdateModel(resetPasswordCode.User);
-                db.ResetPasswordCodes.DeleteOnSubmit(resetPasswordCode);
-                db.SubmitChanges();
-                return RedirectToAction("UpdatePasswordSuccess", "Account");
+                if (resetPasswordCode != null)
+                {
+                    resetPasswordCode.User.PasswordHash = Encode.GetMD5(resetPasswordModel.ConfirmPassword);
+                    UpdateModel(resetPasswordCode.User);
+                    db.ResetPasswordCodes.DeleteOnSubmit(resetPasswordCode);
+                    db.SubmitChanges();
+                    return RedirectToAction("UpdatePasswordSuccess", "Account");
+                }
+                return RedirectToAction("ForgotPassword", "Account");
             }
-            return RedirectToAction("ForgotPassword", "Account");
+            return View(resetPasswordModel);
         }
         public ActionResult ShowProfile()
         {
@@ -269,16 +282,20 @@ namespace SNShop.Areas.Admin.Controllers
         public ActionResult ChangeAdminPassword(ChangeAdminPasswordModel changeAdminPassword)
         {
             User user = db.Users.FirstOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));
-            if (!user.PasswordHash.Equals(Encode.GetMD5(changeAdminPassword.OldPassword)))
-                ModelState.AddModelError("", "Mật khẩu không đúng.");
-            else
+            if (ModelState.IsValid)
             {
-                user.PasswordHash = Encode.GetMD5(changeAdminPassword.ConfirmNewPassword);
-                UpdateModel(user);
-                db.SubmitChanges();
-                Logout();
+                if (!user.PasswordHash.Equals(Encode.GetMD5(changeAdminPassword.OldPassword)))
+                    ModelState.AddModelError("", "Mật khẩu không đúng.");
+                else
+                {
+                    user.PasswordHash = Encode.GetMD5(changeAdminPassword.ConfirmNewPassword);
+                    UpdateModel(user);
+                    db.SubmitChanges();
+                    Logout();
+                }
+                return RedirectToAction("UpdatePasswordSuccess", "Account");
             }
-            return RedirectToAction("UpdatePasswordSuccess", "Account");
+            return View(changeAdminPassword);
         }
         public ActionResult UpdatePasswordSuccess()
         {
