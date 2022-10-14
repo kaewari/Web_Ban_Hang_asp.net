@@ -20,20 +20,22 @@ namespace SNShop.Controllers
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         private decimal? total_quantity = 0;
         private decimal? total_amount = 0;
-        public ActionResult ListCart()// hien thi gio hang
+        public ActionResult ListCart(string msg = null)// hien thi gio hang
         {
             List<CartModel> carts = GetListCarts();//lay DSGH
             ViewBag.Countproduct = Count();
             ViewBag.Total = Total();
+            if (msg != null)
+                ViewData["msg"] = msg;
             return View(carts);
         }
         public List<CartModel> GetListCarts()//lay ds gio hang
         {
-            List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
+            List<CartModel> carts = Session[Constants.CART_SESSION] as List<CartModel>;
             if (carts == null)
             {
                 carts = new List<CartModel>();
-                Session[Constants.CartSession] = carts;
+                Session[Constants.CART_SESSION] = carts;
             }
             return carts;
         }
@@ -79,7 +81,7 @@ namespace SNShop.Controllers
         }
         public decimal? Count()
         {
-            List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
+            List<CartModel> carts = Session[Constants.CART_SESSION] as List<CartModel>;
             if (carts.Any())
             {
                 total_quantity = carts.Sum(s => s.Quantity);
@@ -88,7 +90,7 @@ namespace SNShop.Controllers
         }
         public decimal? Total()
         {
-            List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
+            List<CartModel> carts = Session[Constants.CART_SESSION] as List<CartModel>;
             if (carts.Any())
             {
                 total_amount = carts.Sum(s => s.Total);
@@ -105,6 +107,7 @@ namespace SNShop.Controllers
                     UserDao userDao = new UserDao();
                     order.ModifiedDate = DateTime.Now;
                     order.CustomerID = userDao.GetUserById(int.Parse(Session["UserID"].ToString()));
+
                     db.Orders.InsertOnSubmit(order);
                     db.SubmitChanges();
                     List<CartModel> carts = GetListCarts();
@@ -118,12 +121,37 @@ namespace SNShop.Controllers
                             UnitPrice = item.UnitPrice,
                             ModifiedDate = DateTime.Now,
                         };
-
                         db.OrderDetails.InsertOnSubmit(d);
                     }
                     db.SubmitChanges();
                     tranScope.Complete();
-                    Session[Constants.CartSession] = null;
+                }
+                catch
+                {
+                    tranScope.Dispose();
+                }
+            }
+            UpdateProduct();
+        }
+        public void UpdateProduct()
+        {
+            List<CartModel> carts = GetListCarts();
+            using (TransactionScope tranScope = new TransactionScope())
+            {
+                try
+                {
+                    foreach (var item in carts)
+                    {
+                        var p = db.Products.SingleOrDefault(s => s.Id == item.ProductID);
+                        p.UnitsInStock -= (int)item.Quantity;
+                        p.UnitsOnOrder += (int)item.Quantity;
+                        UpdateModel(p);
+                        db.SubmitChanges();
+                    }
+                    db.SubmitChanges();
+                    tranScope.Complete();
+                    carts.Clear();
+                    Session[Constants.CART_SESSION] = carts;
                 }
                 catch
                 {
@@ -210,7 +238,7 @@ namespace SNShop.Controllers
                 if (checkExits != null)
                 {
                     carts.Remove(checkExits);
-                    Session[Constants.CartSession] = carts;
+                    Session[Constants.CART_SESSION] = carts;
                     return Json(new
                     {
                         status = 200,
@@ -244,14 +272,26 @@ namespace SNShop.Controllers
         }
         public ActionResult OrderForm()
         {
-            if (Session["UserID"] != null && Session["Roles"].ToString() == "Users")
+            var listCart = GetListCarts();
+            if(listCart.Any())
             {
-                OrderFormModel orderFormModel = new OrderFormModel();
-                ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
-                ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
-                return View(orderFormModel);
+                foreach (var item in listCart)
+                {
+                    if (item.Quantity > db.Products.FirstOrDefault(s => s.Id == item.ProductID).UnitsInStock)
+                    {
+                        return RedirectToAction("ListCart", "Cart", new { msg = "Vượt quá số lượng hiện tại!!!" });
+                    }
+                }
+                if (Session["UserID"] != null && Session["Roles"].ToString() == "Users")
+                {
+                    OrderFormModel orderFormModel = new OrderFormModel();
+                    ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+                    ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
+                    return View(orderFormModel);
+                }
+                return RedirectToAction("Login", "Account");
             }
-            return RedirectToAction("Login", "Account");
+            return Redirect("/");
         }
         [HttpPost]
         public async Task<ActionResult> OrderForm(OrderFormModel orderForm, FormCollection formCollection)

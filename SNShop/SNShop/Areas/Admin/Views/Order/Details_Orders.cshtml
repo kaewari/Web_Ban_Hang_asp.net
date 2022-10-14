@@ -5,11 +5,9 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details_Orders</h2>
+<h2>Chi tiết đơn đặt hàng cần duyệt</h2>
 
 <div>
-    <h4>Order</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.CustomerID)
@@ -20,27 +18,19 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Customer.User.Truename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.User.Truename)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Customer.User.Username)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Customer.User.Username)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmployeeID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmployeeID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Employee.User.Username)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee.User.Username)
         </dd>
 
         <dt>

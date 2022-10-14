@@ -11,7 +11,7 @@ namespace SNShop.Controllers
         // GET: MyBase
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {          
-            List<CartModel> carts = Session[Constants.CartSession] as List<CartModel>;
+            List<CartModel> carts = Session[Constants.CART_SESSION] as List<CartModel>;
 
             if (carts == null)
             {

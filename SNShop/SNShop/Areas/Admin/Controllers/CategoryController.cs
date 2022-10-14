@@ -53,7 +53,7 @@ namespace SNShop.Areas.Admin.Controllers
         public ActionResult Edit_Categories(FormCollection formCollection, int id)
         {
             var p = db.Categories.FirstOrDefault(s => s.Id == id);
-            if (string.IsNullOrEmpty(formCollection["Name"]) || !string.IsNullOrWhiteSpace(formCollection["Name"]))
+            if (string.IsNullOrEmpty(formCollection["Name"]) || string.IsNullOrWhiteSpace(formCollection["Name"]))
             {              
                 ViewData["loi"] = "Bạn vui lòng nhập tên danh mục.";
             }
