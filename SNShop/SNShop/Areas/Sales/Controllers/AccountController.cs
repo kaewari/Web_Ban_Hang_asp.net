@@ -72,7 +72,6 @@ namespace SNShop.Areas.Sales.Controllers
         }
         public ActionResult Logout()
         {
-            Session.Abandon();
             Session.Clear();
             Session.Remove(HttpContext.Session.SessionID);
             return RedirectToAction("EmployeeLogin", "Account");

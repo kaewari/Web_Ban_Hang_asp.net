@@ -10,7 +10,7 @@ namespace SNShop.Areas.Admin.Controllers
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         // GET: Admin/Product
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
+        [OutputCache(Duration = 900, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_Products(string error)
         {
             var p = db.Products.Select(s => s).ToList();
@@ -27,29 +27,47 @@ namespace SNShop.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create_Product(FormCollection form, Product product)
         {
-            if (string.IsNullOrEmpty(form["Name"]))
+            ViewData["NCC"] = new SelectList(db.Brands, "Id", "Name");
+            ViewData["LSP"] = new SelectList(db.Categories, "Id", "Name");
+            if (string.IsNullOrEmpty(form["Name"]) || string.IsNullOrWhiteSpace(form["Name"]))
             {
                 ViewData["Loi"] = "Vui lòng nhập tên sản phẩm.";
-                ViewData["NCC"] = new SelectList(db.Brands, "Id", "Name");
-                ViewData["LSP"] = new SelectList(db.Categories, "Id", "Name");
             }
             else
             {
                 try
                 {
                     product.Name = form["Name"];
-                    product.CategoryID = int.Parse(form["LSP"]);
-                    product.BrandID = int.Parse(form["NCC"]);
-                    product.ModifiedDate = DateTime.Parse(form["Release"]);
-                    if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
+                    if (!string.IsNullOrEmpty(form["LSP"]) || !string.IsNullOrWhiteSpace(form["LSP"]))
+                        product.CategoryID = int.Parse(form["LSP"]);
+                    if (!string.IsNullOrEmpty(form["NCC"]) || !string.IsNullOrWhiteSpace(form["NCC"]))
+                        product.BrandID = int.Parse(form["NCC"]);
+                    if (!string.IsNullOrEmpty(form["Release"]) || !string.IsNullOrWhiteSpace(form["Release"]))
+                    {
+                        product.ModifiedDate = DateTime.Parse(form["Release"]);
+                        ViewData["Loi"] = "Vui lòng chọn thời gian ra mắt.";
+                    }                    
+                    if (!string.IsNullOrEmpty(form["QuantityPerUnit"]) || !string.IsNullOrWhiteSpace(form["QuantityPerUnit"]))
+                    {
                         product.QuantityPerUnit = form["QuantityPerUnit"];
-                    if (!string.IsNullOrEmpty(form["Price"]))
+                        ViewData["Loi"] = "Vui lòng nhập tổng số lượng.";
+                    }
+                    if (!string.IsNullOrEmpty(form["Price"]) || !string.IsNullOrWhiteSpace(form["Price"]))
+                    {
                         product.Price = int.Parse(form["Price"]);
-                    if (!string.IsNullOrEmpty(form["UnitsInStock"]))
+                        ViewData["Loi"] = "Vui lòng nhập giá sản phẩm.";
+                    }
+                    if (!string.IsNullOrEmpty(form["UnitsInStock"]) || !string.IsNullOrWhiteSpace(form["UnitsInStock"]))
+                    {
                         product.UnitsInStock = int.Parse(form["UnitsInStock"]);
-                    if (!string.IsNullOrEmpty(form["UnitsOnOrder"]))
+                        ViewData["Loi"] = "Vui lòng nhập số lượng trong kho.";
+                    }
+                    if (!string.IsNullOrEmpty(form["UnitsOnOrder"]) || !string.IsNullOrWhiteSpace(form["UnitsOnOrder"]))
+                    {
                         product.UnitsOnOrder = int.Parse(form["UnitsOnOrder"]);
-                    if (!string.IsNullOrEmpty(form["Discontinued"]))
+                        ViewData["Loi"] = "Vui lòng nhập số lượng trong đơn đặt hàng.";
+                    }                      
+                    if (!string.IsNullOrEmpty(form["Discontinued"]) || !string.IsNullOrWhiteSpace(form["Discontinued"]))
                         product.Discontinued = bool.Parse(form["Discontinued"]);
                     db.Products.InsertOnSubmit(product);
                     db.SubmitChanges();
@@ -63,13 +81,11 @@ namespace SNShop.Areas.Admin.Controllers
 
             return View(product);
         }
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Details_Product(int id)
         {
             Product p = db.Products.FirstOrDefault(s => s.Id == id);
             return View(p);
         }
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Product(int id)
         {
             var p = db.Products.FirstOrDefault(s => s.Id == id);
@@ -79,22 +95,23 @@ namespace SNShop.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Product(FormCollection form, int id)
         {
+            ViewData["NCC"] = new SelectList(db.Brands, "Id", "Name");
+            ViewData["LSP"] = new SelectList(db.Categories, "Id", "Name");
             var p = db.Products.Where(s => s.Id == id).FirstOrDefault();
             if (string.IsNullOrEmpty(form["Name"]))
             {
                 ViewData["Loi"] = "Vui lòng nhập tên sản phẩm.";
-                ViewData["NCC"] = new SelectList(db.Brands, "Id", "Name");
-                ViewData["LSP"] = new SelectList(db.Categories, "Id", "Name");
             }
             else
             {
                 try
                 {
-                    p.BrandID = int.Parse(form["NCC"]);
-                    p.CategoryID = int.Parse(form["LSP"]);
+                    if (!string.IsNullOrEmpty(form["LSP"]) || !string.IsNullOrWhiteSpace(form["LSP"]))
+                        p.CategoryID = int.Parse(form["LSP"]);
+                    if (!string.IsNullOrEmpty(form["NCC"]) || !string.IsNullOrWhiteSpace(form["NCC"]))
+                        p.BrandID = int.Parse(form["NCC"]);
                     p.Name = form["Name"];
                     if (!string.IsNullOrEmpty(form["CPU"]))
                         p.CPU = form["CPU"];
@@ -110,19 +127,39 @@ namespace SNShop.Areas.Admin.Controllers
                         p.OS = form["OS"];
                     if (!string.IsNullOrEmpty(form["Screen"]))
                         p.Screen = form["Screen"];
-                    if (!string.IsNullOrEmpty(form["Release"]))
-                        p.Release = DateTime.Parse(form["Release"]);
+                    if (!string.IsNullOrEmpty(form["Release"]) || !string.IsNullOrWhiteSpace(form["Release"]))
+                    {
+                        p.ModifiedDate = DateTime.Parse(form["Release"]);
+                        ViewData["Loi"] = "Vui lòng chọn thời gian ra mắt.";
+                    }
                     if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
                         p.VGA = form["VGA"];
-                    if (!string.IsNullOrEmpty(form["QuantityPerUnit"]))
+                    if (!string.IsNullOrEmpty(form["Release"]) || !string.IsNullOrWhiteSpace(form["Release"]))
+                    {
+                        p.ModifiedDate = DateTime.Parse(form["Release"]);
+                        ViewData["Loi"] = "Vui lòng chọn thời gian ra mắt.";
+                    }
+                    if (!string.IsNullOrEmpty(form["QuantityPerUnit"]) || !string.IsNullOrWhiteSpace(form["QuantityPerUnit"]))
+                    {
                         p.QuantityPerUnit = form["QuantityPerUnit"];
-                    if (!string.IsNullOrEmpty(form["Price"]))
-                        p.Price = (int?)decimal.Parse(form["Price"]);
-                    if (!string.IsNullOrEmpty(form["UnitsInStock"]))
+                        ViewData["Loi"] = "Vui lòng nhập tổng số lượng.";
+                    }
+                    if (!string.IsNullOrEmpty(form["Price"]) || !string.IsNullOrWhiteSpace(form["Price"]))
+                    {
+                        p.Price = int.Parse(form["Price"]);
+                        ViewData["Loi"] = "Vui lòng nhập giá sản phẩm.";
+                    }
+                    if (!string.IsNullOrEmpty(form["UnitsInStock"]) || !string.IsNullOrWhiteSpace(form["UnitsInStock"]))
+                    {
                         p.UnitsInStock = int.Parse(form["UnitsInStock"]);
-                    if (!string.IsNullOrEmpty(form["UnitsOnOrder"]))
+                        ViewData["Loi"] = "Vui lòng nhập số lượng trong kho.";
+                    }
+                    if (!string.IsNullOrEmpty(form["UnitsOnOrder"]) || !string.IsNullOrWhiteSpace(form["UnitsOnOrder"]))
+                    {
                         p.UnitsOnOrder = int.Parse(form["UnitsOnOrder"]);
-                    if (!string.IsNullOrEmpty(form["Discontinued"]))
+                        ViewData["Loi"] = "Vui lòng nhập số lượng trong đơn đặt hàng.";
+                    }
+                    if (!string.IsNullOrEmpty(form["Discontinued"]) || !string.IsNullOrWhiteSpace(form["Discontinued"]))
                         p.Discontinued = bool.Parse(form["Discontinued"]);
                     p.ModifiedDate = DateTime.Now;
                     UpdateModel(p);

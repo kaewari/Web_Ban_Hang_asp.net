@@ -8,10 +8,10 @@
 + Đã hoàn thành comment.
 + Đã hoàn thành trang employee.
 + Đã hoàn thành chức năng tạo hóa đơn.
-+ Chạy 2 file .sql để thêm data và job
++ Chạy 2 file database.bak và ResetCodeJob.sql để restore database và tạo job
 + Tài khoản admin: sonhoang301@gmail.com 
 + Password: 123123
 + Tài khoản nhân viên: sonhoang305@gmail.com 
 + Password: 123123
-+ Tài khoản admin: sonhoang1@gmail.com 
++ Tài khoản khách hàng: sonhoang1@gmail.com 
 + Password: 123123

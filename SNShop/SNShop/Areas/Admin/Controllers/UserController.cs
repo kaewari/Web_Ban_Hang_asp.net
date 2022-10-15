@@ -1,6 +1,7 @@
 ﻿using SNShop.Models;
 using System;
 using System.Linq;
+using System.Transactions;
 using System.Web.Mvc;
 
 namespace SNShop.Areas.Admin.Controllers
@@ -9,7 +10,7 @@ namespace SNShop.Areas.Admin.Controllers
     {
         // GET: Admin/User
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
+        [OutputCache(Duration = 900, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_Users(string error)
         {
             var p = db.Users.Select(s => s).ToList();
@@ -106,13 +107,12 @@ namespace SNShop.Areas.Admin.Controllers
             }           
             return View(user);
         }
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
-        public ActionResult Details_Users(int id)
+        public ActionResult Details_User(int id)
         {
             var p = db.Users.FirstOrDefault(s => s.Id == id);
             return View(p);
         }
-        public ActionResult Delete_User_Image(int id)
+        public ActionResult Edit_User_Image(int id)
         {
             try
             {
@@ -124,6 +124,35 @@ namespace SNShop.Areas.Admin.Controllers
             }
             catch { }
             return RedirectToAction("Edit_Users_Image", new { id = id });
+        }
+        public ActionResult Delete_User(int id)
+        {
+            using (TransactionScope tranScope = new TransactionScope())
+            {
+                try
+                {
+                    var p = db.Users.FirstOrDefault(s => s.Id == id);
+                    db.Users.DeleteOnSubmit(p);
+                    if (p.UserRoles.FirstOrDefault(s => s.UserId == id).Role.Name == "Users")
+                    {
+                        var c = db.Customers.FirstOrDefault(s => s.UserID == id);
+                        db.Customers.DeleteOnSubmit(c);
+                        var r = db.UserRoles.FirstOrDefault(s => s.UserId == id);
+                        db.UserRoles.DeleteOnSubmit(r);
+                    }
+                    else
+                    {
+                        var e = db.Employees.FirstOrDefault(s => s.UserID == id);
+                        db.Employees.DeleteOnSubmit(e);
+                        var r = db.UserRoles.FirstOrDefault(s => s.UserId == id);
+                        db.UserRoles.DeleteOnSubmit(r);
+                    }
+                    db.SubmitChanges();
+                    tranScope.Complete();
+                }
+                catch { }
+            }
+            return RedirectToAction("List_Users", new { error = "Xóa user thành công." });
         }
     }
 }

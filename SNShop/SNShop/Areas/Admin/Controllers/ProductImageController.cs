@@ -14,7 +14,7 @@ namespace SNShop.Areas.Admin.Controllers
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         // GET: Admin/ProductImage
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
+        [OutputCache(Duration = 900, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_Product_Image(string error)
         {
             _ = new List<ProductImage>(1500);
@@ -133,13 +133,11 @@ namespace SNShop.Areas.Admin.Controllers
             catch { }
             return View(productImage);
         }
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Details_Product_Image(int id)
         {
             var p = db.ProductImages.FirstOrDefault(s => s.Id == id);
             return View(p);
         }
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Product_Image(int id)
         {
             var p = db.ProductImages.FirstOrDefault(s => s.Id == id);
@@ -147,7 +145,6 @@ namespace SNShop.Areas.Admin.Controllers
             return View(p);
         }
         [HttpPost]
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "id")]
         public ActionResult Edit_Product_Image(ImageModel imageModel, FormCollection formCollection, ProductImage p, int id)
         {
             try

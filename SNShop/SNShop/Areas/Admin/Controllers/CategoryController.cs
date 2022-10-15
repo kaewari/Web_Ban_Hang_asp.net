@@ -9,7 +9,7 @@ namespace SNShop.Areas.Admin.Controllers
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         // GET: Admin/Category
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
+        [OutputCache(Duration = 900, Location = System.Web.UI.OutputCacheLocation.Server)]
         public ActionResult List_Categories(string error)
         {
             var p = db.Categories.Select(s => s).ToList();

@@ -268,11 +268,7 @@ namespace SNShop.Controllers
         }
         public ActionResult Logout(string url)
         {
-            Session.Abandon();
-            Session["UserID"] = null;
-            Session["UserName"] = null;
-            Session["Email"] = null;
-            Session["Image"] = null;
+            Session.Clear();
             Session.Remove(HttpContext.Session.SessionID);
             if(url != null)
                 return Redirect(url);

@@ -89,7 +89,6 @@ namespace SNShop.Areas.Admin.Controllers
             }
             return View(p);
         }
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Client, VaryByParam = "id")]
         public ActionResult Edit_Users_Image(int id)
         {
             var p = db.Users.FirstOrDefault(s => s.Id == id);
@@ -102,7 +101,6 @@ namespace SNShop.Areas.Admin.Controllers
             return View(p);
         }
         [HttpPost]
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Client, VaryByParam = "id")]
         public ActionResult Edit_Users_Image(ImageModel imageModel, User p, int id)
         {
             ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
@@ -122,7 +120,6 @@ namespace SNShop.Areas.Admin.Controllers
             }
             return View(p);
         }
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Client, VaryByParam = "id")]
         public ActionResult Edit_Users(FormCollection formCollection, int id)
         {
             try

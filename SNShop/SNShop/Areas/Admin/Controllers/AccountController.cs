@@ -73,12 +73,7 @@ namespace SNShop.Areas.Admin.Controllers
         }
         public ActionResult Logout()
         {
-            Session.Abandon();
-            Session["UserID"] = null;
-            Session["UserName"] = null;
-            Session["Email"] = null;
-            Session["Roles"] = null;
-            Session["Image"] = null;
+            Session.Clear();
             Session.Remove(HttpContext.Session.SessionID);
             return RedirectToAction("AdminLogin", "Account");
         }
