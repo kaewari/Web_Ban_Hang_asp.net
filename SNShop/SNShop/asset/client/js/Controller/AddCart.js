@@ -1,14 +1,15 @@
-﻿function addCart(id, name, price) {
-    Add(id, name, price);
+﻿function addCart(id, name, price, stock) {
+    Add(id, name, price, stock);
 }
 
-function Add(id, name, price) {
+function Add(id, name, price, stock) {
     fetch('/Cart/AddCart', {
         method: 'post',
         body: JSON.stringify({
             'id': id,
             'name': name,
             'price': parseFloat(price),
+            'stock': parseInt(stock)
         }),
         headers: {
             'Content-Type': 'application/json'

@@ -67,6 +67,7 @@
         </table>
     </div>
     <div id="add" class="text-center" style="max-width:100%;">
+        <h3 class="text-danger">File sẽ được lưu vào ổ D</h3>
         <form id="form_customer" style="min-width: 100%">
             <div style="display: flex;">
                 @if (Model.Card_ID.Id == null)
@@ -120,7 +121,12 @@
     var cus_id_check = null;
     var checkDuplicate = [];
     var $rowProducts = $('#myTableProduct tr');
-    $("#searchProduct").keyup(function () {
+    if ($("#searchProduct").val() == "") {
+        $("#add").hide();
+    }
+    else
+        $("#add").show();
+    $("#searchProduct").on("input", function () {
 
         var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
             reg = RegExp(val, 'i'),
@@ -197,6 +203,7 @@
                     alert("Update tồn kho và đơn hàng thành công.")
                     checkDuplicate = []
                     var checkForm = document.getElementById('form');
+                    document.getElementById("searchProduct").value = ""
                     if (checkForm.hasChildNodes && checkForm.lastElementChild != checkForm.firstElementChild) {
                         while (checkForm.hasChildNodes()) {
                             if (checkForm.lastElementChild == checkForm.firstElementChild)
@@ -314,7 +321,7 @@
                     } else {
                         var checkStock = document.getElementById("Product_" + id);
                         if (quantity <= 0 || quantity > parseInt(checkStock.lastElementChild.textContent)) {
-                            alert("Số lượng không được < 0 hoặc lớn hơn số lượng tồn kho");
+                            alert("Số lượng không được <= 0 hoặc lớn hơn số lượng tồn kho");
                         } else {
                             fetch('/Sales/Home/CheckProduct', {
                                 method: 'post',

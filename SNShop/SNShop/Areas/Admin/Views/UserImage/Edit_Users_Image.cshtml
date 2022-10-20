@@ -79,6 +79,14 @@
                     </div>
                 </div>
 
+                 <div class="form-group">
+                     <label class="form-control-label col-md-2">Role</label>
+                     <div class="col-md-10">
+                         @Html.DropDownList("VT", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlRole" })
+                         <span class="field-validation-valid text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+                     </div>
+                </div>
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.ProvinceID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -97,7 +105,7 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-12 row">
                         <input type="submit" value="Save" class="btn btn-danger" />
-                        <a class="btn btn-primary" style="margin-left:5px" href="@Url.Action("List_Users","Users")">Back to List</a>
+                        <a class="btn btn-primary" style="margin-left:5px" href="@Url.Action("List_Users","User")">Back to List</a>
                     </div>
                 </div>
             </div>
@@ -136,6 +144,13 @@
     </div>
 </div>
 <script>
+    var data = document.getElementById("ddlRole");
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].value == @ViewBag.Role) {
+            data[i].selected = "selected";
+            break;
+        }
+    }
     var user = {
         init: function () {
             user.loadProvince();
@@ -165,6 +180,12 @@
                     if (response.status == true) {
                         var html = '<option value="">--Chọn tỉnh thành--</option>';
                         var data = response.data;
+                        $('#ddlDistrict')
+                            .find('option')
+                            .remove()
+                            .end()
+                            .append('<option value=""></option>')
+                            .val('0')
                         $.each(data, function (i, item) {
                             if (item.Id == @Model.ProvinceID)
                                 html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
@@ -196,7 +217,7 @@
                     }
                 }
             })
-        }
+        },
     }
     user.init();
 </script>

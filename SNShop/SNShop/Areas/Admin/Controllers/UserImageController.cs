@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace SNShop.Areas.Admin.Controllers
@@ -89,15 +90,26 @@ namespace SNShop.Areas.Admin.Controllers
             }
             return View(p);
         }
-        public ActionResult Edit_Users_Image(int id)
+        public ActionResult Edit_Users_Image(int id, string error)
         {
             var p = db.Users.FirstOrDefault(s => s.Id == id);
             ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
             ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
-            if (string.IsNullOrEmpty(p.ProvinceID.ToString()))
-                p.ProvinceID = 0;
-            if (string.IsNullOrEmpty(p.ProvinceID.ToString()))
-                p.DistrictID = 0;
+            ViewData["VT"] = new SelectList(db.Roles, "Id", "Name");
+            try
+            {
+                if (string.IsNullOrEmpty(p.ProvinceID.ToString()))
+                    p.ProvinceID = 0;
+                if (string.IsNullOrEmpty(p.DistrictID.ToString()))
+                    p.DistrictID = 0;
+                ViewBag.Role = db.UserRoles.FirstOrDefault(s => s.UserId == id).RoleId;
+                if(error != null)
+                    ViewData["loi"] = error;
+            }
+            catch (Exception ex)
+            {
+                ViewData["loi"] = ex.Message;
+            }
             return View(p);
         }
         [HttpPost]
@@ -105,6 +117,7 @@ namespace SNShop.Areas.Admin.Controllers
         {
             ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
             ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
+            ViewData["VT"] = new SelectList(db.Roles, "Id", "Name");
             try
             {
                 ImageModel image = Single_Product_Image(imageModel);
@@ -120,8 +133,9 @@ namespace SNShop.Areas.Admin.Controllers
             }
             return View(p);
         }
-        public ActionResult Edit_Users(FormCollection formCollection, int id)
+        public ActionResult Edit_Users(FormCollection formCollection, UserRole userRole, int id)
         {
+            ViewData["VT"] = new SelectList(db.Roles, "Id", "Name");
             try
             {
                 var p = db.Users.FirstOrDefault(s => s.Id == id);
@@ -129,14 +143,19 @@ namespace SNShop.Areas.Admin.Controllers
                 p.Email = formCollection["Email"];
                 p.Username = formCollection["Username"];
                 p.ProvinceID = int.Parse(formCollection["PR"]);
-                p.DistrictID = int.Parse(formCollection["DT"]);
+                p.DistrictID = int.Parse(formCollection["DT"]);               
                 p.ModifiedDate = DateTime.Now;
                 UpdateModel(p);
+                var role = db.UserRoles.FirstOrDefault(s => s.UserId == id);
+                db.UserRoles.DeleteOnSubmit(role);
+                userRole.UserId = id;
+                userRole.RoleId = int.Parse(formCollection["VT"]);
+                db.UserRoles.InsertOnSubmit(userRole);
                 db.SubmitChanges();
             }
             catch (Exception ex)
             {
-                ViewData["loi"] = ex.Message;
+                return RedirectToAction("Edit_Users_Image", "UserImage", new { id = id, error = ex.Message });
             }
             return RedirectToAction("Edit_Users_Image", new { id = id });
         }

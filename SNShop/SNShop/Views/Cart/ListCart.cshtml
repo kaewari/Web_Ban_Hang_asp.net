@@ -13,16 +13,19 @@
         <table class="table">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.ProductName)
+                    Tên
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.UnitPrice)
+                    Số lượng trong kho
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Quantity)
+                    Giá
+                </th>
+                <th>
+                    Số lượng muốn mua
                 </th>
                 <th colspan="2">
-                    @Html.DisplayNameFor(model => model.Total)
+                    Tổng tiền
                 </th>
             </tr>
 
@@ -31,6 +34,9 @@
                 <tr id="Product_@item.ProductID">
                     <td>
                         <a href="@Url.Action("Detail", "Home", new { @id = item.ProductID })">@Html.DisplayFor(modelItem => item.ProductName)</a>
+                    </td>
+                    <td>
+                        <span class="item-price text-danger h6">@item.UnitsInStock</span>
                     </td>
                     <td>
                         <span class="item-price text-danger h6" style="color:red">@String.Format("{0:0,0}", item.UnitPrice) &#8363;</span>
@@ -49,7 +55,7 @@
             }
             <tr>
                 <td colspan="2"> Số lượng sản phẩm: <span id="countCart" class="text-danger h6">@ViewBag.CountProduct</span></td>
-                <td colspan="2"><span style="color:black">Tổng tiền: </span><span id="countTotal" class="text-danger h6">@String.Format("{0:0,0}", ViewBag.ToTal) &#8363;</span></td>
+                <td colspan="3"><span style="color:black">Tổng tiền: </span><span id="countTotal" class="text-danger h6">@String.Format("{0:0,0}", ViewBag.ToTal) &#8363;</span></td>
                 <td><input class="btn btn-danger" type="button" onclick="DeleteAll()" value="Xóa tất cả" /></td>
             </tr>
         </table>

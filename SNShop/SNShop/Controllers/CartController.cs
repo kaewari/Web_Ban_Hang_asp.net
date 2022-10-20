@@ -11,7 +11,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Dynamic;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace SNShop.Controllers
 {
@@ -20,13 +19,15 @@ namespace SNShop.Controllers
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         private decimal? total_quantity = 0;
         private decimal? total_amount = 0;
-        public ActionResult ListCart(string msg = null)// hien thi gio hang
+        public ActionResult ListCart(string msg = null)
         {
-            List<CartModel> carts = GetListCarts();//lay DSGH
+            List<CartModel> carts = GetListCarts();
+            carts.RemoveAll(s => s.Quantity <= 0 || s.UnitsInStock <= 0);
+            Session[Constants.CART_SESSION] = carts;
             ViewBag.Countproduct = Count();
             ViewBag.Total = Total();
             if (msg != null)
-                ViewData["msg"] = msg;
+                ViewData["msg"] = msg;          
             return View(carts);
         }
         public List<CartModel> GetListCarts()//lay ds gio hang
@@ -57,13 +58,17 @@ namespace SNShop.Controllers
             return RedirectToAction("Index", "Home");
         }
         [HttpPost]
-        public JsonResult AddCart(int id, string name, decimal? price)
+        public JsonResult AddCart(int id, string name, decimal? price, decimal? stock)
         {
             List<CartModel> carts = GetListCarts();//lay DSGH
             var checkExits = carts.FirstOrDefault(x => x.ProductID == id);
+            var getStock = db.Products.FirstOrDefault(s => s.Id == id).UnitsInStock;
+            if (getStock != stock)
+                stock = getStock;
             if (checkExits == null)
             {
                 checkExits = new CartModel(id);
+                checkExits.UnitsInStock = stock;
                 checkExits.ProductName = name;
                 checkExits.UnitPrice = price;
                 carts.Add(checkExits);
@@ -163,7 +168,7 @@ namespace SNShop.Controllers
         {
             if (carts.Any())
             {
-                foreach(var c in carts)
+                foreach (var c in carts)
                 {
                     total_quantity += c.Quantity;
                     total_amount += c.Total;
@@ -171,7 +176,8 @@ namespace SNShop.Controllers
             }
             ViewBag.Countproduct = total_quantity;
             ViewBag.Total = total_amount;
-            return new {
+            return new
+            {
                 total_quantity = total_quantity,
                 total_amount = total_amount,
             };
@@ -209,19 +215,32 @@ namespace SNShop.Controllers
                 var checkExits = carts.FirstOrDefault(x => x.ProductID == id);
                 if (checkExits != null)
                 {
-                    checkExits.Quantity = quantity;
-                    return Json(new
+                    if (quantity > checkExits.UnitsInStock)
                     {
-                        cartsData = cart_stat(carts),
-                        cartItem = cart_item(checkExits),
-                        success = true,
-                    });
+                        error = "Vượt quá số lượng còn trong kho.";
+                        return Json(new
+                        {
+                            success = false,
+                            error = error
+                        });
+                    }
+                    else
+                    {
+                        checkExits.Quantity = quantity;
+                        Session[Constants.CART_SESSION] = carts;
+                        return Json(new
+                        {
+                            cartsData = cart_stat(carts),
+                            cartItem = cart_item(checkExits),
+                            success = true,
+                        });
+                    }
                 }
                 else
                 {
                     error = "Khong co san pham tuong ung de cap nhat!";
                 }
-            }          
+            }
             return Json(new
             {
                 success = false,
@@ -272,24 +291,32 @@ namespace SNShop.Controllers
         }
         public ActionResult OrderForm()
         {
-            var listCart = GetListCarts();
-            if(listCart.Any())
+            object check = new object();
+            lock(check)
             {
-                foreach (var item in listCart)
+                var listCart = GetListCarts();
+                if (listCart.Any())
                 {
-                    if (item.Quantity > db.Products.FirstOrDefault(s => s.Id == item.ProductID).UnitsInStock)
+                    foreach (var item in listCart)
                     {
-                        return RedirectToAction("ListCart", "Cart", new { msg = "Vượt quá số lượng hiện tại!!!" });
+                        if (item.Quantity > db.Products.FirstOrDefault(s => s.Id == item.ProductID).UnitsInStock)
+                        {
+                            return RedirectToAction("ListCart", "Cart", new { msg = "Vượt quá số lượng hiện tại!!!" });
+                        }
+                        if (item.Quantity <= 0)
+                        {
+                            return RedirectToAction("ListCart", "Cart", new { msg = "Số lượng phải từ 1 trở lên!!!" });
+                        }
                     }
+                    if (Session["UserID"] != null && Session["Roles"].ToString() == "Users")
+                    {
+                        OrderFormModel orderFormModel = new OrderFormModel();
+                        ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+                        ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
+                        return View(orderFormModel);
+                    }
+                    return RedirectToAction("Login", "Account");
                 }
-                if (Session["UserID"] != null && Session["Roles"].ToString() == "Users")
-                {
-                    OrderFormModel orderFormModel = new OrderFormModel();
-                    ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
-                    ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
-                    return View(orderFormModel);
-                }
-                return RedirectToAction("Login", "Account");
             }
             return Redirect("/");
         }
@@ -317,6 +344,7 @@ namespace SNShop.Controllers
                     var getCustomerID = db.Customers.FirstOrDefault(s => s.UserID == user.Id).Id;
                     var getOrderID = db.Orders.OrderByDescending(s => s.Id).Where(s => s.CustomerID == getCustomerID).FirstOrDefault().Id;
                     decimal? total = db.OrderDetails.Where(s => s.OrderId == getOrderID).Sum(s => s.Quantity * s.UnitPrice);
+                    var getProducts = db.OrderDetails.Where(s => s.OrderId == getOrderID);
                     var body =
                         "<h1>Chào bạn,</h1>" +
                         "<h2>Cảm ơn bạn đã đặt hàng. Đây là thông tin đặt hàng của bạn.</h2>" +
@@ -328,8 +356,18 @@ namespace SNShop.Controllers
                         "<h2>Tỉnh thành: {5}</h2>" +
                         "<h2>Quận huyện: {6}</h2>" +
                         "<h2>Ngày đặt hàng: {7}</h2>" +
-                        "<h2>Tổng tiền: {8}</h2>" +
+                        "{8}" +
+                        "<h2>Tổng tiền: {9}đ</h2>" +
                         "<h3>SNShop</h3>";
+                    StringBuilder stringBuilder = new StringBuilder(10);
+                    foreach (var item in getProducts)
+                    {
+                        string productsName = "<h2>Tên sản phẩm: " + item.Product.Name + ";" +
+                                                "<span> Số lượng: " + item.Quantity + "</span>;" +
+                                                "<span> Giá: " + string.Format("{0:#,0}đ", item.UnitPrice * item.Quantity) + "</span>" +
+                                                "</h2>";
+                        stringBuilder.Append(productsName);
+                    }
                     var message = new MailMessage();
                     message.To.Add(new MailAddress(orderForm.Email));
                     message.From = new MailAddress("1951052171son@ou.edu.vn");
@@ -337,11 +375,10 @@ namespace SNShop.Controllers
                     message.Body = string.Format(body, orderForm.Truename, orderForm.Email,
                                     orderForm.PhoneNumber, orderForm.Address,
                                     orderForm.Note, getProvinceName,
-                                    getDistrictName, OrderDate, total);
+                                    getDistrictName, OrderDate, stringBuilder.ToString(), String.Format("{0:#,0}", total));
                     message.IsBodyHtml = true;
                     using (var smtp = new SmtpClient())
                     {
-
                         var credential = new NetworkCredential
                         {
                             UserName = "1951052171son@ou.edu.vn",
@@ -352,7 +389,7 @@ namespace SNShop.Controllers
                         smtp.Port = 587;
                         smtp.EnableSsl = true;
                         if (user != null)
-                        {                         
+                        {
                             await smtp.SendMailAsync(message);
                             return RedirectToAction("Success");
                         }
@@ -367,7 +404,6 @@ namespace SNShop.Controllers
                 {
                     return RedirectToAction("Failure");
                 }
-
             }
             return View(orderForm);
         }

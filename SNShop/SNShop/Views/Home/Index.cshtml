@@ -102,9 +102,18 @@
                     <div>
                         <p class="m-0 p-0"><span class="rupees text-danger">Còn: <span>@item.UnitsInStock</span></span></p>
                     </div>
-                    <div class="add-cart" style="float:none; margin:0">
-                        <a class="button" style="background-color: red; margin: 1px; text-decoration: none; color: white; padding: 7px; cursor: pointer" onclick="addCart(@item.Id, '@item.Name', @item.Price)">Thêm vào giỏ hàng</a>
-                    </div>
+                    @if (item.UnitsInStock > 0)
+                    {
+                        <div class="add-cart" style="float:none; margin:0">
+                            <a class="button" style="background-color: red; margin: 1px; text-decoration: none; color: white; padding: 7px; cursor: pointer" onclick="addCart(@item.Id, '@item.Name', @item.Price, @item.UnitsInStock)">Thêm vào giỏ hàng</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="add-cart" style="float:none; margin:0">
+                            <a class="button" style="background-color: red; margin: 1px; text-decoration: none; color: white; padding: 7px; cursor: pointer">Hết hàng</a>
+                        </div>
+                    }
                     <div class="clear"></div>
                 </div>
             </div>
@@ -115,3 +124,6 @@
     Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) / @Model.PageCount
     @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page = page, SearchString = ViewBag.CurrentFilter, sortOrder = ViewBag.CurrentSortOrder }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+<script>
+    
+</script>

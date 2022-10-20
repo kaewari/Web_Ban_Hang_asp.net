@@ -7,11 +7,6 @@ namespace SNShop.Models
         [Key]
         public long ID { set; get; }
 
-        [Required(ErrorMessage = "Yêu cầu nhập email")]
-        [Display(Name = "Email")]
-        [DataType(DataType.EmailAddress)]
-        public string Email { set; get; }
-
         [Required(ErrorMessage = "Yêu cầu nhập tên thật")]
         [Display(Name = "Truename")]
         public string Truename { set; get; }
@@ -20,8 +15,14 @@ namespace SNShop.Models
         [Display(Name = "Username")]
         public string Username { set; get; }
 
+        [Required(ErrorMessage = "Yêu cầu nhập email")]
+        [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { set; get; }
+
         [Display(Name = "Số điện thoại")]
         [DataType(DataType.PhoneNumber)]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại không hợp lệ.")]
         public string PhoneNumber { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập mật khẩu")]

@@ -30,6 +30,7 @@ function Update(id, obj) {
             console.info(data)
         } else if (data.success == false) {
             alert(data.error)
+            location.reload();
         }
     }).catch(function (err) {
         console.info(err)

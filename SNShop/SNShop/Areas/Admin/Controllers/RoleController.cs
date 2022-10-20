@@ -22,13 +22,17 @@ namespace SNShop.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create_Roles(FormCollection formCollection, Role role)
         {
-            if (string.IsNullOrEmpty(formCollection["name"]) || string.IsNullOrWhiteSpace(formCollection["name"]))
+            if (string.IsNullOrEmpty(formCollection["Name"]) || string.IsNullOrWhiteSpace(formCollection["Name"]))
                 ViewData["loi"] = "Bạn phải nhập tên role.";
             else
             {
                 try
                 {
-                    role.Name = formCollection["name"];
+                    var lastRoleId = db.Roles.OrderByDescending(s => s.Id).FirstOrDefault().Id;
+                    role.Id = lastRoleId + 1;
+                    role.Name = formCollection["Name"];
+                    db.Roles.InsertOnSubmit(role);
+                    db.SubmitChanges();
                 }
                 catch (Exception ex)
                 {
@@ -47,11 +51,13 @@ namespace SNShop.Areas.Admin.Controllers
             var p = db.Roles.Where(s => s.Id == id).FirstOrDefault();
             if (p != null)
             {
-                if (string.IsNullOrEmpty(formCollection["name"]) || string.IsNullOrWhiteSpace(formCollection["name"]))
+                if (string.IsNullOrEmpty(formCollection["Name"]) || string.IsNullOrWhiteSpace(formCollection["Name"]))
                     ViewData["loi"] = "Bạn phải nhập tên role.";
                 else
                 {
-                    role.Name = formCollection["name"];
+                    role.Name = formCollection["Name"];
+                    db.Roles.InsertOnSubmit(role);
+                    db.SubmitChanges();
                 }
             }
             return View(role);

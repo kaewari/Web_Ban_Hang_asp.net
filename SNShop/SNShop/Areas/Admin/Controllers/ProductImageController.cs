@@ -141,7 +141,6 @@ namespace SNShop.Areas.Admin.Controllers
         public ActionResult Edit_Product_Image(int id)
         {
             var p = db.ProductImages.FirstOrDefault(s => s.Id == id);
-            ViewData["SP"] = new SelectList(db.Products, "Id", "Name");
             return View(p);
         }
         [HttpPost]
@@ -149,7 +148,6 @@ namespace SNShop.Areas.Admin.Controllers
         {
             try
             {
-                ViewData["SP"] = new SelectList(db.Products, "Id", "Name");
                 ImageModel image = Single_Product_Image(imageModel);
                 p = db.ProductImages.FirstOrDefault(s => s.Id == id);
                 p.ProductID = int.Parse(formCollection["SP"]);

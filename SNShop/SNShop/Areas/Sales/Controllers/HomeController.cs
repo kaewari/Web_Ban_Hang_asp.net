@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Transactions;
 using System.Web.Mvc;
-using CsvHelper;
 using SNShop.Areas.Sales.Common;
 using SNShop.Areas.Sales.Models;
 using SNShop.DAO;
@@ -68,72 +67,76 @@ namespace SNShop.Areas.Sales.Controllers
         }
         public JsonResult Create_Receipt(int? id)
         {
-            List<FormModel> forms = GetListForm();
-            if (forms.Any())
+            object check = new object();
+            lock(check)
             {
-                using (TransactionScope tranScope = new TransactionScope())
+                List<FormModel> forms = GetListForm();
+                if (forms.Any())
                 {
-                    try
+                    using (TransactionScope tranScope = new TransactionScope())
                     {
-                        ID_Card iD_Card = GetCardID();
-                        var CustomnerName = db.Customers.SingleOrDefault(s => s.Id == id).User.Truename;
-                        var filePath = "D:\\HoaDon.csv";
-                        Order order = new Order();
-                        UserDao userDao = new UserDao();
-                        order.ModifiedDate = DateTime.Now;
-                        order.CustomerID = (int)id;
-                        db.Orders.InsertOnSubmit(order);
-                        db.SubmitChanges();
-                        foreach (var item in forms)
+                        try
                         {
-                            OrderDetail d = new OrderDetail
+                            ID_Card iD_Card = GetCardID();
+                            var CustomnerName = db.Customers.SingleOrDefault(s => s.Id == id).User.Truename;
+                            var filePath = "D:\\HoaDon.csv";
+                            Order order = new Order();
+                            UserDao userDao = new UserDao();
+                            order.ModifiedDate = DateTime.Now;
+                            order.CustomerID = (int)id;
+                            db.Orders.InsertOnSubmit(order);
+                            db.SubmitChanges();
+                            foreach (var item in forms)
                             {
-                                OrderId = order.Id,
-                                ProductID = item.productID,
-                                Quantity = decimal.Parse(item.quantity.ToString()),
-                                UnitPrice = item.unitPrice,
-                                ModifiedDate = DateTime.Now,
-                            };
-                            db.OrderDetails.InsertOnSubmit(d);
-                        }
-                        using (StreamWriter writer = new StreamWriter(new FileStream(filePath,
-                        FileMode.Create, FileAccess.Write), Encoding.UTF8))
-                        {
-                            writer.WriteLine("{0},{1}", null, "=====HÓA ĐƠN=====");
-                            writer.WriteLine("{0},{1}", "Ngày lập:", DateTime.Now.ToString("dd-MM-yyyy"));
-                            writer.WriteLine("{0},{1}", "Customer Name:", CustomnerName);
-                            writer.WriteLine("{0},{1},{2}", "Product Name", "Quantity", "Unit Price");
-                            decimal sum = 0;
-                            for (int i = 0; i < forms.Count(); i++)
-                            {
-                                writer.WriteLine("{0},{1},{2}", forms[i].name, forms[i].quantity, string.Format("{0:#.#}đ", forms[i].unitPrice));
-                                sum += (decimal)forms[i].total;
+                                OrderDetail d = new OrderDetail
+                                {
+                                    OrderId = order.Id,
+                                    ProductID = item.productID,
+                                    Quantity = decimal.Parse(item.quantity.ToString()),
+                                    UnitPrice = item.unitPrice,
+                                    ModifiedDate = DateTime.Now,
+                                };
+                                db.OrderDetails.InsertOnSubmit(d);
                             }
-                            writer.WriteLine("{0},{1}", "Total:", string.Format("{0:#.#}đ", sum));
-                            writer.WriteLine("{0},{1}", "Employee Name:", Session["TrueName"]);
-                            writer.Close();
+                            using (StreamWriter writer = new StreamWriter(new FileStream(filePath,
+                            FileMode.Create, FileAccess.Write), Encoding.UTF8))
+                            {
+                                writer.WriteLine("{0},{1}", null, "=====HÓA ĐƠN=====");
+                                writer.WriteLine("{0},{1}", "Ngày lập:", DateTime.Now.ToString("dd-MM-yyyy"));
+                                writer.WriteLine("{0},{1}", "Customer Name:", CustomnerName);
+                                writer.WriteLine("{0},{1},{2}", "Product Name", "Quantity", "Unit Price");
+                                decimal sum = 0;
+                                for (int i = 0; i < forms.Count(); i++)
+                                {
+                                    writer.WriteLine("{0},{1},{2}", forms[i].name, forms[i].quantity, string.Format("{0:#.#}đ", forms[i].unitPrice));
+                                    sum += (decimal)forms[i].total;
+                                }
+                                writer.WriteLine("{0},{1}", "Total:", string.Format("{0:#.#}đ", sum));
+                                writer.WriteLine("{0},{1}", "Employee Name:", Session["TrueName"]);
+                                writer.Close();
+                            }
+                            db.SubmitChanges();
+                            tranScope.Complete();
+                            iD_Card = null;
+                            id = null;
+                            Session[Constants.CUSTOMER_FORM_ID_CARD_SESSION] = iD_Card;
                         }
-                        db.SubmitChanges();
-                        tranScope.Complete();
-                        iD_Card = null;
-                        id = null; 
-                        Session[Constants.CUSTOMER_FORM_ID_CARD_SESSION] = iD_Card;
+                        catch
+                        {
+                            tranScope.Dispose();
+                        }
                     }
-                    catch
-                    {
-                        tranScope.Dispose();
-                    }
-                }
 
+                    return Json(new
+                    {
+                        status = 200
+                    });
+                }
                 return Json(new
                 {
-                    status = 200
+                    status = 400
                 });
             }
-            return Json(new
-            {
-                status = 400
-            });
         }
         public JsonResult UpdateProduct()
         {
