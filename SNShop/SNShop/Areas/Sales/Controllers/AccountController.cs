@@ -20,7 +20,7 @@ namespace SNShop.Areas.Sales.Controllers
     public class AccountController : Controller
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
-        public void LoadUser(User user)
+        public void ReloadSession(User user)
         {
             UserDao userDao = new UserDao();
             var userSession = new EmployeeLogin()
@@ -63,8 +63,11 @@ namespace SNShop.Areas.Sales.Controllers
                 }
                 else if (result == 1)
                 {
-                    var user = userDao.GetUserByEmail(employeeLoginModel.Email);
-                    LoadUser(user);
+                    var user = db.Users.SingleOrDefault(s => s.Email == employeeLoginModel.Email);
+                    ReloadSession(user);
+                    user.Status = true;
+                    UpdateModel(user);
+                    db.SubmitChanges();
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -72,6 +75,13 @@ namespace SNShop.Areas.Sales.Controllers
         }
         public ActionResult Logout()
         {
+            if (Session["UserID"] != null)
+            {
+                var user = db.Users.SingleOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));
+                user.Status = false;
+                UpdateModel(user);
+                db.SubmitChanges();
+            }
             Session.Clear();
             Session.Remove(HttpContext.Session.SessionID);
             return RedirectToAction("EmployeeLogin", "Account");
@@ -227,7 +237,7 @@ namespace SNShop.Areas.Sales.Controllers
                     user.DistrictID = int.Parse(formCollection["DT"]);
                 UpdateModel(user);
                 db.SubmitChanges();
-                LoadUser(user);
+                ReloadSession(user);
                 return RedirectToAction("ShowProfile", "Account");
             }
             return View(editModel);
@@ -247,7 +257,7 @@ namespace SNShop.Areas.Sales.Controllers
                 user.Image = imageModel.Path.Remove(0, 1);
                 UpdateModel(user);
                 db.SubmitChanges();
-                LoadUser(user);
+                ReloadSession(user);
             }
             catch
             {
@@ -257,10 +267,8 @@ namespace SNShop.Areas.Sales.Controllers
         }
         public ActionResult ChangeEmployeePassword()
         {
-            var session = (EmployeeLogin)Session[Constants.USER_SESSION];
-            if (session == null)
-                return RedirectToAction("EmployeeLogin", "Account");
-            return View();
+            ChangeEmployeePasswordModel changeEmployeePasswordModel = new ChangeEmployeePasswordModel();
+            return View(changeEmployeePasswordModel);
         }
         [HttpPost]
         public ActionResult ChangeEmployeePassword(ChangeEmployeePasswordModel changeEmployeePassword)

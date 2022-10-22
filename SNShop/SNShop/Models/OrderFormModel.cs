@@ -4,7 +4,8 @@ namespace SNShop.Models
 {
     public class OrderFormModel
     {
-        [Key]
+        [Required(ErrorMessage = "Yêu cầu nhap65 CMND")]
+        [Display(Name = "CMND")]
         public long ID { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập tên thật")]

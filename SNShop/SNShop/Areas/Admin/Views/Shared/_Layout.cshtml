@@ -237,14 +237,21 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">@session.UserName</span>
-                                @if (session.Image != null)
+                                @if (session == null)
                                 {
-                                    <img class="img-profile rounded-circle" src="@session.Image">
+                                    <meta http-equiv="Refresh" content="0; url='@Url.Action("AdminLogin", "Account")'" />
                                 }
                                 else
                                 {
-                                    <img class="img-profile rounded-circle" src="~/Images/Avatars/man-avatar.jpg">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">@session.UserName</span>
+                                    if (session.Image != null)
+                                    {
+                                        <img class="img-profile rounded-circle" src="@session.Image">
+                                    }
+                                    else
+                                    {
+                                        <img class="img-profile rounded-circle" src="~/Images/Avatars/man-avatar.jpg">
+                                    }
                                 }
                             </a>
                             <!-- Dropdown - User Information -->
@@ -267,9 +274,17 @@
                 </nav>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
+                @if (session == null)
+                {
+                    <meta http-equiv="Refresh" content="0; url='@Url.Action("AdminLogin", "Account")'" />
+                }
+                else
+                {
                 <div class="container-fluid">
                     @RenderBody()
                 </div>
+                }
+
                 <!-- /.container-fluid -->
 
             </div>
@@ -316,7 +331,8 @@
 </body>
 </html>
 @RenderSection("scripts", required: false)
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
 <!--Chart.js-->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>

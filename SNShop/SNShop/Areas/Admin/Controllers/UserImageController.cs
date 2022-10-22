@@ -92,18 +92,23 @@ namespace SNShop.Areas.Admin.Controllers
         }
         public ActionResult Edit_Users_Image(int id, string error)
         {
-            var p = db.Users.FirstOrDefault(s => s.Id == id);
             ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
             ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             ViewData["VT"] = new SelectList(db.Roles, "Id", "Name");
+            var p = db.Users.FirstOrDefault(s => s.Id == id);
             try
             {
                 if (string.IsNullOrEmpty(p.ProvinceID.ToString()))
                     p.ProvinceID = 0;
                 if (string.IsNullOrEmpty(p.DistrictID.ToString()))
                     p.DistrictID = 0;
-                ViewBag.Role = db.UserRoles.FirstOrDefault(s => s.UserId == id).RoleId;
-                if(error != null)
+                var role = db.UserRoles.FirstOrDefault(s => s.UserId == id);
+                if (role != null)
+                    ViewBag.Role = role.RoleId;
+                else
+                    ViewBag.Role = 2;
+
+                if (error != null)
                     ViewData["loi"] = error;
             }
             catch (Exception ex)
@@ -131,31 +136,42 @@ namespace SNShop.Areas.Admin.Controllers
             {
                 ViewData["loi"] = ex.Message;
             }
-            return View(p);
+            return RedirectToAction("Edit_Users_Image", "UserImage", new {id = id});
         }
+
         public ActionResult Edit_Users(FormCollection formCollection, UserRole userRole, int id)
         {
             ViewData["VT"] = new SelectList(db.Roles, "Id", "Name");
             try
             {
                 var p = db.Users.FirstOrDefault(s => s.Id == id);
-                p.Truename = formCollection["truename"];
-                p.Email = formCollection["Email"];
-                p.Username = formCollection["Username"];
-                p.ProvinceID = int.Parse(formCollection["PR"]);
-                p.DistrictID = int.Parse(formCollection["DT"]);               
+                if (string.IsNullOrEmpty(formCollection["Truename"]) || string.IsNullOrWhiteSpace(formCollection["Truename"]))
+                    ViewData["loi"] = "Bạn chưa nhập tên thật";
+                if (string.IsNullOrEmpty(formCollection["Email"]) || string.IsNullOrWhiteSpace(formCollection["Email"]))
+                    ViewData["loi"] = "Bạn chưa nhập số email";
+                if (string.IsNullOrEmpty(formCollection["Username"]) || string.IsNullOrWhiteSpace(formCollection["Username"]))
+                    ViewData["loi"] = "Bạn chưa nhập số username";
+                if (string.IsNullOrEmpty(formCollection["PasswordHash"]) || string.IsNullOrWhiteSpace(formCollection["PasswordHash"]))
+                    ViewData["loi"] = "Bạn chưa nhập mật khẩu";
+                if (string.IsNullOrEmpty(formCollection["ID_Card"]) || string.IsNullOrWhiteSpace(formCollection["ID_Card"]))
+                    ViewData["loi"] = "Bạn chưa nhập số CMND";
+                p.ProvinceID = int.Parse(formCollection["PR"].ToString());
+                p.DistrictID = int.Parse(formCollection["DT"].ToString());
                 p.ModifiedDate = DateTime.Now;
                 UpdateModel(p);
                 var role = db.UserRoles.FirstOrDefault(s => s.UserId == id);
-                db.UserRoles.DeleteOnSubmit(role);
+                if(role != null)
+                {
+                    db.UserRoles.DeleteOnSubmit(role);
+                }
                 userRole.UserId = id;
                 userRole.RoleId = int.Parse(formCollection["VT"]);
                 db.UserRoles.InsertOnSubmit(userRole);
                 db.SubmitChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return RedirectToAction("Edit_Users_Image", "UserImage", new { id = id, error = ex.Message });
+                return RedirectToAction("Edit_Users_Image", "UserImage", new { id = id, error = ViewData["loi"] });
             }
             return RedirectToAction("Edit_Users_Image", new { id = id });
         }

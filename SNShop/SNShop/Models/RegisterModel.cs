@@ -4,11 +4,12 @@ namespace SNShop.Models
 {
     public class RegisterModel
     {
-        [Key]
+        [Required(ErrorMessage = "Yêu cầu nhập CMND")]
+        [Display(Name = "CMND")]
         public long ID { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập tên thật")]
-        [Display(Name = "Truename")]
+        [Display(Name = "Họ tên")]
         public string Truename { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập username")]

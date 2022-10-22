@@ -12,7 +12,7 @@ namespace SNShop.Controllers
     {
         SNOnlineShopDataContext db = new SNOnlineShopDataContext();
         public ActionResult Index(int? page, string SearchString, string sortOrder)
-        {            
+        {
             var sanPham = new List<Product>();
             ViewBag.CurrentSortOrder = sortOrder;
             ViewBag.SortByName = string.IsNullOrEmpty(sortOrder) ? "ten_desc" : "";

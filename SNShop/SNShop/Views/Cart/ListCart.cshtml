@@ -60,13 +60,13 @@
             </tr>
         </table>
         <div class="fa-pull-right">
-            @if (Session["UserID"] == null)
+            @if (Session["UserID"] != null && Session["Roles"].ToString() == "Users")
             {
-                <a href="@Url.Action("Login", "Account", new {url = HttpContext.Current.Request.RawUrl })"> Bạn chưa đăng nhập </a>
+                <a href="@Url.Action("OrderForm","Cart")">Đặt hàng</a>
             }
             else
             {
-                <a href="@Url.Action("OrderForm","Cart")">Đặt hàng</a>
+                <a href="@Url.Action("Login", "Account", new {url = HttpContext.Current.Request.RawUrl })"> Bạn chưa đăng nhập </a>
             }
         </div>
     </div>

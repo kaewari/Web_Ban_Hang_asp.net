@@ -195,6 +195,7 @@ namespace SNShop.Controllers
                 var check = userDao.CheckEmail(registerModel.Email);
                 if (!check)
                 {
+                    u.ID_Card = registerModel.ID;
                     u.Truename = registerModel.Truename;
                     u.Email = registerModel.Email;
                     u.PasswordHash = Encode.GetMD5(registerModel.Password);
@@ -229,6 +230,10 @@ namespace SNShop.Controllers
                         return Redirect(url);
                     return RedirectToAction("Login", "Account");
                 }
+                else
+                {
+                    ViewData["loi"] = "Email đã tồn tại!!!";
+                }
             }
             return View(registerModel);
         }
@@ -257,8 +262,11 @@ namespace SNShop.Controllers
                 }
                 else if (result == 1)
                 {
-                    var user = userDao.GetUserByEmail(loginModel.Email);
+                    var user = db.Users.SingleOrDefault(s => s.Email == loginModel.Email);
                     ReloadSession(user);
+                    user.Status = true;
+                    UpdateModel(user);
+                    db.SubmitChanges();
                     if (url == null)
                         return Redirect("/");
                     return Redirect(url);
@@ -268,9 +276,16 @@ namespace SNShop.Controllers
         }
         public ActionResult Logout(string url)
         {
+            if (Session["UserID"] != null)
+            {
+                var user = db.Users.SingleOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));
+                user.Status = false;
+                UpdateModel(user);
+                db.SubmitChanges();
+            }
             Session.Clear();
             Session.Remove(HttpContext.Session.SessionID);
-            if(url != null)
+            if (url != null)
                 return Redirect(url);
             return RedirectToAction("Login", "Account");
         }

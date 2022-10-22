@@ -3,6 +3,7 @@
     ViewBag.Title = "Edit_Users_Image";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+
 <h3 class="text-danger">@ViewData["loi"]</h3>
 <div class="row">
     <div class="col-md-8 col-xs-12">
@@ -24,6 +25,14 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(model => model.ID_Card, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ID_Card, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ID_Card, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
                     @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
@@ -41,8 +50,9 @@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.PasswordHash, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.PasswordHash, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="d-flex justify-content-around col-md-10">
+                        @Html.EditorFor(model => model.PasswordHash, new { htmlAttributes = new { @class = "form-control", @id = "pass" } })
+                        <input class="col-md-2 btn btn-danger" id="Hash" type="button" value="Hash" onclick="Hash()" />
                         @Html.ValidationMessageFor(model => model.PasswordHash, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -79,12 +89,12 @@
                     </div>
                 </div>
 
-                 <div class="form-group">
-                     <label class="form-control-label col-md-2">Role</label>
-                     <div class="col-md-10">
-                         @Html.DropDownList("VT", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlRole" })
-                         <span class="field-validation-valid text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
-                     </div>
+                <div class="form-group">
+                    <label class="form-control-label col-md-2">Role</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("VT", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlRole" })
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Role" data-valmsg-replace="true"></span>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -143,8 +153,18 @@
         }
     </div>
 </div>
-<script>
+<script defer>
     var data = document.getElementById("ddlRole");
+        function Hash() {
+        var hash = CryptoJS.MD5(document.getElementById("pass").value);
+        return hash
+    }
+
+    document.getElementById("Hash").onclick = function () {
+        var x = Hash();
+        document.getElementById("pass").value = x;
+        document.getElementById("pass").innerHTML = x;
+    };
     for (var i = 0; i < data.length; i++) {
         if (data[i].value == @ViewBag.Role) {
             data[i].selected = "selected";
@@ -220,5 +240,6 @@
         },
     }
     user.init();
+
 </script>
 

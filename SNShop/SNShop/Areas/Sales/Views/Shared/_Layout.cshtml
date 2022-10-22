@@ -128,23 +128,30 @@
                 <!-- User -->
                 <ul class="navbar-nav align-items-center d-none d-md-flex">
                     <li class="nav-item dropdown">
-                        <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <div class="media align-items-center">
-                                <span class="avatar avatar-sm rounded-circle">
-                                    @if (session.Image != null)
-                                    {
-                                        <img src="@session.Image">
-                                    }
-                                    else
-                                    {
-                                        <img alt="Image placeholder" src="/asset/sales/img/theme/team-4-800x800.jpg">
-                                    }
-                                </span>
-                                <div class="media-body ml-2 d-none d-lg-block">
-                                    <span class="mb-0 text-sm  font-weight-bold">@session.UserName</span>
+                        @if (session == null)
+                        {
+                            <meta http-equiv="Refresh" content="0; url='@Url.Action("AdminLogin", "Account")'" />
+                        }
+                        else
+                        {
+                            <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="media align-items-center">
+                                    <span class="avatar avatar-sm rounded-circle">
+                                        @if (session.Image != null)
+                                        {
+                                            <img src="@session.Image">
+                                        }
+                                        else
+                                        {
+                                            <img alt="Image placeholder" src="/asset/sales/img/theme/team-4-800x800.jpg">
+                                        }
+                                    </span>
+                                    <div class="media-body ml-2 d-none d-lg-block">
+                                        <span class="mb-0 text-sm  font-weight-bold">@session.UserName</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        }
                         <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
                             <div class=" dropdown-header noti-title">
                                 <h6 class="text-overflow m-0">Welcome!</h6>
@@ -166,13 +173,20 @@
         <!-- End Navbar -->
         <div class="header bg-gradient-primary pb-6 pt-5 pt-md-3"></div>
         <!-- Header -->
-        @RenderBody()
+        @if (session == null)
+        {
+            <meta http-equiv="Refresh" content="0; url='@Url.Action("AdminLogin", "Account")'" />
+        }
+        else
+        {
+            @RenderBody()
+        }
         <div class="container-fluid">
             <!-- Footer -->
             <footer class="footer">
                 <div class="row align-items-center justify-content-xl-between">
-                    <div class="col-xl-6">
-                        <div class="copyright text-center text-xl-left text-muted">
+                    <div class="col-xl-12">
+                        <div class="copyright text-center">
                             &copy; 2022 <a href="@Url.Action("Index", "Home")" class="font-weight-bold ml-1" target="_blank">SNShop</a>
                         </div>
                     </div>

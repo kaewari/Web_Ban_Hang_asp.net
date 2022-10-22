@@ -323,6 +323,7 @@ namespace SNShop.Controllers
         [HttpPost]
         public async Task<ActionResult> OrderForm(OrderFormModel orderForm, FormCollection formCollection)
         {
+            
             ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
             ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
             if (ModelState.IsValid)
@@ -330,10 +331,10 @@ namespace SNShop.Controllers
                 try
                 {
                     var user = db.Users.SingleOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));
+                    orderForm.ID = long.Parse(formCollection["ID"]);
                     orderForm.Truename = formCollection["Truename"];
                     orderForm.ProvinceID = int.Parse(formCollection["PR"]);
                     orderForm.DistrictID = int.Parse(formCollection["DT"]);
-                    orderForm.Email = formCollection["Email"];
                     orderForm.Note = formCollection["Note"];
                     orderForm.Address = formCollection["Address"];
                     orderForm.PhoneNumber = formCollection["PhoneNumber"];
@@ -349,7 +350,7 @@ namespace SNShop.Controllers
                         "<h1>Chào bạn,</h1>" +
                         "<h2>Cảm ơn bạn đã đặt hàng. Đây là thông tin đặt hàng của bạn.</h2>" +
                         "<h2>Họ tên: {0}</h2>" +
-                        "<h2>Email: {1}</h2>" +
+                        "<h2>CMND: {1}</h2>" +
                         "<h2>Số điện thoại: {2}</h2>" +
                         "<h2>Địa chỉ: {3}</h2>" +
                         "<h2>Ghi chú: {4}</h2>" +
@@ -372,7 +373,7 @@ namespace SNShop.Controllers
                     message.To.Add(new MailAddress(orderForm.Email));
                     message.From = new MailAddress("1951052171son@ou.edu.vn");
                     message.Subject = "Thông tin đơn đặt hàng";
-                    message.Body = string.Format(body, orderForm.Truename, orderForm.Email,
+                    message.Body = string.Format(body, orderForm.Truename, orderForm.ID,
                                     orderForm.PhoneNumber, orderForm.Address,
                                     orderForm.Note, getProvinceName,
                                     getDistrictName, OrderDate, stringBuilder.ToString(), String.Format("{0:#,0}", total));
@@ -391,6 +392,7 @@ namespace SNShop.Controllers
                         if (user != null)
                         {
                             await smtp.SendMailAsync(message);
+                            Session[Constants.CART_SESSION] = null;
                             return RedirectToAction("Success");
                         }
                         else

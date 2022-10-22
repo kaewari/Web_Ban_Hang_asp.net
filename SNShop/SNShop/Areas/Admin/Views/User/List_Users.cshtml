@@ -28,6 +28,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Truename)
             </th>
             <th>
@@ -74,6 +77,9 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Truename)
                 </td>
                 <td>
@@ -111,7 +117,7 @@
                 </td>
                 <td class="tool">
                     <a class="btn btn-success" style="margin-left:5px" href="@Url.Action("Create_User_Image","UserImage", new {id = item.Id})">Image</a>
-                    <a class="btn btn-info" style="margin-left:5px" href="@Url.Action("Details_User","User", new {id = item.Id})">Detail</a>
+                    <a class="btn btn-info" style="margin-left:5px" href="@Url.Action("Details_Users","User", new {id = item.Id})">Detail</a>
                     <a class="btn btn-warning" href="@Url.Action("Edit_Users_Image","UserImage", new { id = item.Id })">Edit</a>
                     <a class="btn btn-danger" href="@Url.Action("Delete_User","User", new { id = item.Id })">Delete</a>
                 </td>

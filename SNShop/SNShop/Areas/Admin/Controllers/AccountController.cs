@@ -64,8 +64,11 @@ namespace SNShop.Areas.Admin.Controllers
                 }
                 else if (result == 1)
                 {
-                    var user = userDao.GetUserByEmail(adminLoginModel.Email);
+                    var user = db.Users.SingleOrDefault(s => s.Email == adminLoginModel.Email);
                     ReloadSession(user);
+                    user.Status = true;
+                    UpdateModel(user);
+                    db.SubmitChanges();
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -73,6 +76,13 @@ namespace SNShop.Areas.Admin.Controllers
         }
         public ActionResult Logout()
         {
+            if(Session["UserID"] != null)
+            {
+                var user = db.Users.SingleOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));
+                user.Status = false;
+                UpdateModel(user);
+                db.SubmitChanges();
+            }
             Session.Clear();
             Session.Remove(HttpContext.Session.SessionID);
             return RedirectToAction("AdminLogin", "Account");

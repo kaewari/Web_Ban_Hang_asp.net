@@ -28,67 +28,69 @@ namespace SNShop.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Create_Users(FormCollection formCollection, User user, UserRole userRole, Employee employee, Customer customer)
         {
-            using (TransactionScope tranScope = new TransactionScope())
+
+            ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
+            ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
+            ViewData["VT"] = new SelectList(db.Roles, "Id", "Name");
+            if (string.IsNullOrEmpty(formCollection["Truename"]) || string.IsNullOrWhiteSpace(formCollection["Truename"]))
             {
-                try
+                ViewData["Loi"] = "Bạn vui lòng nhập họ tên";
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(formCollection["Username"]) || string.IsNullOrWhiteSpace(formCollection["Username"]))
                 {
-                    ViewData["PR"] = new SelectList(db.Provinces, "Id", "Name");
-                    ViewData["DT"] = new SelectList(db.Districts, "Id", "Name");
-                    ViewData["VT"] = new SelectList(db.Roles, "Id", "Name");
-                    if (string.IsNullOrEmpty(formCollection["Truename"]) || string.IsNullOrWhiteSpace(formCollection["Truename"]))
+                    ViewData["Loi"] = "Bạn vui lòng nhập username";
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(formCollection["Email"]) || string.IsNullOrWhiteSpace(formCollection["Email"]))
                     {
-                        ViewData["Loi"] = "Bạn vui lòng nhập họ tên";
+                        ViewData["Loi"] = "Bạn vui lòng nhập email";
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(formCollection["Username"]) || string.IsNullOrWhiteSpace(formCollection["Username"]))
+                        if (string.IsNullOrEmpty(formCollection["PasswordHash"]) || string.IsNullOrWhiteSpace(formCollection["PasswordHash"]))
                         {
-                            ViewData["Loi"] = "Bạn vui lòng nhập username";
+                            ViewData["Loi"] = "Bạn vui lòng nhập password";
                         }
                         else
                         {
-                            if (string.IsNullOrEmpty(formCollection["Email"]) || string.IsNullOrWhiteSpace(formCollection["Email"]))
+                            if (string.IsNullOrEmpty(formCollection["PhoneNumber"]) || string.IsNullOrWhiteSpace(formCollection["PhoneNumber"]))
                             {
-                                ViewData["Loi"] = "Bạn vui lòng nhập email";
+                                ViewData["loi"] = "Bạn chưa nhập số điện thoại";
                             }
                             else
                             {
-                                if (string.IsNullOrEmpty(formCollection["PasswordHash"]) || string.IsNullOrWhiteSpace(formCollection["PasswordHash"]))
+                                if (string.IsNullOrEmpty(formCollection["Address"]) || string.IsNullOrWhiteSpace(formCollection["Address"]))
                                 {
-                                    ViewData["Loi"] = "Bạn vui lòng nhập password";
+                                    ViewData["loi"] = "Bạn chưa nhập địa chỉ";
                                 }
                                 else
                                 {
-                                    if (string.IsNullOrEmpty(formCollection["PhoneNumber"]) || string.IsNullOrWhiteSpace(formCollection["PhoneNumber"]))
+                                    if (string.IsNullOrEmpty(formCollection["PR"]) || string.IsNullOrWhiteSpace(formCollection["PR"]))
                                     {
-                                        ViewData["loi"] = "Bạn chưa nhập số điện thoại";
+                                        ViewData["loi"] = "Bạn chưa chọn tỉnh/thành phố";
                                     }
                                     else
                                     {
-                                        if (string.IsNullOrEmpty(formCollection["Address"]) || string.IsNullOrWhiteSpace(formCollection["Address"]))
+                                        if (string.IsNullOrEmpty(formCollection["DT"]) || string.IsNullOrWhiteSpace(formCollection["DT"]))
                                         {
-                                            ViewData["loi"] = "Bạn chưa nhập địa chỉ";
+                                            ViewData["loi"] = "Bạn chưa chọn quận/huyện";
                                         }
                                         else
                                         {
-                                            if (string.IsNullOrEmpty(formCollection["PR"]) || string.IsNullOrWhiteSpace(formCollection["PR"]))
+                                            try
                                             {
-                                                ViewData["loi"] = "Bạn chưa chọn tỉnh/thành phố";
-                                            }
-                                            else
-                                            {
-                                                if (string.IsNullOrEmpty(formCollection["DT"]) || string.IsNullOrWhiteSpace(formCollection["DT"]))
-                                                {
-                                                    ViewData["loi"] = "Bạn chưa chọn quận/huyện";
-                                                }
-                                                else
+                                                using (TransactionScope tranScope = new TransactionScope())
                                                 {
                                                     try
                                                     {
+                                                        user.ID_Card = long.Parse(formCollection["ID_Card"]);
                                                         user.Email = formCollection["Email"];
                                                         user.Username = formCollection["Username"];
                                                         user.Truename = formCollection["Truename"];
-                                                        user.PasswordHash = formCollection["PasswordHash"];
+                                                        user.PasswordHash = Common.Encode.GetMD5(formCollection["PasswordHash"]);
                                                         user.PhoneNumber = formCollection["PhoneNumber"];
                                                         user.DistrictID = int.Parse(formCollection["DT"]);
                                                         user.ProvinceID = int.Parse(formCollection["PR"]);
@@ -110,13 +112,18 @@ namespace SNShop.Areas.Admin.Controllers
                                                             db.Customers.InsertOnSubmit(customer);
                                                         }
                                                         db.SubmitChanges();
+                                                        tranScope.Complete();
                                                         return RedirectToAction("List_Users");
                                                     }
-                                                    catch (Exception ex)
+                                                    catch
                                                     {
-                                                        ViewData["loi"] = ex.Message;
+                                                        tranScope.Dispose();
                                                     }
                                                 }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                ViewData["loi"] = ex.Message;
                                             }
                                         }
                                     }
@@ -125,11 +132,6 @@ namespace SNShop.Areas.Admin.Controllers
                         }
 
                     }
-                    tranScope.Complete();
-                }
-                catch
-                {
-                    tranScope.Dispose();
                 }
             }
             return View(user);
