@@ -67,18 +67,23 @@
         <div class="clear"></div>
     </div>
     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        <button class="btn btn-primary dropdown-toggle"
+                id="dropdownFilter"
+                type="button" 
+                data-toggle="dropdown" 
+                aria-haspopup="true"
+                aria-expanded="false">
             Lọc sản phẩm
         </button>
-        <ul class="dropdown-menu">
-            <li>
-                @Html.ActionLink("Tên sản phẩm", "Index", new { sortOrder = ViewBag.SortByName })
+        <ul class="dropdown-menu filter" aria-labelledby="dropdownFilter">
+            <li class="position-relative w-100">
+                @Html.ActionLink("Tên sản phẩm", "Index", new { sortOrder = ViewBag.SortByName }, new {@class="full-link"})
             </li>
             <li>
-                @Html.ActionLink("Đơn giá", "Index", new { sortOrder = ViewBag.SortByPrice })
+                @Html.ActionLink("Đơn giá", "Index", new { sortOrder = ViewBag.SortByPrice }, new { @class = "full-link" })
             </li>
             <li>
-                @Html.ActionLink("Ngày thêm", "Index", new { sortOrder = ViewBag.SortByDate })
+                @Html.ActionLink("Ngày thêm", "Index", new { sortOrder = ViewBag.SortByDate }, new { @class = "full-link" })
             </li>
         </ul>
     </div>
@@ -124,6 +129,15 @@
     Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) / @Model.PageCount
     @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page = page, SearchString = ViewBag.CurrentFilter, sortOrder = ViewBag.CurrentSortOrder }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-<script>
-    
-</script>
+<style>
+    .full-link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-align: left;
+        padding: 10px;
+    }
+    ul.filter > li{
+        padding: 0px !important;
+    }
+</style>

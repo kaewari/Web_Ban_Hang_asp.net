@@ -8,16 +8,16 @@ namespace SNShop.Models
         public int ID { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập email")]
-        [Display(Name = "Email")]
+        [Display(Name = "Địa chỉ email")]
         [DataType(DataType.EmailAddress)]
         public string Email { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập tên thật")]
-        [Display(Name = "Truename")]
+        [Display(Name = "Họ & Tên")]
         public string Truename { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập username")]
-        [Display(Name = "Username")]
+        [Display(Name = "Nickname")]
         public string Username { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập số điện thoại")]

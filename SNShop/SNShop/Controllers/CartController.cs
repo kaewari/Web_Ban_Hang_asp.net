@@ -150,10 +150,8 @@ namespace SNShop.Controllers
                         var p = db.Products.SingleOrDefault(s => s.Id == item.ProductID);
                         p.UnitsInStock -= (int)item.Quantity;
                         p.UnitsOnOrder += (int)item.Quantity;
-                        UpdateModel(p);
                         db.SubmitChanges();
                     }
-                    db.SubmitChanges();
                     tranScope.Complete();
                     carts.Clear();
                     Session[Constants.CART_SESSION] = carts;
@@ -331,7 +329,7 @@ namespace SNShop.Controllers
                 try
                 {
                     var user = db.Users.SingleOrDefault(s => s.Id == int.Parse(Session["UserID"].ToString()));
-                    orderForm.ID = long.Parse(formCollection["ID"]);
+                    orderForm.ID = formCollection["ID"];
                     orderForm.Truename = formCollection["Truename"];
                     orderForm.ProvinceID = int.Parse(formCollection["PR"]);
                     orderForm.DistrictID = int.Parse(formCollection["DT"]);
@@ -389,6 +387,7 @@ namespace SNShop.Controllers
                         smtp.Host = "smtp.gmail.com";
                         smtp.Port = 587;
                         smtp.EnableSsl = true;
+                        
                         if (user != null)
                         {
                             await smtp.SendMailAsync(message);

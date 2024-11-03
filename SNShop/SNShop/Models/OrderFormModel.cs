@@ -4,9 +4,10 @@ namespace SNShop.Models
 {
     public class OrderFormModel
     {
-        [Required(ErrorMessage = "Yêu cầu nhap65 CMND")]
+        [Required(ErrorMessage = "Yêu cầu nhập CMND")]
         [Display(Name = "CMND")]
-        public long ID { set; get; }
+        [StringLength(12, MinimumLength = 12, ErrorMessage = "CMND phải có độ dài 12 ký tự.")]
+        public string ID { set; get; }
 
         [Required(ErrorMessage = "Yêu cầu nhập tên thật")]
         [Display(Name = "Họ tên")]
@@ -17,10 +18,9 @@ namespace SNShop.Models
         [DataType(DataType.EmailAddress)]
         public string Email { set; get; }
 
-        [Required]
+        [Required(ErrorMessage = "Số điện thoại gồm 10 số.")]
         [Display(Name = "Số điện thoại")]
-        [DataType(DataType.PhoneNumber)]
-        [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại gồm 10 số.")]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có độ dài 10 ký tự.")]
         public string PhoneNumber { set; get; }
 
         [Required]

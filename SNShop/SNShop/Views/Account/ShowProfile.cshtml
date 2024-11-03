@@ -19,7 +19,7 @@
                 @Html.HiddenFor(model => model.ID)
                 <p class="text-danger">@ViewData["duplicateEmail"]</p>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label fw-bold col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Truename, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Truename, htmlAttributes: new { @class = "control-label fw-bold col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Truename, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Truename, "", new { @class = "text-danger" })
@@ -35,7 +35,7 @@
                 </div>
                 <p class="text-danger">@ViewData["duplicateUsername"]</p>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label fw-bold col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label fw-bold col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label fw-bold col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
@@ -59,7 +59,7 @@
                 </div>
                 <p class="text-danger">@ViewData["cityNull"]</p>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ProvinceID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ProvinceID, htmlAttributes: new { @class = "control-label fw-bold col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownList("PR", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlProvince" })
                         @Html.ValidationMessageFor(model => model.ProvinceID, "", new { @class = "text-danger" })
@@ -67,7 +67,7 @@
                 </div>
                 <p class="text-danger">@ViewData["districtNull"]</p>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DistrictID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.DistrictID, htmlAttributes: new { @class = "control-label fw-bold col-md-2" })
                     <div class="col-md-10">
                         @Html.DropDownList("DT", null, htmlAttributes: new { @class = "form-control", @style = "width:100%", @id = "ddlDistrict" })
                         @Html.ValidationMessageFor(model => model.DistrictID, "", new { @class = "text-danger" })
@@ -93,16 +93,16 @@
             </div>
             <div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-6" })
+                    @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label fw-bold col-md-6 fw-bold" })
                     <div class="col-md-10">
 
                         @if (Model.Image != null)
                         {
-                            <img class="rounded-circle" name="Image" id="Image" width="250" height="250" src="@Model.Image" />
+                            <img class="border border-2 rounded-3" name="Image" id="Image" width="300" height="300" src="@Model.Image" />
                         }
                         else
                         {
-                            <img class="rounded-circle" name="Image" id="Image" width="250" height="250" src="~/Images/Avatars/man-avatar.jpg" />
+                            <img class="border border-2 rounded-3" name="Image" id="Image" width="250" height="250" src="~/Images/Avatars/man-avatar.jpg" />
                         }
                         @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
                     </div>
@@ -131,73 +131,107 @@
     </div>
 </div>
 <script>
-    var user = {
-        init: function () {
+var user = {
+    init: function () {
+        // Kiểm tra xem đã có ProvinceID hay chưa
+        if (@Model.ProvinceID != null && @Model.ProvinceID != '') {
+        // Nếu đã có, thiết lập giá trị và không cần gọi AJAX
+            user.setProvinceAndDistrict(@Model.ProvinceID, @Model.DistrictID);
+        } else {
+        // Nếu chưa có ProvinceID thì load dữ liệu như bình thường
             user.loadProvince();
-            if (@Model.ProvinceID != null) {
-                user.loadDistrict(@Model.ProvinceID);
-            }
-
-            user.registerEvent();
-        },
-        registerEvent: function () {
-            $('#ddlProvince').off('change').on('change', function () {
-                var id = $(this).val();
-                if (id != '') {
-                    user.loadDistrict(parseInt(id));
-                }
-                else {
-                    $('#ddlDistrict').html('');
-                }
-            });
-        },
-        loadProvince: function () {
-            $.ajax({
-                url: '/Account/LoadProvince',
-                type: "POST",
-                dataType: "json",
-                success: function (response) {
-                    if (response.status == true) {
-                        var html = '<option value="">--Chọn tỉnh thành--</option>';
-                        var data = response.data;
-                        $('#ddlDistrict')
-                            .find('option')
-                            .remove()
-                            .end()
-                            .append('<option value=""></option>')
-                            .val('0')
-                        $.each(data, function (i, item) {
-                            if (item.Id == @Model.ProvinceID)
-                                html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
-                            else
-                                html += '<option value="' + item.Id + '">' + item.Name + '</option>'
-                        });
-                        $('#ddlProvince').html(html);
-                    }
-                }
-            })
-        },
-        loadDistrict: function (id) {
-            $.ajax({
-                url: '/Account/LoadDistrict',
-                type: "POST",
-                data: { provinceID: id },
-                dataType: "json",
-                success: function (response) {
-                    if (response.status == true) {
-                        var html = '<option value="">--Chọn quận huyện--</option>';
-                        var data = response.data;
-                        $.each(data, function (i, item) {
-                            if (item.Id == @Model.DistrictID)
-                                html += '<option selected value="' + item.Id + '">' + item.Name + '</option>'
-                            else
-                                html += '<option value="' + item.Id + '">' + item.Name + '</option>'
-                        });
-                        $('#ddlDistrict').html(html);
-                    }
-                }
-            })
         }
+        user.registerEvent();
+    },
+    registerEvent: function () {
+        $('#ddlProvince').off('change').on('change', function () {
+            var id = $(this).val();
+            if (id != '') {
+                user.loadDistrict(parseInt(id));
+            }
+            else {
+                $('#ddlDistrict').html('');
+            }
+        });
+    },
+    setProvinceAndDistrict: function (provinceID, districtID) {
+        // Load dữ liệu cho tỉnh và thiết lập option cho quận/huyện nếu có sẵn
+        $.ajax({
+            url: '/Account/LoadProvince',
+            type: "POST",
+            dataType: "json",
+            success: function (response) {
+                if (response.status == true) {
+                    var html = '<option value="">--Chọn tỉnh thành--</option>';
+                    var data = response.data;
+                    $.each(data, function (i, item) {
+                        if (item.Id == provinceID) {
+                            html += '<option selected value="' + item.Id + '">' + item.Name + '</option>';
+                        } else {
+                            html += '<option value="' + item.Id + '">' + item.Name + '</option>';
+                        }
+                    });
+                    $('#ddlProvince').html(html);
+
+                    // Sau khi thiết lập Province, load District
+                    if (districtID != null && districtID != '') {
+                        user.loadDistrict(provinceID, districtID);
+                    }
+                }
+            }
+        });
+    },
+    loadProvince: function () {
+        // Load danh sách tỉnh, thành phố
+        $.ajax({
+            url: '/Account/LoadProvince',
+            type: "POST",
+            dataType: "json",
+            success: function (response) {
+                if (response.status == true) {
+                    var html = '<option value="">--Chọn tỉnh thành--</option>';
+                    var data = response.data;
+                    $('#ddlDistrict')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value=""></option>')
+                        .val('0');
+                    $.each(data, function (i, item) {
+                        html += '<option value="' + item.Id + '">' + item.Name + '</option>';
+                    });
+                    $('#ddlProvince').html(html);
+                }
+            }
+        });
+    },
+    loadDistrict: function (provinceID, selectedDistrictID = null) {
+        // Load danh sách quận/huyện dựa trên provinceID
+        $.ajax({
+            url: '/Account/LoadDistrict',
+            type: "POST",
+            data: { provinceID: provinceID },
+            dataType: "json",
+            success: function (response) {
+                if (response.status == true) {
+                    var html = '<option value="">--Chọn quận huyện--</option>';
+                    var data = response.data;
+                    $.each(data, function (i, item) {
+                        if (selectedDistrictID != null && item.Id == selectedDistrictID) {
+                            html += '<option selected value="' + item.Id + '">' + item.Name + '</option>';
+                        } else {
+                            html += '<option value="' + item.Id + '">' + item.Name + '</option>';
+                        }
+                    });
+                    $('#ddlDistrict').html(html);
+                }
+            }
+        });
     }
+}
+
+$(document).ready(function () {
     user.init();
+});
+
 </script>

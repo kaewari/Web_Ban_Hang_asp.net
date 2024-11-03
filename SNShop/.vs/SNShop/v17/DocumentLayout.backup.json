@@ -1,0 +1,329 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|c:\\users\\sonho\\onedrive\\m\u00E1y t\u00EDnh\\web_ban_hang_asp.net\\snshop\\snshop\\asset\\admin\\js\\demo\\chart-bar-demo.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\asset\\admin\\js\\demo\\chart-bar-demo.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|c:\\users\\sonho\\onedrive\\m\u00E1y t\u00EDnh\\web_ban_hang_asp.net\\snshop\\snshop\\asset\\admin\\js\\demo\\chart-area-demo.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\asset\\admin\\js\\demo\\chart-area-demo.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|c:\\users\\sonho\\onedrive\\m\u00E1y t\u00EDnh\\web_ban_hang_asp.net\\snshop\\snshop\\areas\\admin\\views\\home\\charts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\areas\\admin\\views\\home\\charts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|c:\\users\\sonho\\onedrive\\m\u00E1y t\u00EDnh\\web_ban_hang_asp.net\\snshop\\snshop\\models\\userloginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\models\\userloginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|c:\\users\\sonho\\onedrive\\m\u00E1y t\u00EDnh\\web_ban_hang_asp.net\\snshop\\snshop\\views\\account\\showprofile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\views\\account\\showprofile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\models\\editusermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\models\\editusermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\app_start\\filterconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\app_start\\filterconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\models\\orderformmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\models\\orderformmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\models\\cartmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\models\\cartmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\models\\snonlineshop.dbml||{B465B5AD-8799-4507-B90A-EE29ACF36AF9}|",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\models\\snonlineshop.dbml||{B465B5AD-8799-4507-B90A-EE29ACF36AF9}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\areas\\admin\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\areas\\admin\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\views\\cart\\listcart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\views\\cart\\listcart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\views\\home\\detail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\views\\home\\detail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\snshop\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C877F3E2-DD16-43E2-A4B7-0F91A2AC547B}|SNShop\\SNShop.csproj|solutionrelative:snshop\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "chart-bar-demo.js",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\asset\\admin\\js\\demo\\chart-bar-demo.js",
+              "RelativeDocumentMoniker": "SNShop\\asset\\admin\\js\\demo\\chart-bar-demo.js",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\asset\\admin\\js\\demo\\chart-bar-demo.js",
+              "RelativeToolTip": "SNShop\\asset\\admin\\js\\demo\\chart-bar-demo.js",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-10-21T17:11:19.377Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "chart-area-demo.js",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\asset\\admin\\js\\demo\\chart-area-demo.js",
+              "RelativeDocumentMoniker": "SNShop\\asset\\admin\\js\\demo\\chart-area-demo.js",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\asset\\admin\\js\\demo\\chart-area-demo.js",
+              "RelativeToolTip": "SNShop\\asset\\admin\\js\\demo\\chart-area-demo.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-10-21T17:10:32.789Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Charts.cshtml",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Areas\\Admin\\Views\\Home\\Charts.cshtml",
+              "RelativeDocumentMoniker": "SNShop\\Areas\\Admin\\Views\\Home\\Charts.cshtml",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Areas\\Admin\\Views\\Home\\Charts.cshtml",
+              "RelativeToolTip": "SNShop\\Areas\\Admin\\Views\\Home\\Charts.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACYAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-21T17:08:48.529Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserLoginModel.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\UserLoginModel.cs",
+              "RelativeDocumentMoniker": "SNShop\\Models\\UserLoginModel.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\UserLoginModel.cs",
+              "RelativeToolTip": "SNShop\\Models\\UserLoginModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-21T17:08:02.364Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "RouteConfig.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\App_Start\\RouteConfig.cs",
+              "RelativeDocumentMoniker": "SNShop\\App_Start\\RouteConfig.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\App_Start\\RouteConfig.cs",
+              "RelativeToolTip": "SNShop\\App_Start\\RouteConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T14:23:35.881Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "FilterConfig.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\App_Start\\FilterConfig.cs",
+              "RelativeDocumentMoniker": "SNShop\\App_Start\\FilterConfig.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\App_Start\\FilterConfig.cs",
+              "RelativeToolTip": "SNShop\\App_Start\\FilterConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T14:23:34.817Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ShowProfile.cshtml",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Views\\Account\\ShowProfile.cshtml",
+              "RelativeDocumentMoniker": "SNShop\\Views\\Account\\ShowProfile.cshtml",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Views\\Account\\ShowProfile.cshtml",
+              "RelativeToolTip": "SNShop\\Views\\Account\\ShowProfile.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-06T13:53:07.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "SNShop\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "SNShop\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAkwCsAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T13:47:14.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "EditUserModel.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\EditUserModel.cs",
+              "RelativeDocumentMoniker": "SNShop\\Models\\EditUserModel.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\EditUserModel.cs",
+              "RelativeToolTip": "SNShop\\Models\\EditUserModel.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T13:46:56.253Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "OrderFormModel.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\OrderFormModel.cs",
+              "RelativeDocumentMoniker": "SNShop\\Models\\OrderFormModel.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\OrderFormModel.cs",
+              "RelativeToolTip": "SNShop\\Models\\OrderFormModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAABbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T12:00:59.081Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "ListCart.cshtml",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Views\\Cart\\ListCart.cshtml",
+              "RelativeDocumentMoniker": "SNShop\\Views\\Cart\\ListCart.cshtml",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Views\\Cart\\ListCart.cshtml",
+              "RelativeToolTip": "SNShop\\Views\\Cart\\ListCart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-06T11:46:55.74Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "SNShop\\Controllers\\CartController.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Controllers\\CartController.cs",
+              "RelativeToolTip": "SNShop\\Controllers\\CartController.cs",
+              "ViewState": "AgIAAEcBAAAAAAAAAAAmwEkBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T11:39:40.608Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "CartModel.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\CartModel.cs",
+              "RelativeDocumentMoniker": "SNShop\\Models\\CartModel.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\CartModel.cs",
+              "RelativeToolTip": "SNShop\\Models\\CartModel.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T11:39:34.094Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "SNOnlineShop.dbml",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\SNOnlineShop.dbml",
+              "RelativeDocumentMoniker": "SNShop\\Models\\SNOnlineShop.dbml",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Models\\SNOnlineShop.dbml",
+              "RelativeToolTip": "SNShop\\Models\\SNOnlineShop.dbml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001722|",
+              "WhenOpened": "2024-10-06T10:37:19.561Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Web.config",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Web.config",
+              "RelativeDocumentMoniker": "SNShop\\Web.config",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Web.config",
+              "RelativeToolTip": "SNShop\\Web.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-10-06T10:35:37.199Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Detail.cshtml",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Views\\Home\\Detail.cshtml",
+              "RelativeDocumentMoniker": "SNShop\\Views\\Home\\Detail.cshtml",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Views\\Home\\Detail.cshtml",
+              "RelativeToolTip": "SNShop\\Views\\Home\\Detail.cshtml",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAHoAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-06T10:35:37.258Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "SNShop\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "SNShop\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAIwEIAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T10:35:37.262Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "SNShop\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "SNShop\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAGQAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-10-06T10:35:37.265Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Areas\\Admin\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "SNShop\\Areas\\Admin\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\sonho\\OneDrive\\M\u00E1y t\u00EDnh\\Web_Ban_Hang_asp.net\\SNShop\\SNShop\\Areas\\Admin\\Controllers\\UserController.cs",
+              "RelativeToolTip": "SNShop\\Areas\\Admin\\Controllers\\UserController.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAqwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-06T10:35:37.268Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
